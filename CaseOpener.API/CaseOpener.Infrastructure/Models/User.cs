@@ -1,0 +1,58 @@
+﻿using CaseOpener.Infrastructure.Constants;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace CaseOpener.Infrastructure.Models
+{
+    /// <summary>
+    /// Represents the user
+    /// </summary>
+    [Comment("Represents the user")]
+    public class User
+    {
+        /// <summary>
+        /// Unique identifier for the user.
+        /// </summary>
+        [Key]
+        [Comment("User's identifier")]
+        public string Id { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Username chosen by the user.
+        /// </summary>
+        [Required]
+        [Comment("User's username")]
+        [MinLength(PropertiesConstants.USER_USERNAME_MIN_LENGTH)]
+        public string Username { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Email address of the user.
+        /// </summary>
+        [Required]
+        [Comment("User's email")]
+        [MinLength(PropertiesConstants.USER_EMAIL_MIN_LENGTH)]
+        public string Email { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Hashed password for secure authentication.
+        /// </summary>
+        [Required]
+        [Comment("User's password")]
+        [MinLength(PropertiesConstants.USER_PASSWORD_MIN_LENGTH)]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Balance of the user
+        /// </summary>
+        [Required]
+        [Comment("User's balance")]
+        public decimal Balance { get; set; }
+
+        /// <summary>
+        /// Date and time the user joined.
+        /// </summary>
+        [Required]
+        [Comment("The date when user joined")]
+        public DateTime DateJoined { get; set; }
+    }
+}

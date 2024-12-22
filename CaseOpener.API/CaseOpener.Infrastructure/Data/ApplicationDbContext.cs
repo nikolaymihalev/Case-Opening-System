@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CaseOpener.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaseOpener.Infrastructure.Data
 {
@@ -7,5 +8,7 @@ namespace CaseOpener.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {            
         }
+
+        public DbSet<User> Users { get; set; }
     }
 }
