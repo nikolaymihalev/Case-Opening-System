@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CaseOpener.Infrastructure.Constants
+﻿namespace CaseOpener.Infrastructure.Constants
 {
     public static class PropertiesConstants
     {
@@ -16,5 +10,8 @@ namespace CaseOpener.Infrastructure.Constants
 
         public const int USER_EMAIL_MIN_LENGTH = 10;
         public const int USER_EMAIL_MAX_LENGTH = 100;
+
+        public const int ITEM_NAME_MIN_LENGTH = 2;
+        public const int ITEM_NAME_MAX_LENGTH = 50;
     }
 }
