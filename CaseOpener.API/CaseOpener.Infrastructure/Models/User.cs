@@ -54,5 +54,10 @@ namespace CaseOpener.Infrastructure.Models
         [Required]
         [Comment("The date when user joined")]
         public DateTime DateJoined { get; set; }
+
+        /// <summary>
+        /// Transactions created by the user.
+        /// </summary>
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }
