@@ -42,7 +42,7 @@ namespace CaseOpener.Infrastructure.Models
         public string PasswordHash { get; set; } = string.Empty;
 
         /// <summary>
-        /// Balance of the user
+        /// Balance of the user.
         /// </summary>
         [Required]
         [Comment("User's balance")]
@@ -59,5 +59,15 @@ namespace CaseOpener.Infrastructure.Models
         /// Transactions created by the user.
         /// </summary>
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+        /// <summary>
+        /// Case openings created by the user.
+        /// </summary>
+        public ICollection<CaseOpening> CaseOpenings { get; set; } = new List<CaseOpening>();
+
+        /// <summary>
+        /// Inventory items added by the user.
+        /// </summary>
+        public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
     }
 }
