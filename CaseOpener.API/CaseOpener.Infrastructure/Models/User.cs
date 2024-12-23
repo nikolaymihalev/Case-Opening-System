@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 namespace CaseOpener.Infrastructure.Models
 {
     /// <summary>
-    /// Represents the user
+    /// Represents the User
     /// </summary>
-    [Comment("Represents the user")]
+    [Comment("Represents the User")]
     public class User
     {
         /// <summary>
@@ -54,5 +54,10 @@ namespace CaseOpener.Infrastructure.Models
         [Required]
         [Comment("The date when user joined")]
         public DateTime DateJoined { get; set; }
+
+        /// <summary>
+        /// Transactions created by the user.
+        /// </summary>
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

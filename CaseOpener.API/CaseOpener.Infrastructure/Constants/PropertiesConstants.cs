@@ -13,5 +13,8 @@
 
         public const int ITEM_NAME_MIN_LENGTH = 2;
         public const int ITEM_NAME_MAX_LENGTH = 50;
+
+        public const int CASE_NAME_MIN_LENGTH = 5;
+        public const int CASE_NAME_MAX_LENGTH = 100;
     }
 }
