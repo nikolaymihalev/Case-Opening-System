@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 namespace CaseOpener.Infrastructure.Models
 {
     /// <summary>
-    /// Represents the user
+    /// Represents the User
     /// </summary>
-    [Comment("Represents the user")]
+    [Comment("Represents the User")]
     public class User
     {
         /// <summary>

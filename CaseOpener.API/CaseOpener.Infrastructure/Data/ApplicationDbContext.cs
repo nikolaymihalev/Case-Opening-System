@@ -11,5 +11,6 @@ namespace CaseOpener.Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Case> Cases { get; set; }
     }
 }
