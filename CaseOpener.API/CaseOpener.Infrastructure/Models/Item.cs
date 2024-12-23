@@ -64,5 +64,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Collection of case openings.
         /// </summary>
         public ICollection<CaseOpening> CaseOpenings { get; set; } = new List<CaseOpening>();
+
+        /// <summary>
+        /// Collection of inventory items.
+        /// </summary>
+        public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
     }
 }

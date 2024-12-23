@@ -15,5 +15,6 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<CaseOpening> CaseOpenings { get; set; }
         public DbSet<DailyReward> DailyRewards { get; set; }
+        public DbSet<InventoryItem> InventoryItems { get; set; }
     }
 }
