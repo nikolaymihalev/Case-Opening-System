@@ -75,5 +75,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Daily rewards for user.
         /// </summary>
         public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
+
+        /// <summary>
+        /// Roles for user.
+        /// </summary>
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

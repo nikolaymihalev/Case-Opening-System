@@ -17,6 +17,8 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<CaseOpening> CaseOpenings { get; set; }
         public DbSet<DailyReward> DailyRewards { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +26,7 @@ namespace CaseOpener.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new DailyRewardConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryItemConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
