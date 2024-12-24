@@ -45,6 +45,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Balance of the user.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("User's balance")]
         public decimal Balance { get; set; }
 
@@ -69,5 +70,15 @@ namespace CaseOpener.Infrastructure.Models
         /// Inventory items added by the user.
         /// </summary>
         public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+
+        /// <summary>
+        /// Daily rewards for user.
+        /// </summary>
+        public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
+
+        /// <summary>
+        /// Roles for user.
+        /// </summary>
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

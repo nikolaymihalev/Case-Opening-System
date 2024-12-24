@@ -1,4 +1,5 @@
-﻿using CaseOpener.Infrastructure.Models;
+﻿using CaseOpener.Infrastructure.Data.Configurations;
+using CaseOpener.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaseOpener.Infrastructure.Data
@@ -16,5 +17,18 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<CaseOpening> CaseOpenings { get; set; }
         public DbSet<DailyReward> DailyRewards { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CaseOpeningConfiguration());
+            modelBuilder.ApplyConfiguration(new DailyRewardConfiguration());
+            modelBuilder.ApplyConfiguration(new InventoryItemConfiguration());
+            modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Amount of the item.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("Item's amount")]
         public decimal Amount { get; set; }
 
