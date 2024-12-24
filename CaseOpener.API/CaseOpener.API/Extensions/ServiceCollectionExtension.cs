@@ -1,4 +1,6 @@
-﻿using CaseOpener.Infrastructure.Common;
+﻿using CaseOpener.Core.Contracts;
+using CaseOpener.Core.Services;
+using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IRepository, Repository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services) 
+        {
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }
