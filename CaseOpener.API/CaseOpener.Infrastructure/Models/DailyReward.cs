@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CaseOpener.Infrastructure.Models
 {
@@ -36,5 +37,11 @@ namespace CaseOpener.Infrastructure.Models
         [Required]
         [Comment("Case's claimed date")]
         public DateTime LastClaimedDate { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; } = null!;
+
+        [ForeignKey(nameof(CaseId))]
+        public Case Case { get; set; } = null!;
     }
 }

@@ -69,5 +69,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Inventory items added by the user.
         /// </summary>
         public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+
+        /// <summary>
+        /// Daily rewards for user.
+        /// </summary>
+        public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
     }
 }
