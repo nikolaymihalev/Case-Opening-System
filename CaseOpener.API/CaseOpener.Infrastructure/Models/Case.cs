@@ -36,6 +36,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Price of the case.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("Case's price")]
         public decimal Price { get; set; }
 

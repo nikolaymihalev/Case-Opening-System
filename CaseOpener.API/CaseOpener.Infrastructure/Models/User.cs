@@ -45,6 +45,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Balance of the user.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("User's balance")]
         public decimal Balance { get; set; }
 

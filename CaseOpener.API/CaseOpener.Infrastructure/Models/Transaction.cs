@@ -35,6 +35,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Amount of the transaction.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("Transaction's amount")]
         public decimal Amount { get; set; }
 
