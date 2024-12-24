@@ -10,4 +10,9 @@
     <ProjectReference Include="..\CaseOpener.Infrastructure\CaseOpener.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
