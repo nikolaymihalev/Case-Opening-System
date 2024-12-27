@@ -1,4 +1,5 @@
 ﻿using CaseOpener.Core.Contracts;
+using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Core.Models.User;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
@@ -92,7 +93,76 @@ namespace CaseOpener.Core.Services
                     }).ToListAsync();
             }
 
-            return new List<RoleModel>();
+            throw new ArgumentException("Unauthorized!");
+        }
+
+        public async Task<UserModel?> GetUserInformationAsync(string adminId, string userId)
+        {
+            string result = CheckUserId(adminId).Result;
+
+            if (result == "Authorized")
+            {
+                var user = await repository.GetByIdAsync<User>(userId);
+
+                if (user is null)
+                    return null;
+
+                return new UserModel()
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Balance = user.Balance,
+                    DateJoined = user.DateJoined
+                };
+            }
+
+            throw new ArgumentException("Unauthorized!");
+        }
+
+        public async Task<IEnumerable<UserModel>> GetUsersAsync(string adminId)
+        {
+            string result = CheckUserId(adminId).Result;
+
+            if (result == "Authorized")
+            {
+                return await repository.AllReadonly<User>()
+                    .Where(x => x.Id != adminId)
+                    .Select(x => new UserModel()
+                    {
+                        Id = x.Id,
+                        Username = x.Username,
+                        Email = x.Email,
+                        Balance = x.Balance,
+                        DateJoined = x.DateJoined
+                    })
+                    .ToListAsync();
+            }
+
+            throw new ArgumentException("Unauthorized!");
+        }
+
+        public async Task<IEnumerable<TransactionInfoModel>> GetUserTransactionsAsync(string adminId, string userId)
+        {
+            string result = CheckUserId(adminId).Result;
+
+            if (result == "Authorized")
+            {
+                return await repository.AllReadonly<Transaction>()
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new TransactionInfoModel()
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        Type = x.Type,
+                        Amount = x.Amount,
+                        Date = x.Date,
+                        Status = x.Status
+                    })
+                    .ToListAsync();
+            }
+
+            throw new ArgumentException("Unauthorized!");
         }
 
         private async Task<string> CheckUserId(string userId)
