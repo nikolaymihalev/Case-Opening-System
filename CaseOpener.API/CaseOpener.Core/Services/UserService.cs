@@ -10,10 +10,14 @@ namespace CaseOpener.Core.Services
     public class UserService : IUserService
     {
         private readonly IRepository repository;
+        private readonly IAdminService adminService;
 
-        public UserService(IRepository _repository)
+        public UserService(
+            IRepository _repository,
+            IAdminService _adminService)
         {
             repository = _repository;
+            adminService = _adminService;
         }
 
         public async Task<UserModel?> GetUserAsync(string userId)
@@ -73,6 +77,8 @@ namespace CaseOpener.Core.Services
             var passwordHasher = new PasswordHasher<User>();
 
             user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
+
+            await adminService.AddUserToRoleAsync(user.Id, "User");
 
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();

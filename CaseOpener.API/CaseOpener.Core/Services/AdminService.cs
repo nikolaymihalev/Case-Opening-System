@@ -35,16 +35,22 @@ namespace CaseOpener.Core.Services
             return result;           
         }
 
-        public async Task AddUserToRoleAsync(string userId, int roleId)
+        public async Task AddUserToRoleAsync(string userId, string roleName)
         {
-            var userRole = new UserRole()
-            {
-                UserId = userId,
-                RoleId = roleId
-            };
+            var role = await repository.All<Role>()
+                .FirstOrDefaultAsync(x => x.Name == roleName);
 
-            await repository.AddAsync(userRole);
-            await repository.SaveChangesAsync();
+            if(role != null)
+            {
+                var userRole = new UserRole()
+                {
+                    UserId = userId,
+                    RoleId = role.Id
+                };
+
+                await repository.AddAsync(userRole);
+                await repository.SaveChangesAsync();
+            }            
         }
 
         public async Task<string> EditRoleAsync(string adminId, RoleModel model)
