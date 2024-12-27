@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseOpener.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241224102821_AddRoles")]
-    partial class AddRoles
+    [Migration("20241227121109_InitialAndSeed")]
+    partial class InitialAndSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,6 +236,18 @@ namespace CaseOpener.Infrastructure.Migrations
                         {
                             t.HasComment("Represents the user role");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.Transaction", b =>
@@ -317,6 +329,26 @@ namespace CaseOpener.Infrastructure.Migrations
                         {
                             t.HasComment("Represents the User");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba",
+                            Balance = 0m,
+                            DateJoined = new DateTime(2024, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOWAQdphO9zl1nuVnG74bkkFfVfU6pGMU++bjaUNth/9zkpC0LtSXnlBsfOaWxaNZg==",
+                            Username = "Admin"
+                        },
+                        new
+                        {
+                            Id = "5a646737-b3ab-4595-9770-2c744e5808c6",
+                            Balance = 1000m,
+                            DateJoined = new DateTime(2024, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "johndoe@gmail.com",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPrfAaKVdcbrM/LsfBkDW6ar2SM0zDVp9QBbp1tgJxspt0Q+g28niBuYZ+Jz8M2G5w==",
+                            Username = "JohnD"
+                        });
                 });
 
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.UserRole", b =>
@@ -336,6 +368,18 @@ namespace CaseOpener.Infrastructure.Migrations
                     b.ToTable("UserRoles", t =>
                         {
                             t.HasComment("Represents a mapping between users and roles");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = "5a646737-b3ab-4595-9770-2c744e5808c6",
+                            RoleId = 1
                         });
                 });
 

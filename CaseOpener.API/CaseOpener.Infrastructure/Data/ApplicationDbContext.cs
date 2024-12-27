@@ -1,6 +1,7 @@
 ﻿using CaseOpener.Infrastructure.Data.Configurations;
 using CaseOpener.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CaseOpener.Infrastructure.Data
 {
@@ -22,6 +23,8 @@ namespace CaseOpener.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new CaseOpeningConfiguration());
             modelBuilder.ApplyConfiguration(new DailyRewardConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryItemConfiguration());
@@ -29,6 +32,11 @@ namespace CaseOpener.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
 
             base.OnModelCreating(modelBuilder);
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
         }
     }
 }
