@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CaseOpener.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialAndSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +48,20 @@ namespace CaseOpener.Infrastructure.Migrations
                     table.PrimaryKey("PK_Items", x => x.Id);
                 },
                 comment: "Represents the Item");
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false, comment: "Role's identifier")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "Role's name")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                },
+                comment: "Represents the user role");
 
             migrationBuilder.CreateTable(
                 name: "Users",
@@ -179,6 +195,58 @@ namespace CaseOpener.Infrastructure.Migrations
                 },
                 comment: "Represents the Transaction");
 
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "User's identifier"),
+                    RoleId = table.Column<int>(type: "int", nullable: false, comment: "Role's identifier")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                },
+                comment: "Represents a mapping between users and roles");
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "User" },
+                    { 2, "Admin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Balance", "DateJoined", "Email", "PasswordHash", "Username" },
+                values: new object[,]
+                {
+                    { "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba", 0m, new DateTime(2024, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", "AQAAAAIAAYagAAAAEOWAQdphO9zl1nuVnG74bkkFfVfU6pGMU++bjaUNth/9zkpC0LtSXnlBsfOaWxaNZg==", "Admin" },
+                    { "5a646737-b3ab-4595-9770-2c744e5808c6", 1000m, new DateTime(2024, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "johndoe@gmail.com", "AQAAAAIAAYagAAAAEPrfAaKVdcbrM/LsfBkDW6ar2SM0zDVp9QBbp1tgJxspt0Q+g28niBuYZ+Jz8M2G5w==", "JohnD" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 2, "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba" },
+                    { 1, "5a646737-b3ab-4595-9770-2c744e5808c6" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CaseOpenings_CaseId",
                 table: "CaseOpenings",
@@ -218,6 +286,11 @@ namespace CaseOpener.Infrastructure.Migrations
                 name: "IX_Transactions_UserId",
                 table: "Transactions",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -236,10 +309,16 @@ namespace CaseOpener.Infrastructure.Migrations
                 name: "Transactions");
 
             migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
                 name: "Cases");
 
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");

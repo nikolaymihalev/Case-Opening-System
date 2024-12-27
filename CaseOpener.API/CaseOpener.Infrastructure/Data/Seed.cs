@@ -1,4 +1,5 @@
 ﻿using CaseOpener.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CaseOpener.Infrastructure.Data
 {
@@ -22,6 +23,11 @@ namespace CaseOpener.Infrastructure.Data
                 new User { Id = "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba", Email = "admin@gmail.com", Username = "Admin" ,Balance = 0, DateJoined = new DateTime(2024,10,23)},
                 new User { Id = "5a646737-b3ab-4595-9770-2c744e5808c6", Email = "johndoe@gmail.com", Username = "JohnD" , Balance = 1000, DateJoined = new DateTime(2024,12,23)},
             };
+
+            var passwordHasher = new PasswordHasher<User>();
+
+            Users[0].PasswordHash = passwordHasher.HashPassword(Users[0], "@dM1n#20Xx7&Qw4Z!T$p9Hj2");
+            Users[1].PasswordHash = passwordHasher.HashPassword(Users[1], "john12345");
         }
 
         private void SeedRoles()
