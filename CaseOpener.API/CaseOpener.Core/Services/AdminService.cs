@@ -1,4 +1,5 @@
-﻿using CaseOpener.Core.Contracts;
+﻿using CaseOpener.Core.Constants;
+using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Core.Models.User;
 using CaseOpener.Infrastructure.Common;
@@ -30,7 +31,7 @@ namespace CaseOpener.Core.Services
                 await repository.AddAsync(role);
                 await repository.SaveChangesAsync();
 
-                return "Successfully added new role!";
+                return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "role");
             }
 
             return result;           
@@ -68,11 +69,11 @@ namespace CaseOpener.Core.Services
 
                     await repository.SaveChangesAsync();
 
-                    return "Successfully edited role!";
+                    return string.Format(ReturnMessages.SUCCESSFULLY_EDITED, "role");
                 }   
                 else
                 {
-                    return "Role doesn't exist!";
+                    return string.Format(ReturnMessages.DOESNT_EXIST, "Role");
                 }                
             }
 

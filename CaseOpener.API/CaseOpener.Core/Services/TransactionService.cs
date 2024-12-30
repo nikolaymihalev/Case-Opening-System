@@ -1,4 +1,5 @@
-﻿using CaseOpener.Core.Contracts;
+﻿using CaseOpener.Core.Constants;
+using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Infrastructure.Common;
@@ -19,7 +20,7 @@ namespace CaseOpener.Core.Services
         {
             if(IsValidEnumValue<TransactionType>(model.Type) == false)
             {
-                return "Invalid model!";
+                return ReturnMessages.INVALID_MODEL;
             }
 
             var transaction = new Transaction()
@@ -34,7 +35,7 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(transaction);
             await repository.SaveChangesAsync();
 
-            return "Successfully added new transaction!";
+            return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "transaction");
         }
 
         public async Task<string> DeleteTransactionAsync(string adminId, int id)
@@ -46,10 +47,10 @@ namespace CaseOpener.Core.Services
                 await repository.DeleteAsync<Transaction>(id);
                 await repository.SaveChangesAsync();
 
-                return "Successfully deleted transaction";
+                return string.Format(ReturnMessages.SUCCESSFULLY_DELETED, "transaction");
             }
 
-            return "Transaction doesn't exist!";
+            return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
         }
 
         public async Task<TransactionModel?> GetTransactionByIdAsync(string userId, int id)
@@ -80,10 +81,10 @@ namespace CaseOpener.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return "Successfully updated transaction";
+                return string.Format(ReturnMessages.SUCCESSFULLY_UPDATED, "transaction");
             }
 
-            return "Transaction doesn't exist!";
+            return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum

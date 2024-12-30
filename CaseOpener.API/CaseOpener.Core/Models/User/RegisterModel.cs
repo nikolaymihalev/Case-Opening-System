@@ -14,26 +14,26 @@ namespace CaseOpener.Core.Models.User
         /// <summary>
         /// The username that the user will register with
         /// </summary>
-        [Required(ErrorMessage = ErrorMessages.RequireErrorMessage)]
+        [Required(ErrorMessage = ReturnMessages.REQUIRE)]
         [StringLength(PropertiesConstants.USER_USERNAME_MAX_LENGTH,
             MinimumLength = PropertiesConstants.USER_USERNAME_MIN_LENGTH,
-            ErrorMessage = ErrorMessages.StringLengthErrorMessage)]
+            ErrorMessage = ReturnMessages.STRING_LENGTH)]
         public string Username { get; set; } = null!;
 
         /// <summary>
         /// The user's email address used for account registration
         /// </summary>
-        [Required(ErrorMessage = ErrorMessages.RequireErrorMessage)]
+        [Required(ErrorMessage = ReturnMessages.REQUIRE)]
         [EmailAddress]
         [StringLength(PropertiesConstants.USER_EMAIL_MAX_LENGTH,
             MinimumLength = PropertiesConstants.USER_EMAIL_MIN_LENGTH,
-            ErrorMessage = ErrorMessages.StringLengthErrorMessage)]
+            ErrorMessage = ReturnMessages.STRING_LENGTH)]
         public string Email { get; set; } = null!;
 
         /// <summary>
         /// The user's password used for account registration and future authentication
         /// </summary>
-        [Required(ErrorMessage = ErrorMessages.RequireErrorMessage)]
+        [Required(ErrorMessage = ReturnMessages.REQUIRE)]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 

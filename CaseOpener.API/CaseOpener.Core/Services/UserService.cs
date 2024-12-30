@@ -1,4 +1,5 @@
-﻿using CaseOpener.Core.Contracts;
+﻿using CaseOpener.Core.Constants;
+using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Models.User;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
@@ -43,7 +44,7 @@ namespace CaseOpener.Core.Services
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user != null)
-                return "User already exists!";
+                return string.Format(ReturnMessages.ALREADY_EXIST, "User");
 
             var passwordHasher = new PasswordHasher<User>();
 
@@ -51,10 +52,10 @@ namespace CaseOpener.Core.Services
 
             if (result == PasswordVerificationResult.Success)
             {
-                return "User successfully logged in!";
+                return ReturnMessages.SUCCESSFULLY_LOGGED_IN;
             }
 
-            return "Invalid password";
+            return ReturnMessages.INVALID_PASSWORD;
         }
 
         public async Task<string> RegisterAsync(RegisterModel model)
@@ -63,7 +64,7 @@ namespace CaseOpener.Core.Services
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user != null)
-                return "User already exists!";
+                return string.Format(ReturnMessages.ALREADY_EXIST, "User");
 
             user = new User()
             {
@@ -83,7 +84,7 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();
 
-            return "You was successfully registered!";
+            return ReturnMessages.SUCCESSFULLY_REGISTERED;
         }
 
         public async Task<string> UpdateUserBalanceAsync(string userId, string operation, decimal amount)
@@ -91,7 +92,7 @@ namespace CaseOpener.Core.Services
             var user = await repository.GetByIdAsync<User>(userId);
 
             if (user is null)
-                return "User doesn't exist!";
+                return string.Format(ReturnMessages.DOESNT_EXIST, "User");
 
             if(operation == "increase")
             {
@@ -99,7 +100,7 @@ namespace CaseOpener.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return $"Successfully increased balance!";
+                return string.Format(ReturnMessages.SUCCESSFULLY_MODIFIED_BALANCE, "increased");
             }
             else
             {
@@ -107,7 +108,7 @@ namespace CaseOpener.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return $"Successfully decreased balance!";
+                return string.Format(ReturnMessages.SUCCESSFULLY_MODIFIED_BALANCE, "decreased");
             }
         }
 
@@ -117,13 +118,13 @@ namespace CaseOpener.Core.Services
                     .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user == null || user.Email != model.Email)
-                return "User doesn't exist!";
+                return string.Format(ReturnMessages.DOESNT_EXIST, "User");
 
             user.Username = model.Username;
 
             await repository.SaveChangesAsync();
 
-            return "Successfully updated information!";
+            return string.Format(ReturnMessages.SUCCESSFULLY_UPDATED, "information");
         }
     }
 }
