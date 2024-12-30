@@ -12,6 +12,7 @@
 
         public const string SUCCESSFULLY_LOGGED_IN = "User successfully logged in!";
         public const string SUCCESSFULLY_REGISTERED = "You was successfully registered!";
+        public const string UNAUTHORIZED = "Unauthorized!";
 
         public const string SUCCESSFULLY_MODIFIED_BALANCE = "Successfully {0} balance!";
 

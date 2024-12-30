@@ -19,9 +19,7 @@ namespace CaseOpener.Core.Services
 
         public async Task<string> AddRoleAsync(string adminId, RoleModel model)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized") 
+            if (await CheckUserIsAdmin(adminId)) 
             {
                 var role = new Role()
                 {
@@ -34,7 +32,7 @@ namespace CaseOpener.Core.Services
                 return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "role");
             }
 
-            return result;           
+            return ReturnMessages.UNAUTHORIZED;           
         }
 
         public async Task AddUserToRoleAsync(string userId, string roleName)
@@ -57,9 +55,7 @@ namespace CaseOpener.Core.Services
 
         public async Task<string> EditRoleAsync(string adminId, RoleModel model)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized")
+            if (await CheckUserIsAdmin(adminId))
             {
                 var role = await repository.GetByIdAsync<Role>(model.Id);
 
@@ -77,14 +73,12 @@ namespace CaseOpener.Core.Services
                 }                
             }
 
-            return result;
+            return ReturnMessages.UNAUTHORIZED;
         }
 
         public async Task<IEnumerable<RoleModel>> GetRolesAsync(string adminId)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized")
+            if (await CheckUserIsAdmin(adminId))
             {
                 return await repository.AllReadonly<Role>()
                     .Select(x => new RoleModel()
@@ -94,14 +88,12 @@ namespace CaseOpener.Core.Services
                     }).ToListAsync();
             }
 
-            throw new ArgumentException("Unauthorized!");
+            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
         }
 
         public async Task<UserModel?> GetUserInformationAsync(string adminId, string userId)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized")
+            if (await CheckUserIsAdmin(adminId))
             {
                 var user = await repository.GetByIdAsync<User>(userId);
 
@@ -118,14 +110,12 @@ namespace CaseOpener.Core.Services
                 };
             }
 
-            throw new ArgumentException("Unauthorized!");
+            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
         }
 
         public async Task<IEnumerable<UserModel>> GetUsersAsync(string adminId)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized")
+            if (await CheckUserIsAdmin(adminId))
             {
                 return await repository.AllReadonly<User>()
                     .Where(x => x.Id != adminId)
@@ -140,14 +130,12 @@ namespace CaseOpener.Core.Services
                     .ToListAsync();
             }
 
-            throw new ArgumentException("Unauthorized!");
+            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
         }
 
         public async Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(string adminId, string userId)
         {
-            string result = CheckUserId(adminId).Result;
-
-            if (result == "Authorized")
+            if (await CheckUserIsAdmin(adminId))
             {
                 return await repository.AllReadonly<Transaction>()
                     .Where(x => x.UserId == userId)
@@ -163,19 +151,16 @@ namespace CaseOpener.Core.Services
                     .ToListAsync();
             }
 
-            throw new ArgumentException("Unauthorized!");
+            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
         }
 
-        private async Task<string> CheckUserId(string userId)
+        public async Task<bool> CheckUserIsAdmin(string userId)
         {
             var userRoles = await repository.AllReadonly<UserRole>()
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
 
-            if (userRoles.Any(x => x.RoleId == 2))
-                return "Authorized!";
-            else
-                return "Unauthorized";
+            return userRoles.Any(x => x.RoleId == 2);
         }
     }
 }

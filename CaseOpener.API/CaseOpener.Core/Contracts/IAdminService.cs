@@ -12,5 +12,6 @@ namespace CaseOpener.Core.Contracts
         Task AddUserToRoleAsync(string userId, string roleName);
         Task<string> AddRoleAsync(string adminId, RoleModel model);
         Task<string> EditRoleAsync(string adminId, RoleModel model);
+        Task<bool> CheckUserIsAdmin(string userId);
     }
 }
