@@ -1,6 +1,9 @@
 ﻿namespace CaseOpener.Core.Models.Transaction
 {
-    public class TransactionInfoModel
+    /// <summary>
+    /// Model for Transaction
+    /// </summary>
+    public class TransactionModel
     {
         /// <summary>
         /// Unique identifier for the transaction.

@@ -142,7 +142,7 @@ namespace CaseOpener.Core.Services
             throw new ArgumentException("Unauthorized!");
         }
 
-        public async Task<IEnumerable<TransactionInfoModel>> GetUserTransactionsAsync(string adminId, string userId)
+        public async Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(string adminId, string userId)
         {
             string result = CheckUserId(adminId).Result;
 
@@ -150,7 +150,7 @@ namespace CaseOpener.Core.Services
             {
                 return await repository.AllReadonly<Transaction>()
                     .Where(x => x.UserId == userId)
-                    .Select(x => new TransactionInfoModel()
+                    .Select(x => new TransactionModel()
                     {
                         Id = x.Id,
                         UserId = x.UserId,
