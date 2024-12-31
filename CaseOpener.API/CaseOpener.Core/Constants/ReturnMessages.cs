@@ -2,7 +2,7 @@
 {
     public static class ReturnMessages
     {
-        public const string REQUIRE = "The field {0} is required!";
+        public const string REQUIRED = "The field {0} is required!";
         public const string STRING_LENGTH = "The field {0} is between {2} and {1} characters long!";
 
         public const string SUCCESSFYLLY_ADDED = "Successfully added new {0}!";

@@ -1,4 +1,4 @@
-﻿namespace CaseOpener.Core.Models.Case
+﻿namespace CaseOpener.Core.Models.Item
 {
     /// <summary>
     /// Model for information about item
