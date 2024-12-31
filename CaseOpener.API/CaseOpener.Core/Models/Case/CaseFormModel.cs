@@ -1,6 +1,5 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Infrastructure.Constants;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace CaseOpener.Core.Models.Case
@@ -24,11 +23,6 @@ namespace CaseOpener.Core.Models.Case
             MinimumLength = PropertiesConstants.CASE_NAME_MIN_LENGTH, 
             ErrorMessage = ReturnMessages.STRING_LENGTH)]
         public string Name { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Uploaded file for image
-        /// </summary>
-        public IFormFile? ImageFile { get; set; }
 
         /// <summary>
         /// Image of the case.

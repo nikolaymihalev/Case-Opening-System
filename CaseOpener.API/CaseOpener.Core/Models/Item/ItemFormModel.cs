@@ -1,6 +1,5 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Infrastructure.Constants;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace CaseOpener.Core.Models.Item
@@ -14,11 +13,6 @@ namespace CaseOpener.Core.Models.Item
         /// Unique identifier for the item.
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Uploaded file for image
-        /// </summary>
-        public IFormFile? ImageFile { get; set; }
 
         /// <summary>
         /// Image of the item.

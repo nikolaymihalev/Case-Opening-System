@@ -98,7 +98,7 @@ namespace CaseOpener.Core.Services
                 var user = await repository.GetByIdAsync<User>(userId);
 
                 if (user is null)
-                    return null;
+                    throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "User"));
 
                 return new UserModel()
                 {

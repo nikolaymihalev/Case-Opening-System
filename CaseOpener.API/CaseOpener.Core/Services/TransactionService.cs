@@ -23,9 +23,7 @@ namespace CaseOpener.Core.Services
         public async Task<string> AddTransactionAsync(TransactionModel model)
         {
             if(IsValidEnumValue<TransactionType>(model.Type) == false)
-            {
                 return ReturnMessages.INVALID_MODEL;
-            }
 
             var transaction = new Transaction()
             {
@@ -80,9 +78,9 @@ namespace CaseOpener.Core.Services
                     };
                 else
                     throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
-            }              
+            }
 
-            return null;
+            throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "Transaction")); ;
         }
 
         public async Task<string> UpdateTransactionStatusAsync(string adminId, int id, string newStatus)
