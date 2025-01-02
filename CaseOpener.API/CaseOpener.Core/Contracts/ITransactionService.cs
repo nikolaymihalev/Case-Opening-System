@@ -7,6 +7,6 @@ namespace CaseOpener.Core.Contracts
         Task<string> AddTransactionAsync(TransactionModel model);
         Task<string> DeleteTransactionAsync(string adminId, int id);
         Task<string> UpdateTransactionStatusAsync(string adminId, int id, string newStatus);
-        Task<TransactionModel?> GetTransactionByIdAsync(string userId, int id);
+        Task<TransactionModel> GetTransactionByIdAsync(string userId, int id);
     }
 }

@@ -16,6 +16,9 @@
 
         public const string SuccessfullyModifiedBalance = "Successfully {0} balance!";
 
+        public const string SuccessfullyClaimedDailyReward = "Successfully claimed daily reward!";
+        public const string CannotClaimDailyReward = "You can't claim daily reward!";
+
         public const string DoesntExist = "{0} doesn't exist!";
         public const string AlreadyExist = "{0} already exists!";
 

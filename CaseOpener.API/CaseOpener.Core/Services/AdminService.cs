@@ -91,7 +91,7 @@ namespace CaseOpener.Core.Services
             throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
-        public async Task<UserModel?> GetUserInformationAsync(string adminId, string userId)
+        public async Task<UserModel> GetUserInformationAsync(string adminId, string userId)
         {
             if (await CheckUserIsAdmin(adminId))
             {

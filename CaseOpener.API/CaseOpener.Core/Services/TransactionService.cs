@@ -60,7 +60,7 @@ namespace CaseOpener.Core.Services
             return ReturnMessages.Unauthorized;
         }
 
-        public async Task<TransactionModel?> GetTransactionByIdAsync(string userId, int id)
+        public async Task<TransactionModel> GetTransactionByIdAsync(string userId, int id)
         {
             var transaction = await repository.GetByIdAsync<Transaction>(id);
 

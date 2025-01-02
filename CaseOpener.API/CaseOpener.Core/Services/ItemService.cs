@@ -105,7 +105,7 @@ namespace CaseOpener.Core.Services
             return ReturnMessages.Unauthorized;
         }
 
-        public async Task<ItemModel?> GetItemByIdAsync(int id)
+        public async Task<ItemModel> GetItemByIdAsync(int id)
         {
             var item = await repository.GetByIdAsync<Item>(id);
 
@@ -144,7 +144,7 @@ namespace CaseOpener.Core.Services
             throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
-        public async Task<InventoryItemModel?> GetrInventoryItemByIdAsync(int id, string userId)
+        public async Task<InventoryItemModel> GetrInventoryItemByIdAsync(int id, string userId)
         {
             var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
 

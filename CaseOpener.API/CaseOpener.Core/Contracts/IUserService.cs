@@ -8,6 +8,6 @@ namespace CaseOpener.Core.Contracts
         Task<string> RegisterAsync(RegisterModel model);
         Task<string> UpdateUserInformationAsync(UserModel model);
         Task<string> UpdateUserBalanceAsync(string userId, string operation, decimal amount);
-        Task<UserModel?> GetUserAsync(string userId);
+        Task<UserModel> GetUserAsync(string userId);
     }
 }

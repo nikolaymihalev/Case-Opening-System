@@ -15,18 +15,21 @@ namespace CaseOpener.Core.Services
         private readonly IRepository repository;
         private readonly IAdminService adminService;
         private readonly ITransactionService transactionService;
+        private readonly ICaseService caseService;
 
         public UserService(
             IRepository _repository,
             IAdminService _adminService,
-            ITransactionService _transactionService)
+            ITransactionService _transactionService,
+            ICaseService _caseService)
         {
             repository = _repository;
             adminService = _adminService;
             transactionService = _transactionService;
+            caseService = _caseService;
         }
 
-        public async Task<UserModel?> GetUserAsync(string userId)
+        public async Task<UserModel> GetUserAsync(string userId)
         {
             var user = await repository.GetByIdAsync<User>(userId);
 
@@ -93,6 +96,7 @@ namespace CaseOpener.Core.Services
 
             await adminService.AddUserToRoleAsync(user.Id, "User");
             await transactionService.AddTransactionAsync(transaction);
+            await caseService.SubscribeUserToDailyRewardAsync(user.Id);
 
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();
