@@ -13,6 +13,6 @@ namespace CaseOpener.Core.Contracts
         Task<string> AddItemToInventoryAsync(InventoryItem model);
         Task<string> RemoveItemFromInventoryAsync(int id, string userId);
         Task<InventoryItemModel> GetInventoryItemByIdAsync(int id, string userId);
-        Task<IEnumerable<ItemModel>> GetUserInventoryItemsAsync(string userId);
+        Task<IEnumerable<ItemModel>> GetUserInventoryItemsAsync(string userId);        
     }
 }

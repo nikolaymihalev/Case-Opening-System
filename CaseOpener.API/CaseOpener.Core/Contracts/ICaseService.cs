@@ -1,4 +1,5 @@
 ﻿using CaseOpener.Core.Models.Case;
+using CaseOpener.Core.Models.Item;
 
 namespace CaseOpener.Core.Contracts
 {
@@ -10,7 +11,8 @@ namespace CaseOpener.Core.Contracts
         Task<string> AddCaseAsync(CaseFormModel model);
         Task<string> EditCaseAsync(CaseFormModel model);
         Task<string> DeleteCaseAsync(int id);
-        Task<string> OpenCaseAsync(int caseId, string userId);
+        Task<ItemModel> OpenCaseAsync(int caseId, string userId);
         Task<string> OpenDailyRewardAsync(string userId);
+        Task<bool> DoesUserHaveCase(string userId, int itemId);
     }
 }

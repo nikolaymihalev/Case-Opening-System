@@ -1,5 +1,6 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
+using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Case;
 using CaseOpener.Core.Models.Item;
 using CaseOpener.Infrastructure.Common;
@@ -58,6 +59,26 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyDeleted, "case");
         }
 
+        public async Task<bool> DoesUserHaveCase(string userId, int caseId)
+        {
+            var user = await repository.GetByIdAsync<User>(userId);
+
+            if (user is null)
+                return false;
+
+            var caseM = await repository.GetByIdAsync<Case>(caseId);
+
+            if (caseM is null)
+                return false;
+
+            var userInventoryItems = await repository.AllReadonly<InventoryItem>()
+                .Include(x=>x.Item)
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+
+            return userInventoryItems.Any(x => x.Item.Name == caseM.Name);
+        }
+
         public async Task<string> EditCaseAsync(CaseFormModel model)
         {
             var caseEntity = await repository.GetByIdAsync<Case>(model.Id);
@@ -103,7 +124,7 @@ namespace CaseOpener.Core.Services
             var caseM = await repository.GetByIdAsync<Case>(id);
 
             if (caseM is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "case"));
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
 
             return new CaseModel()
             {
@@ -115,9 +136,35 @@ namespace CaseOpener.Core.Services
             };
         }
 
-        public Task<string> OpenCaseAsync(int caseId, string userId)
+        public async Task<ItemModel> OpenCaseAsync(int caseId, string userId)
         {
-            throw new NotImplementedException();
+            var caseM = await repository.GetByIdAsync<Case>(caseId);
+
+            if (caseM is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+            var user = await repository.GetByIdAsync<User>(userId);
+
+            if (user is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
+
+            var items = JsonSerializer.Deserialize<List<ItemModel>>(caseM.Items) ?? new List<ItemModel>();
+
+            var item = GetRandomItem(items);
+
+            var caseOpening = new CaseOpeningModel()
+            {
+                UserId = userId,
+                ItemId = item.Id,
+                CaseId = caseId,
+                DateOpened = DateTime.UtcNow,
+            };
+
+            await repository.AddAsync(caseOpening);
+
+            await repository.SaveChangesAsync();
+
+            return item;
         }
 
         public async Task<string> OpenDailyRewardAsync(string userId)
@@ -175,6 +222,23 @@ namespace CaseOpener.Core.Services
                     }
                 }
             }           
+        }
+
+        private ItemModel GetRandomItem(List<ItemModel> items)
+        {
+            var cumulativeProbability = 0.0;
+            var weightedItems = items
+                .Select(item => new
+                {
+                    Item = item,
+                    CumulativeProbability = cumulativeProbability += item.Probability
+                })
+                .ToList();
+
+            var random = new Random();
+            var randomValue = random.NextDouble() * cumulativeProbability;
+
+            return weightedItems.First(w => randomValue <= w.CumulativeProbability).Item;
         }
     }
 }
