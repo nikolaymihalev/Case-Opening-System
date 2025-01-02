@@ -156,6 +156,31 @@ namespace CaseOpener.Core.Services
 
             return string.Format(ReturnMessages.SuccessfullyDeleted, "inventory item");
         }
+        public async Task<IEnumerable<ItemModel>> GetUserInventoryItemsAsync(string userId)
+        {
+            var inItems = await repository.AllReadonly<InventoryItem>().Where(x => x.UserId == userId).ToListAsync();
+
+            var items = new List<Item>();
+
+            for (int i = 0; i < inItems.Count(); i++)
+            {
+                var item = await repository.GetByIdAsync<Item>(inItems[i].ItemId);
+
+                if (item != null)
+                    items.Add(item);
+            }
+
+            return items.Select(x=>new ItemModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ImageUrl = x.ImageUrl,
+                Type = x.Type,
+                Rarity = x.Rarity,
+                Probability = x.Probability,
+                Amount = x.Amount,
+            });
+        }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum
         {
