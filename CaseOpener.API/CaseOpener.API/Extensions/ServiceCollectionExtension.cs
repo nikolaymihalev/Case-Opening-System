@@ -2,7 +2,10 @@
 using CaseOpener.Core.Services;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -26,6 +29,46 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICaseService, CaseService>();
             services.AddScoped<IItemService, ItemService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngular", policy =>
+                {
+                    policy.WithOrigins("") //angular link
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationAuthentication(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "", //angular link
+                        ValidAudience = "", //angular link
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
+                    };
+                });
 
             return services;
         }

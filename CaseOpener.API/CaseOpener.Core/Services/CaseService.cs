@@ -1,6 +1,5 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
-using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Case;
 using CaseOpener.Core.Models.Item;
 using CaseOpener.Infrastructure.Common;
