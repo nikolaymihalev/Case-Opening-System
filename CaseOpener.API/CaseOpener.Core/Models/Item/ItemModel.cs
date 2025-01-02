@@ -13,7 +13,7 @@
         /// <summary>
         /// Image of the item.
         /// </summary>
-        public string Image { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Name of the item.

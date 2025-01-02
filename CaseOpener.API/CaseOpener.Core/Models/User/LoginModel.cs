@@ -12,13 +12,13 @@ namespace CaseOpener.Core.Models.User
         /// <summary>
         /// The user's email address used for login authentication
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public string Email { get; set; } = null!;
 
         /// <summary>
         /// The user's password used for login authentication
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
     }

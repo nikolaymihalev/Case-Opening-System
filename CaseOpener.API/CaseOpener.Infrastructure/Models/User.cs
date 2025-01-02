@@ -22,7 +22,7 @@ namespace CaseOpener.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("User's username")]
-        [MinLength(PropertiesConstants.USER_USERNAME_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.UsernameMinLength)]
         public string Username { get; set; } = string.Empty;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace CaseOpener.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("User's email")]
-        [MinLength(PropertiesConstants.USER_EMAIL_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.EmailMinLength)]
         public string Email { get; set; } = string.Empty;
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CaseOpener.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("User's password")]
-        [MinLength(PropertiesConstants.USER_PASSWORD_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.PasswordMinLength)]
         public string PasswordHash { get; set; } = string.Empty;
 
         /// <summary>

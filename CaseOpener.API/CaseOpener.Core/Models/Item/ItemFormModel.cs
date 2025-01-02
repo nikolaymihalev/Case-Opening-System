@@ -17,40 +17,40 @@ namespace CaseOpener.Core.Models.Item
         /// <summary>
         /// Image of the item.
         /// </summary>
-        public byte[] Image { get; set; } = new byte[128];
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Name of the item.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         [StringLength(
-            PropertiesConstants.ITEM_NAME_MAX_LENGTH,
-            MinimumLength = PropertiesConstants.ITEM_NAME_MIN_LENGTH,
-            ErrorMessage = ReturnMessages.STRING_LENGTH)]
+            PropertiesConstants.ItemNameMaxLength,
+            MinimumLength = PropertiesConstants.ItemNameMinLength,
+            ErrorMessage = ReturnMessages.StringLength)]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Type of the item.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public string Type { get; set; } = string.Empty;
 
         /// <summary>
         /// Rarity of the item.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public string Rarity { get; set; } = string.Empty;
 
         /// <summary>
         /// Amount of the item.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public decimal Amount { get; set; }
 
         /// <summary>
         /// Probability chance of the item.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public double Probability { get; set; }
     }
 }

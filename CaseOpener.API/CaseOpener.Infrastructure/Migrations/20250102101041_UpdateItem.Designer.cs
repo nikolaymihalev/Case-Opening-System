@@ -4,6 +4,7 @@ using CaseOpener.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseOpener.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250102101041_UpdateItem")]
+    partial class UpdateItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +34,9 @@ namespace CaseOpener.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<byte[]>("Image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("varbinary(max)")
                         .HasComment("Case's image");
 
                     b.Property<string>("Items")
@@ -334,7 +337,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 0m,
                             DateJoined = new DateTime(2024, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHmbfPIpayyyEgWCXnUEIvnU1VHZr6c3yDTPdCsb7Jr1m7U9dGxERnjN7yF8R7bbJw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELwhJ+z9byommm5CTbyul7VhYKC84DFkQUxpXApP7T10i4RaroqofARxt7rVuK6bZA==",
                             Username = "Admin"
                         },
                         new
@@ -343,7 +346,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 1000m,
                             DateJoined = new DateTime(2024, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "johndoe@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIy8S3zuK6nL/f/cymtdVnecQOyXnCpqPNBo02aZgBEgtJMMZE2C5ya2/DtlXW4Lvw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJaeHnokkMeKNAWI8m8TKKkXpE7s8eGacB9xMAJLugdh8SCmqvnxq2NwmbUydLjp2A==",
                             Username = "JohnD"
                         });
                 });

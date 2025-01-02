@@ -26,7 +26,7 @@ namespace CaseOpener.Core.Services
             if(await adminService.CheckUserIsAdmin(adminId))
             {
                 if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                    return ReturnMessages.INVALID_MODEL;
+                    return ReturnMessages.InvalidModel;
 
                 var item = new Item()
                 {
@@ -34,17 +34,17 @@ namespace CaseOpener.Core.Services
                     Type = model.Type,
                     Rarity = model.Rarity,
                     Probability = model.Probability,
-                    Image = model.Image,
+                    ImageUrl = model.ImageUrl,
                     Amount = model.Amount,
                 };
 
                 await repository.AddAsync(item);
                 await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "item");
+                return string.Format(ReturnMessages.SuccessfullyAdded, "item");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         public async Task<string> AddItemToInventoryAsync(InventoryItem model)
@@ -59,7 +59,7 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(inventoryItem);
             await repository.SaveChangesAsync();
 
-            return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "item to inventory");
+            return string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory");
         }
 
         public async Task<string> DeleteItemAsync(int id, string adminId)
@@ -69,15 +69,15 @@ namespace CaseOpener.Core.Services
                 var item = await repository.GetByIdAsync<Item>(id);
 
                 if (item is null)
-                    return string.Format(ReturnMessages.DOESNT_EXIST, "item");
+                    return string.Format(ReturnMessages.DoesntExist, "item");
 
                 await repository.DeleteAsync<Item>(id);
                 await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SUCCESSFULLY_DELETED, "item");
+                return string.Format(ReturnMessages.SuccessfullyDeleted, "item");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         public async Task<string> EditItemAsync(ItemFormModel model, string adminId)
@@ -87,22 +87,22 @@ namespace CaseOpener.Core.Services
                 var item = await repository.GetByIdAsync<Item>(model.Id);
 
                 if (item is null)
-                    return string.Format(ReturnMessages.DOESNT_EXIST, "item");
+                    return string.Format(ReturnMessages.DoesntExist, "item");
 
                 if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                    return ReturnMessages.INVALID_MODEL;
+                    return ReturnMessages.InvalidModel;
 
                 item.Amount = model.Amount;
                 item.Rarity = model.Rarity;
                 item.Name = model.Name;
                 item.Type = model.Type;
-                item.Image = model.Image;
+                item.ImageUrl = model.ImageUrl;
                 item.Probability = model.Probability;
 
                 await repository.SaveChangesAsync();
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         public async Task<ItemModel?> GetItemByIdAsync(int id)
@@ -110,7 +110,7 @@ namespace CaseOpener.Core.Services
             var item = await repository.GetByIdAsync<Item>(id);
 
             if(item is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "item"));
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "item"));
 
             return new ItemModel()
             {
@@ -120,7 +120,7 @@ namespace CaseOpener.Core.Services
                 Type = item.Type,
                 Amount = item.Amount,
                 Probability = item.Probability,
-                Image = Convert.ToBase64String(item.Image)
+                ImageUrl = item.ImageUrl
             };
         }
 
@@ -137,11 +137,11 @@ namespace CaseOpener.Core.Services
                         Type = x.Type,
                         Amount = x.Amount,
                         Probability = x.Probability,
-                        Image = Convert.ToBase64String(x.Image)
+                        ImageUrl = x.ImageUrl
                     }).ToListAsync();
             }
 
-            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<InventoryItemModel?> GetrInventoryItemByIdAsync(int id, string userId)
@@ -149,10 +149,10 @@ namespace CaseOpener.Core.Services
             var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
 
             if (inventoryItem is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "Inventory item"));
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Inventory item"));
 
             if (inventoryItem.UserId != userId)
-                throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+                throw new ArgumentException(ReturnMessages.Unauthorized);
 
             return new InventoryItemModel()
             {
@@ -168,15 +168,15 @@ namespace CaseOpener.Core.Services
             var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
 
             if (inventoryItem is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "Inventory item"));
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Inventory item"));
 
             if (inventoryItem.UserId != userId)
-                return ReturnMessages.UNAUTHORIZED;
+                return ReturnMessages.Unauthorized;
 
             await repository.DeleteAsync<InventoryItem>(id);
             await repository.SaveChangesAsync();
 
-            return string.Format(ReturnMessages.SUCCESSFULLY_DELETED, "inventory item");
+            return string.Format(ReturnMessages.SuccessfullyDeleted, "inventory item");
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum

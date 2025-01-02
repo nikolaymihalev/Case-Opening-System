@@ -21,15 +21,15 @@ namespace CaseOpener.Infrastructure.Models
         /// Image of the item.
         /// </summary>
         [Required]
-        [Comment("Item's image")]
-        public byte[] Image { get; set; } = new byte[128];
+        [Comment("Item's image url")]
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Name of the item.
         /// </summary>
         [Required]
         [Comment("Item's name")]
-        [MinLength(PropertiesConstants.ITEM_NAME_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.ItemNameMinLength)]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>

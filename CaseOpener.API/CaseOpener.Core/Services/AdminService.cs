@@ -29,10 +29,10 @@ namespace CaseOpener.Core.Services
                 await repository.AddAsync(role);
                 await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "role");
+                return string.Format(ReturnMessages.SuccessfullyAdded, "role");
             }
 
-            return ReturnMessages.UNAUTHORIZED;           
+            return ReturnMessages.Unauthorized;           
         }
 
         public async Task AddUserToRoleAsync(string userId, string roleName)
@@ -65,15 +65,15 @@ namespace CaseOpener.Core.Services
 
                     await repository.SaveChangesAsync();
 
-                    return string.Format(ReturnMessages.SUCCESSFULLY_EDITED, "role");
+                    return string.Format(ReturnMessages.SuccessfullyEdited, "role");
                 }   
                 else
                 {
-                    return string.Format(ReturnMessages.DOESNT_EXIST, "Role");
+                    return string.Format(ReturnMessages.DoesntExist, "Role");
                 }                
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         public async Task<IEnumerable<RoleModel>> GetRolesAsync(string adminId)
@@ -88,7 +88,7 @@ namespace CaseOpener.Core.Services
                     }).ToListAsync();
             }
 
-            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<UserModel?> GetUserInformationAsync(string adminId, string userId)
@@ -98,7 +98,7 @@ namespace CaseOpener.Core.Services
                 var user = await repository.GetByIdAsync<User>(userId);
 
                 if (user is null)
-                    throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "User"));
+                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
                 return new UserModel()
                 {
@@ -110,7 +110,7 @@ namespace CaseOpener.Core.Services
                 };
             }
 
-            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<IEnumerable<UserModel>> GetUsersAsync(string adminId)
@@ -130,7 +130,7 @@ namespace CaseOpener.Core.Services
                     .ToListAsync();
             }
 
-            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(string adminId, string userId)
@@ -151,7 +151,7 @@ namespace CaseOpener.Core.Services
                     .ToListAsync();
             }
 
-            throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<bool> CheckUserIsAdmin(string userId)

@@ -23,7 +23,7 @@ namespace CaseOpener.Core.Services
         public async Task<string> AddTransactionAsync(TransactionModel model)
         {
             if(IsValidEnumValue<TransactionType>(model.Type) == false)
-                return ReturnMessages.INVALID_MODEL;
+                return ReturnMessages.InvalidModel;
 
             var transaction = new Transaction()
             {
@@ -37,7 +37,7 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(transaction);
             await repository.SaveChangesAsync();
 
-            return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "transaction");
+            return string.Format(ReturnMessages.SuccessfullyAdded, "transaction");
         }
 
         public async Task<string> DeleteTransactionAsync(string adminId, int id)
@@ -51,13 +51,13 @@ namespace CaseOpener.Core.Services
                     await repository.DeleteAsync<Transaction>(id);
                     await repository.SaveChangesAsync();
 
-                    return string.Format(ReturnMessages.SUCCESSFULLY_DELETED, "transaction");
+                    return string.Format(ReturnMessages.SuccessfullyDeleted, "transaction");
                 }
 
-                return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
+                return string.Format(ReturnMessages.DoesntExist, "Transaction");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         public async Task<TransactionModel?> GetTransactionByIdAsync(string userId, int id)
@@ -77,10 +77,10 @@ namespace CaseOpener.Core.Services
                         Status = transaction.Status,
                     };
                 else
-                    throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+                    throw new ArgumentException(ReturnMessages.Unauthorized);
             }
 
-            throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "Transaction")); ;
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction")); ;
         }
 
         public async Task<string> UpdateTransactionStatusAsync(string adminId, int id, string newStatus)
@@ -95,13 +95,13 @@ namespace CaseOpener.Core.Services
 
                     await repository.SaveChangesAsync();
 
-                    return string.Format(ReturnMessages.SUCCESSFULLY_UPDATED, "transaction");
+                    return string.Format(ReturnMessages.SuccessfullyUpdated, "transaction");
                 }
 
-                return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
+                return string.Format(ReturnMessages.DoesntExist, "Transaction");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            return ReturnMessages.Unauthorized;
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum
