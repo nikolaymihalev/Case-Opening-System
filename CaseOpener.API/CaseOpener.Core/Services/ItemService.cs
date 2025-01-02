@@ -11,41 +11,32 @@ namespace CaseOpener.Core.Services
     public class ItemService : IItemService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
 
-        public ItemService(
-            IRepository _repository,
-            IAdminService _adminService)
+        public ItemService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
         }
 
-        public async Task<string> AddItemAsync(ItemFormModel model, string adminId)
+        public async Task<string> AddItemAsync(ItemFormModel model)
         {
-            if(await adminService.CheckUserIsAdmin(adminId))
+            if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
+                return ReturnMessages.InvalidModel;
+
+            var item = new Item()
             {
-                if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                    return ReturnMessages.InvalidModel;
+                Name = model.Name,
+                Type = model.Type,
+                Rarity = model.Rarity,
+                Probability = model.Probability,
+                ImageUrl = model.ImageUrl,
+                Amount = model.Amount,
+            };
 
-                var item = new Item()
-                {
-                    Name = model.Name,
-                    Type = model.Type,
-                    Rarity = model.Rarity,
-                    Probability = model.Probability,
-                    ImageUrl = model.ImageUrl,
-                    Amount = model.Amount,
-                };
+            await repository.AddAsync(item);
+            await repository.SaveChangesAsync();
 
-                await repository.AddAsync(item);
-                await repository.SaveChangesAsync();
-
-                return string.Format(ReturnMessages.SuccessfullyAdded, "item");
-            }
-
-            return ReturnMessages.Unauthorized;
-        }
+            return string.Format(ReturnMessages.SuccessfullyAdded, "item");
+         }
 
         public async Task<string> AddItemToInventoryAsync(InventoryItem model)
         {
@@ -62,47 +53,39 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory");
         }
 
-        public async Task<string> DeleteItemAsync(int id, string adminId)
+        public async Task<string> DeleteItemAsync(int id)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            {
-                var item = await repository.GetByIdAsync<Item>(id);
+            var item = await repository.GetByIdAsync<Item>(id);
 
-                if (item is null)
-                    return string.Format(ReturnMessages.DoesntExist, "item");
+            if (item is null)
+                return string.Format(ReturnMessages.DoesntExist, "item");
 
-                await repository.DeleteAsync<Item>(id);
-                await repository.SaveChangesAsync();
+            await repository.DeleteAsync<Item>(id);
+            await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SuccessfullyDeleted, "item");
-            }
-
-            return ReturnMessages.Unauthorized;
+            return string.Format(ReturnMessages.SuccessfullyDeleted, "item");
         }
 
-        public async Task<string> EditItemAsync(ItemFormModel model, string adminId)
+        public async Task<string> EditItemAsync(ItemFormModel model)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            {
-                var item = await repository.GetByIdAsync<Item>(model.Id);
+            var item = await repository.GetByIdAsync<Item>(model.Id);
 
-                if (item is null)
-                    return string.Format(ReturnMessages.DoesntExist, "item");
+            if (item is null)
+                return string.Format(ReturnMessages.DoesntExist, "item");
 
-                if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                    return ReturnMessages.InvalidModel;
+            if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
+                return ReturnMessages.InvalidModel;
 
-                item.Amount = model.Amount;
-                item.Rarity = model.Rarity;
-                item.Name = model.Name;
-                item.Type = model.Type;
-                item.ImageUrl = model.ImageUrl;
-                item.Probability = model.Probability;
+            item.Amount = model.Amount;
+            item.Rarity = model.Rarity;
+            item.Name = model.Name;
+            item.Type = model.Type;
+            item.ImageUrl = model.ImageUrl;
+            item.Probability = model.Probability;
 
-                await repository.SaveChangesAsync();
-            }
+            await repository.SaveChangesAsync();
 
-            return ReturnMessages.Unauthorized;
+            return string.Format(ReturnMessages.SuccessfullyEdited, "item");
         }
 
         public async Task<ItemModel> GetItemByIdAsync(int id)
@@ -124,11 +107,9 @@ namespace CaseOpener.Core.Services
             };
         }
 
-        public async Task<IEnumerable<ItemModel>> GetItemsAsync(string adminId)
+        public async Task<IEnumerable<ItemModel>> GetItemsAsync()
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            {
-                return await repository.AllReadonly<Item>()
+            return await repository.AllReadonly<Item>()
                     .Select(x => new ItemModel()
                     {
                         Id = x.Id,
@@ -139,12 +120,9 @@ namespace CaseOpener.Core.Services
                         Probability = x.Probability,
                         ImageUrl = x.ImageUrl
                     }).ToListAsync();
-            }
-
-            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
-        public async Task<InventoryItemModel> GetrInventoryItemByIdAsync(int id, string userId)
+        public async Task<InventoryItemModel> GetInventoryItemByIdAsync(int id, string userId)
         {
             var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
 

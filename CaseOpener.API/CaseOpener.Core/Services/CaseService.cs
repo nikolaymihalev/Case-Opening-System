@@ -12,93 +12,76 @@ namespace CaseOpener.Core.Services
     public class CaseService : ICaseService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
 
-        public CaseService(
-            IRepository _repository,
-            IAdminService _adminService)
+        public CaseService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
         }
 
-        public async Task<string> AddCaseAsync(CaseFormModel model, string adminId)
+        public async Task<string> AddCaseAsync(CaseFormModel model)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
+            var caseModel = new Case()
             {
-                var caseModel = new Case()
-                {
-                    Name = model.Name,
-                    ImageUrl = model.ImageUrl,
-                    Price = model.Price,
-                };
+                Name = model.Name,
+                ImageUrl = model.ImageUrl,
+                Price = model.Price,
+            };
 
-                var itemsList = new List<Item>();
+            var itemsList = new List<Item>();
 
-                for(int i = 0; i < model.Items.Length - 1; i++)
-                {
-                    var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
+            for(int i = 0; i < model.Items.Length - 1; i++)
+            {
+                var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
 
-                    itemsList.Add(itemEntity!);
-                }
-
-                caseModel.Items = JsonSerializer.Serialize(itemsList);
-
-                await repository.AddAsync(caseModel);
-                await repository.SaveChangesAsync();
-
-                return string.Format(ReturnMessages.SuccessfullyAdded, "case");
+                if(itemEntity != null)
+                    itemsList.Add(itemEntity);
             }
-            else
-                return ReturnMessages.Unauthorized;
+
+            caseModel.Items = JsonSerializer.Serialize(itemsList);
+
+            await repository.AddAsync(caseModel);
+            await repository.SaveChangesAsync();
+
+            return string.Format(ReturnMessages.SuccessfullyAdded, "case");
         }
 
-        public async Task<string> DeleteCaseAsync(int id, string adminId)
+        public async Task<string> DeleteCaseAsync(int id)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            {
-                var caseEntity = await repository.GetByIdAsync<Case>(id);
+            var caseEntity = await repository.GetByIdAsync<Case>(id);
 
-                if(caseEntity is null)
-                    return string.Format(ReturnMessages.DoesntExist, "Case");
+            if(caseEntity is null)
+                return string.Format(ReturnMessages.DoesntExist, "Case");
 
-                await repository.DeleteAsync<Case>(id);
-                await repository.SaveChangesAsync();
+            await repository.DeleteAsync<Case>(id);
+            await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SuccessfullyDeleted, "case");
-            }
-            else
-                return ReturnMessages.Unauthorized;
+            return string.Format(ReturnMessages.SuccessfullyDeleted, "case");
         }
 
-        public async Task<string> EditCaseAsync(CaseFormModel model, string adminId)
+        public async Task<string> EditCaseAsync(CaseFormModel model)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
+            var caseEntity = await repository.GetByIdAsync<Case>(model.Id);
+
+            if (caseEntity is null)
+                return string.Format(ReturnMessages.DoesntExist, "Case");
+
+            caseEntity.Name = model.Name;
+            caseEntity.Price = model.Price;
+            caseEntity.ImageUrl = model.ImageUrl;
+
+            var itemsList = new List<Item>();
+
+            for (int i = 0; i < model.Items.Length - 1; i++)
             {
-                var caseEntity = await repository.GetByIdAsync<Case>(model.Id);
+                var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
 
-                if (caseEntity is null)
-                    return string.Format(ReturnMessages.DoesntExist, "Case");
-
-                caseEntity.Name = model.Name;
-                caseEntity.Price = model.Price;
-                caseEntity.ImageUrl = model.ImageUrl;
-
-                var itemsList = new List<Item>();
-
-                for (int i = 0; i < model.Items.Length - 1; i++)
-                {
-                    var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
-
-                    itemsList.Add(itemEntity!);
-                }
-
-                caseEntity.Items = JsonSerializer.Serialize(itemsList);
-
-                return string.Format(ReturnMessages.SuccessfullyEdited, "case");
+                if(itemEntity != null)
+                    itemsList.Add(itemEntity);
             }
-            else
-                return ReturnMessages.Unauthorized;
+
+            caseEntity.Items = JsonSerializer.Serialize(itemsList);
+
+            return string.Format(ReturnMessages.SuccessfullyEdited, "case");
         }
 
         public async Task<IEnumerable<CaseModel>> GetAllCasesAsync()

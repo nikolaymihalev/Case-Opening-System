@@ -5,13 +5,13 @@ namespace CaseOpener.Core.Contracts
 {
     public interface IItemService
     {
-        Task<IEnumerable<ItemModel>> GetItemsAsync(string adminId);
+        Task<IEnumerable<ItemModel>> GetItemsAsync();
         Task<ItemModel> GetItemByIdAsync(int id);
-        Task<string> AddItemAsync(ItemFormModel model, string adminId);
-        Task<string> EditItemAsync(ItemFormModel model, string adminId);
-        Task<string> DeleteItemAsync(int id, string adminId);
+        Task<string> AddItemAsync(ItemFormModel model);
+        Task<string> EditItemAsync(ItemFormModel model);
+        Task<string> DeleteItemAsync(int id);
         Task<string> AddItemToInventoryAsync(InventoryItem model);
         Task<string> RemoveItemFromInventoryAsync(int id, string userId);
-        Task<InventoryItemModel> GetrInventoryItemByIdAsync(int id, string userId);
+        Task<InventoryItemModel> GetInventoryItemByIdAsync(int id, string userId);
     }
 }

@@ -13,20 +13,10 @@ namespace CaseOpener.Core.Services
     public class UserService : IUserService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
-        private readonly ITransactionService transactionService;
-        private readonly ICaseService caseService;
 
-        public UserService(
-            IRepository _repository,
-            IAdminService _adminService,
-            ITransactionService _transactionService,
-            ICaseService _caseService)
+        public UserService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
-            transactionService = _transactionService;
-            caseService = _caseService;
         }
 
         public async Task<UserModel> GetUserAsync(string userId)
@@ -84,19 +74,8 @@ namespace CaseOpener.Core.Services
             };
 
             var passwordHasher = new PasswordHasher<User>();
-            var transaction = new TransactionModel()
-            {
-                UserId = user.Id,
-                Type = TransactionType.Deposit.ToString(),
-                Amount = 1000m,
-                Status = TransactionStatus.Completed.ToString()
-            };
 
             user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
-
-            await adminService.AddUserToRoleAsync(user.Id, "User");
-            await transactionService.AddTransactionAsync(transaction);
-            await caseService.SubscribeUserToDailyRewardAsync(user.Id);
 
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();

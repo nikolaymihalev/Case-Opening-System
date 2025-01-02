@@ -10,14 +10,10 @@ namespace CaseOpener.Core.Services
     public class TransactionService : ITransactionService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
 
-        public TransactionService(
-            IRepository _repository,
-            IAdminService _adminService)
+        public TransactionService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
         }
 
         public async Task<string> AddTransactionAsync(TransactionModel model)
@@ -40,68 +36,55 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyAdded, "transaction");
         }
 
-        public async Task<string> DeleteTransactionAsync(string adminId, int id)
+        public async Task<string> DeleteTransactionAsync(int id)
         {
-            if(await adminService.CheckUserIsAdmin(adminId))
+            var transaction = await repository.GetByIdAsync<Transaction>(id);
+
+            if (transaction != null)
             {
-                var transaction = await repository.GetByIdAsync<Transaction>(id);
+                await repository.DeleteAsync<Transaction>(id);
+                await repository.SaveChangesAsync();
 
-                if (transaction != null)
-                {
-                    await repository.DeleteAsync<Transaction>(id);
-                    await repository.SaveChangesAsync();
-
-                    return string.Format(ReturnMessages.SuccessfullyDeleted, "transaction");
-                }
-
-                return string.Format(ReturnMessages.DoesntExist, "Transaction");
+                return string.Format(ReturnMessages.SuccessfullyDeleted, "transaction");
             }
 
-            return ReturnMessages.Unauthorized;
+            return string.Format(ReturnMessages.DoesntExist, "Transaction");
         }
 
-        public async Task<TransactionModel> GetTransactionByIdAsync(string userId, int id)
+        public async Task<TransactionModel> GetTransactionByIdAsync(int id)
         {
             var transaction = await repository.GetByIdAsync<Transaction>(id);
 
             if (transaction != null) 
             {
-                if (transaction.UserId == userId || await adminService.CheckUserIsAdmin(userId))
-                    return new TransactionModel()
-                    {
-                        Id = transaction.Id,
-                        UserId = userId,
-                        Type = transaction.Type,
-                        Amount = transaction.Amount,
-                        Date = transaction.Date,
-                        Status = transaction.Status,
-                    };
-                else
-                    throw new ArgumentException(ReturnMessages.Unauthorized);
+                return new TransactionModel()
+                {
+                    Id = transaction.Id,
+                    UserId = transaction.UserId,
+                    Type = transaction.Type,
+                    Amount = transaction.Amount,
+                    Date = transaction.Date,
+                    Status = transaction.Status,
+                };
             }
 
             throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction")); ;
         }
 
-        public async Task<string> UpdateTransactionStatusAsync(string adminId, int id, string newStatus)
+        public async Task<string> UpdateTransactionStatusAsync(int id, string newStatus)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            { 
-                var transaction = await repository.GetByIdAsync<Transaction>(id);
+            var transaction = await repository.GetByIdAsync<Transaction>(id);
 
-                if (transaction != null)
-                {
-                    transaction.Status = newStatus;
+            if (transaction != null)
+            {
+                transaction.Status = newStatus;
 
-                    await repository.SaveChangesAsync();
+                await repository.SaveChangesAsync();
 
-                    return string.Format(ReturnMessages.SuccessfullyUpdated, "transaction");
-                }
-
-                return string.Format(ReturnMessages.DoesntExist, "Transaction");
+                return string.Format(ReturnMessages.SuccessfullyUpdated, "transaction");
             }
 
-            return ReturnMessages.Unauthorized;
+            return string.Format(ReturnMessages.DoesntExist, "Transaction");
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum
