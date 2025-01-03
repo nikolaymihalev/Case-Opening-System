@@ -12,7 +12,7 @@ namespace CaseOpener.Core.Contracts
         Task<string> EditCaseAsync(CaseFormModel model);
         Task<string> DeleteCaseAsync(int id);
         Task<ItemModel> OpenCaseAsync(int caseId, string userId);
-        Task<string> OpenDailyRewardAsync(string userId);
-        Task<bool> DoesUserHaveCase(string userId, int itemId);
+        Task<ItemModel> OpenDailyRewardAsync(string userId);
+        Task<bool> DoesUserHaveCase(string userId, int caseId);
     }
 }

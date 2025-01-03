@@ -50,7 +50,7 @@ namespace CaseOpener.Core.Services
             var caseEntity = await repository.GetByIdAsync<Case>(id);
 
             if(caseEntity is null)
-                return string.Format(ReturnMessages.DoesntExist, "Case");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
 
             await repository.DeleteAsync<Case>(id);
             await repository.SaveChangesAsync();
@@ -83,7 +83,7 @@ namespace CaseOpener.Core.Services
             var caseEntity = await repository.GetByIdAsync<Case>(model.Id);
 
             if (caseEntity is null)
-                return string.Format(ReturnMessages.DoesntExist, "Case");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
 
             caseEntity.Name = model.Name;
             caseEntity.Price = model.Price;
@@ -166,7 +166,7 @@ namespace CaseOpener.Core.Services
             return item;
         }
 
-        public async Task<string> OpenDailyRewardAsync(string userId)
+        public async Task<ItemModel> OpenDailyRewardAsync(string userId)
         {
             var user = await repository.GetByIdAsync<User>(userId);
 
@@ -180,19 +180,19 @@ namespace CaseOpener.Core.Services
 
                     if (caseM != null)
                     {
-                        await OpenCaseAsync(caseM.Id, userId);
+                        var item = await OpenCaseAsync(caseM.Id, userId);
                         dailyReward.LastClaimedDate = DateTime.UtcNow;
 
                         await repository.SaveChangesAsync();
 
-                        return ReturnMessages.SuccessfullyClaimedDailyReward;
+                        return item;
                     }
                 }
 
-                return ReturnMessages.CannotClaimDailyReward;
+                throw new ArgumentException(ReturnMessages.CannotClaimDailyReward);
             }
             else
-                return string.Format(ReturnMessages.DoesntExist, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
         }
 
         public async Task SubscribeUserToDailyRewardAsync(string userId)

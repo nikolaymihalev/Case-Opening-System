@@ -21,7 +21,7 @@ namespace CaseOpener.API.Controllers
             itemService = _itemService;
         }
 
-        [HttpGet("items")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetItems(string adminId)
         {
             if (await adminService.CheckUserIsAdmin(adminId))
@@ -74,7 +74,7 @@ namespace CaseOpener.API.Controllers
             return BadRequest(new { Message = ReturnMessages.Unauthorized });
         }
 
-        [HttpDelete("item")]
+        [HttpDelete("delete-item")]
         public async Task<IActionResult> DeleteItem(string adminId, int itemId)
         {
             if (await adminService.CheckUserIsAdmin(adminId))
