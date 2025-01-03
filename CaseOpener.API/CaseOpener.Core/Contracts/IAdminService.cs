@@ -9,7 +9,7 @@ namespace CaseOpener.Core.Contracts
         Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(string adminId, string userId);
         Task<IEnumerable<RoleModel>> GetRolesAsync(string adminId);
         Task AddUserToRoleAsync(string userId, string roleName);
-        Task<string> AddRoleAsync(string adminId, RoleModel model);
+        Task<string> AddRoleAsync(string adminId, string roleName);
         Task<string> EditRoleAsync(string adminId, RoleModel model);
         Task<bool> CheckUserIsAdmin(string userId);
     }

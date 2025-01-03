@@ -17,13 +17,13 @@ namespace CaseOpener.Core.Services
             repository = _repository;    
         }
 
-        public async Task<string> AddRoleAsync(string adminId, RoleModel model)
+        public async Task<string> AddRoleAsync(string adminId, string roleName)
         {
             if (await CheckUserIsAdmin(adminId)) 
             {
                 var role = new Role()
                 {
-                    Name = model.Name
+                    Name = roleName
                 };
 
                 await repository.AddAsync(role);
@@ -32,7 +32,7 @@ namespace CaseOpener.Core.Services
                 return string.Format(ReturnMessages.SuccessfullyAdded, "role");
             }
 
-            return ReturnMessages.Unauthorized;           
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task AddUserToRoleAsync(string userId, string roleName)
@@ -69,11 +69,11 @@ namespace CaseOpener.Core.Services
                 }   
                 else
                 {
-                    return string.Format(ReturnMessages.DoesntExist, "Role");
+                    throw new ArgumentException(ReturnMessages.DoesntExist, "Role");
                 }                
             }
 
-            return ReturnMessages.Unauthorized;
+            throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
         public async Task<IEnumerable<RoleModel>> GetRolesAsync(string adminId)
