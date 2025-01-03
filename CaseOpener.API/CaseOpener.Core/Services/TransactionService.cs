@@ -4,6 +4,7 @@ using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaseOpener.Core.Services
 {
@@ -48,7 +49,7 @@ namespace CaseOpener.Core.Services
                 return string.Format(ReturnMessages.SuccessfullyDeleted, "transaction");
             }
 
-            return string.Format(ReturnMessages.DoesntExist, "Transaction");
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
         public async Task<TransactionModel> GetTransactionByIdAsync(int id)
@@ -68,7 +69,7 @@ namespace CaseOpener.Core.Services
                 };
             }
 
-            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction")); ;
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
         public async Task<string> UpdateTransactionStatusAsync(int id, string newStatus)
@@ -84,7 +85,7 @@ namespace CaseOpener.Core.Services
                 return string.Format(ReturnMessages.SuccessfullyUpdated, "transaction");
             }
 
-            return string.Format(ReturnMessages.DoesntExist, "Transaction");
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum
