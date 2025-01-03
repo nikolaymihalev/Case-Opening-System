@@ -20,7 +20,7 @@ namespace CaseOpener.Core.Services
         public async Task<string> AddItemAsync(ItemFormModel model)
         {
             if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                return ReturnMessages.InvalidModel;
+                throw new ArgumentException(ReturnMessages.InvalidModel);
 
             var item = new Item()
             {
@@ -58,7 +58,7 @@ namespace CaseOpener.Core.Services
             var item = await repository.GetByIdAsync<Item>(id);
 
             if (item is null)
-                return string.Format(ReturnMessages.DoesntExist, "item");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
 
             await repository.DeleteAsync<Item>(id);
             await repository.SaveChangesAsync();
@@ -71,10 +71,10 @@ namespace CaseOpener.Core.Services
             var item = await repository.GetByIdAsync<Item>(model.Id);
 
             if (item is null)
-                return string.Format(ReturnMessages.DoesntExist, "item");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
 
             if (IsValidEnumValue<ItemRarity>(model.Rarity) == false || IsValidEnumValue<ItemRarity>(model.Type))
-                return ReturnMessages.InvalidModel;
+                throw new ArgumentException(ReturnMessages.InvalidModel);
 
             item.Amount = model.Amount;
             item.Rarity = model.Rarity;
@@ -93,7 +93,7 @@ namespace CaseOpener.Core.Services
             var item = await repository.GetByIdAsync<Item>(id);
 
             if(item is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "item"));
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
 
             return new ItemModel()
             {
@@ -149,7 +149,7 @@ namespace CaseOpener.Core.Services
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Inventory item"));
 
             if (inventoryItem.UserId != userId)
-                return ReturnMessages.Unauthorized;
+                throw new ArgumentException(ReturnMessages.Unauthorized);
 
             await repository.DeleteAsync<InventoryItem>(id);
             await repository.SaveChangesAsync();
