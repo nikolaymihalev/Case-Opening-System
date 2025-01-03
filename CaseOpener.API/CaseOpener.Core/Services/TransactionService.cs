@@ -78,6 +78,9 @@ namespace CaseOpener.Core.Services
 
             if (transaction != null)
             {
+                if (IsValidEnumValue<TransactionStatus>(newStatus) == false)
+                    throw new ArgumentException(ReturnMessages.InvalidModel);
+
                 transaction.Status = newStatus;
 
                 await repository.SaveChangesAsync();

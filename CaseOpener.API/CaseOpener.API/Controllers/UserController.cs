@@ -54,36 +54,44 @@ namespace CaseOpener.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model) 
         {
-            string operation = await userService.LoginAsync(model);
-
-            if (operation == ReturnMessages.SuccessfullyLoggedIn) 
+            try
             {
-                string userRole = await userService.GetUserRoleAsync(model.Email);
+                string operation = await userService.LoginAsync(model);
 
-                var claims = new[]
+                if (operation == ReturnMessages.SuccessfullyLoggedIn)
                 {
+                    string userRole = await userService.GetUserRoleAsync(model.Email);
+
+                    var claims = new[]
+                    {
                     new Claim(ClaimTypes.Name, model.Email),
                     new Claim(ClaimTypes.Role, userRole)
                 };
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var keyBytes = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.UtcNow.AddHours(24),
-                    SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(keyBytes),
-                        SecurityAlgorithms.HmacSha256Signature)
-                };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var keyBytes = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddHours(24),
+                        SigningCredentials = new SigningCredentials(
+                            new SymmetricSecurityKey(keyBytes),
+                            SecurityAlgorithms.HmacSha256Signature)
+                    };
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenString = tokenHandler.WriteToken(token);
 
-                return Ok(new { token = tokenString });
+                    return Ok(new { token = tokenString });
+                }
+
+                return BadRequest(new { Message = operation });
+
             }
-
-            return BadRequest(new { Message = operation });
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
         }
 
         [HttpPost("register")]

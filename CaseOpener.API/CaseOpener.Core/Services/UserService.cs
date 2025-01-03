@@ -49,8 +49,8 @@ namespace CaseOpener.Core.Services
             var user = await repository.AllReadonly<User>()
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
-            if (user != null)
-                return string.Format(ReturnMessages.AlreadyExist, "User");
+            if (user == null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             var passwordHasher = new PasswordHasher<User>();
 
@@ -59,7 +59,7 @@ namespace CaseOpener.Core.Services
             if (result == PasswordVerificationResult.Success)
                 return ReturnMessages.SuccessfullyLoggedIn;
 
-            return ReturnMessages.InvalidPassword;
+            throw new ArgumentException(ReturnMessages.InvalidPassword);
         }
 
         public async Task<UserModel> RegisterAsync(RegisterModel model)
@@ -74,7 +74,7 @@ namespace CaseOpener.Core.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = model.Username,
-                Email = model.Username,
+                Email = model.Email,
                 DateJoined = DateTime.UtcNow,
                 Balance = 1000m
             };

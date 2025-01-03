@@ -69,7 +69,7 @@ namespace CaseOpener.Core.Services
                 }   
                 else
                 {
-                    throw new ArgumentException(ReturnMessages.DoesntExist, "Role");
+                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Role"));
                 }                
             }
 
