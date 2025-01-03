@@ -1,7 +1,5 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
-using CaseOpener.Core.Enums;
-using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Core.Models.User;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
@@ -36,6 +34,16 @@ namespace CaseOpener.Core.Services
             };
         }
 
+        public async Task<string> GetUserRoleAsync(string email)
+        {
+            var roles = await repository.AllReadonly<UserRole>().Include(x => x.User).Where(x => x.User.Email == email).ToListAsync();
+
+            if (roles.Count > 1)
+                return "Admin";
+
+            return "User";
+        }
+
         public async Task<string> LoginAsync(LoginModel model)
         {
             var user = await repository.AllReadonly<User>()
@@ -49,20 +57,18 @@ namespace CaseOpener.Core.Services
             var result = passwordHasher.VerifyHashedPassword(user!, user!.PasswordHash, model.Password);
 
             if (result == PasswordVerificationResult.Success)
-            {
                 return ReturnMessages.SuccessfullyLoggedIn;
-            }
 
             return ReturnMessages.InvalidPassword;
         }
 
-        public async Task<string> RegisterAsync(RegisterModel model)
+        public async Task<UserModel> RegisterAsync(RegisterModel model)
         {
             var user = await repository.AllReadonly<User>()
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user != null)
-                return string.Format(ReturnMessages.AlreadyExist, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.AlreadyExist, "User"));
 
             user = new User()
             {
@@ -80,7 +86,14 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();
 
-            return ReturnMessages.SuccessfullyRegistered;
+            return new UserModel()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                DateJoined = user.DateJoined,
+                Balance = user.Balance
+            };
         }
 
         public async Task<string> UpdateUserBalanceAsync(string userId, string operation, decimal amount)
@@ -88,7 +101,7 @@ namespace CaseOpener.Core.Services
             var user = await repository.GetByIdAsync<User>(userId);
 
             if (user is null)
-                return string.Format(ReturnMessages.DoesntExist, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             if(operation == "increase")
             {
@@ -114,7 +127,7 @@ namespace CaseOpener.Core.Services
                     .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user == null || user.Email != model.Email)
-                return string.Format(ReturnMessages.DoesntExist, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             user.Username = model.Username;
 

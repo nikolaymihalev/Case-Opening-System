@@ -91,28 +91,6 @@ namespace CaseOpener.Core.Services
             throw new ArgumentException(ReturnMessages.Unauthorized);
         }
 
-        public async Task<UserModel> GetUserInformationAsync(string adminId, string userId)
-        {
-            if (await CheckUserIsAdmin(adminId))
-            {
-                var user = await repository.GetByIdAsync<User>(userId);
-
-                if (user is null)
-                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
-
-                return new UserModel()
-                {
-                    Id = user.Id,
-                    Username = user.Username,
-                    Email = user.Email,
-                    Balance = user.Balance,
-                    DateJoined = user.DateJoined
-                };
-            }
-
-            throw new ArgumentException(ReturnMessages.Unauthorized);
-        }
-
         public async Task<IEnumerable<UserModel>> GetUsersAsync(string adminId)
         {
             if (await CheckUserIsAdmin(adminId))

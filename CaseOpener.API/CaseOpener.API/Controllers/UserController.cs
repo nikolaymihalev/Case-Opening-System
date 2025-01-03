@@ -1,5 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CaseOpener.Core.Constants;
+using CaseOpener.Core.Contracts;
+using CaseOpener.Core.Enums;
+using CaseOpener.Core.Models.Transaction;
+using CaseOpener.Core.Models.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CaseOpener.API.Controllers
 {
@@ -7,5 +15,134 @@ namespace CaseOpener.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserService userService;
+        private readonly IConfiguration configuration;
+        private readonly IAdminService adminService;
+        private readonly ITransactionService transactionService;
+        private readonly ICaseService caseService;
+
+        public UserController(
+            IUserService _userService,
+            IConfiguration _configuration,
+            IAdminService _adminService,
+            ITransactionService _transactionService,
+            ICaseService _caseService)
+        {
+            userService = _userService;
+            configuration = _configuration;
+            adminService = _adminService;
+            transactionService = _transactionService;
+            caseService = _caseService;
+
+        }
+
+        [HttpGet("get-user")]
+        public async Task<IActionResult> GetUser(string userId)
+        {
+            try
+            {
+                var user = await userService.GetUserAsync(userId);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model) 
+        {
+            string operation = await userService.LoginAsync(model);
+
+            if (operation == ReturnMessages.SuccessfullyLoggedIn) 
+            {
+                string userRole = await userService.GetUserRoleAsync(model.Email);
+
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, model.Email),
+                    new Claim(ClaimTypes.Role, userRole)
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var keyBytes = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.UtcNow.AddHours(24),
+                    SigningCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(keyBytes),
+                        SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return Ok(new { token = tokenString });
+            }
+
+            return BadRequest(new { Message = operation });
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        {
+            try
+            {
+                var user = await userService.RegisterAsync(model);
+
+                await adminService.AddUserToRoleAsync(user.Id, "User");
+                await caseService.SubscribeUserToDailyRewardAsync(user.Id);
+
+                var transaction = new TransactionModel()
+                {
+                    UserId = user.Id,
+                    Type = TransactionType.Deposit.ToString(),
+                    Amount = 1000m,
+                    Date = DateTime.UtcNow,
+                    Status = TransactionStatus.Completed.ToString()
+                };
+
+                await transactionService.AddTransactionAsync(transaction);
+
+                return Ok(new { Message = ReturnMessages.SuccessfullyRegistered });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update-info")]
+        public async Task<IActionResult> Update([FromBody]UserModel model)
+        {
+            try
+            {
+                string operation = await userService.UpdateUserInformationAsync(model);
+
+                return Ok(new { Message = operation });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update-balance")]
+        public async Task<IActionResult> UpdateBalance(string userId, string operation, decimal amount) 
+        {
+            try
+            {
+                string result = await userService.UpdateUserBalanceAsync(userId, operation, amount);
+
+                return Ok(new { Message = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
