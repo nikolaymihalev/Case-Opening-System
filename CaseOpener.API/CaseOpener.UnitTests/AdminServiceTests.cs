@@ -20,7 +20,6 @@ namespace CaseOpener.UnitTests
         [SetUp]
         public void Setup()
         {
-            // Инициализация на in-memory контекст и репозиторий
             context = InMemoryDbContextFactory.Create();
             repository = new Repository(context);
             adminService = new AdminService(repository);
@@ -29,7 +28,6 @@ namespace CaseOpener.UnitTests
         [TearDown]
         public void Teardown()
         {
-            // Изчистване на контекста след всеки тест
             context.Database.EnsureDeleted();
             context.Dispose();
         }
@@ -278,6 +276,5 @@ namespace CaseOpener.UnitTests
             // Assert
             Assert.IsFalse(isAdmin);
         }
-
     }
 }
