@@ -21,7 +21,7 @@ namespace CaseOpener.Infrastructure.Models
         /// Name of the case.
         /// </summary>
         [Required]
-        [MinLength(PropertiesConstants.CASE_NAME_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.CaseNameMinLength)]
         [Comment("Case's name")]
         public string Name { get; set; } = string.Empty;
 
@@ -30,7 +30,7 @@ namespace CaseOpener.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Case's image")]
-        public byte[] Image { get; set; } = new byte[128];
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Price of the case.

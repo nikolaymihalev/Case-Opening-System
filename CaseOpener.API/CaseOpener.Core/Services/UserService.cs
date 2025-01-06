@@ -1,7 +1,5 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
-using CaseOpener.Core.Enums;
-using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Core.Models.User;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
@@ -13,25 +11,18 @@ namespace CaseOpener.Core.Services
     public class UserService : IUserService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
-        private readonly ITransactionService transactionService;
 
-        public UserService(
-            IRepository _repository,
-            IAdminService _adminService,
-            ITransactionService _transactionService)
+        public UserService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
-            transactionService = _transactionService;
         }
 
-        public async Task<UserModel?> GetUserAsync(string userId)
+        public async Task<UserModel> GetUserAsync(string userId)
         {
             var user = await repository.GetByIdAsync<User>(userId);
 
             if(user is null)
-                throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "User")); ;
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User")); ;
 
             return new UserModel()
             {
@@ -43,61 +34,66 @@ namespace CaseOpener.Core.Services
             };
         }
 
+        public async Task<string> GetUserRoleAsync(string email)
+        {
+            var roles = await repository.AllReadonly<UserRole>().Include(x => x.User).Where(x => x.User.Email == email).ToListAsync();
+
+            if (roles.Count > 1)
+                return "Admin";
+
+            return "User";
+        }
+
         public async Task<string> LoginAsync(LoginModel model)
         {
             var user = await repository.AllReadonly<User>()
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
-            if (user != null)
-                return string.Format(ReturnMessages.ALREADY_EXIST, "User");
+            if (user == null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             var passwordHasher = new PasswordHasher<User>();
 
             var result = passwordHasher.VerifyHashedPassword(user!, user!.PasswordHash, model.Password);
 
             if (result == PasswordVerificationResult.Success)
-            {
-                return ReturnMessages.SUCCESSFULLY_LOGGED_IN;
-            }
+                return ReturnMessages.SuccessfullyLoggedIn;
 
-            return ReturnMessages.INVALID_PASSWORD;
+            throw new ArgumentException(ReturnMessages.InvalidPassword);
         }
 
-        public async Task<string> RegisterAsync(RegisterModel model)
+        public async Task<UserModel> RegisterAsync(RegisterModel model)
         {
             var user = await repository.AllReadonly<User>()
                 .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user != null)
-                return string.Format(ReturnMessages.ALREADY_EXIST, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.AlreadyExist, "User"));
 
             user = new User()
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = model.Username,
-                Email = model.Username,
+                Email = model.Email,
                 DateJoined = DateTime.UtcNow,
                 Balance = 1000m
             };
 
             var passwordHasher = new PasswordHasher<User>();
-            var transaction = new TransactionModel()
-            {
-                UserId = user.Id,
-                Type = TransactionType.Deposit.ToString(),
-                Amount = 1000m,
-                Status = TransactionStatus.Completed.ToString()
-            };
 
             user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
-
-            await adminService.AddUserToRoleAsync(user.Id, "User");
-            await transactionService.AddTransactionAsync(transaction);
 
             await repository.AddAsync(user);
             await repository.SaveChangesAsync();
 
-            return ReturnMessages.SUCCESSFULLY_REGISTERED;
+            return new UserModel()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                DateJoined = user.DateJoined,
+                Balance = user.Balance
+            };
         }
 
         public async Task<string> UpdateUserBalanceAsync(string userId, string operation, decimal amount)
@@ -105,7 +101,7 @@ namespace CaseOpener.Core.Services
             var user = await repository.GetByIdAsync<User>(userId);
 
             if (user is null)
-                return string.Format(ReturnMessages.DOESNT_EXIST, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             if(operation == "increase")
             {
@@ -113,7 +109,7 @@ namespace CaseOpener.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SUCCESSFULLY_MODIFIED_BALANCE, "increased");
+                return string.Format(ReturnMessages.SuccessfullyModifiedBalance, "increased");
             }
             else
             {
@@ -121,7 +117,7 @@ namespace CaseOpener.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.SUCCESSFULLY_MODIFIED_BALANCE, "decreased");
+                return string.Format(ReturnMessages.SuccessfullyModifiedBalance, "decreased");
             }
         }
 
@@ -131,13 +127,13 @@ namespace CaseOpener.Core.Services
                     .FirstOrDefaultAsync(x => x.Email == model.Email);
 
             if (user == null || user.Email != model.Email)
-                return string.Format(ReturnMessages.DOESNT_EXIST, "User");
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
             user.Username = model.Username;
 
             await repository.SaveChangesAsync();
 
-            return string.Format(ReturnMessages.SUCCESSFULLY_UPDATED, "information");
+            return string.Format(ReturnMessages.SuccessfullyUpdated, "information");
         }
     }
 }

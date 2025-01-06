@@ -17,23 +17,23 @@ namespace CaseOpener.Core.Models.Case
         /// <summary>
         /// Name of the case.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         [StringLength(
-            PropertiesConstants.CASE_NAME_MAX_LENGTH, 
-            MinimumLength = PropertiesConstants.CASE_NAME_MIN_LENGTH, 
-            ErrorMessage = ReturnMessages.STRING_LENGTH)]
+            PropertiesConstants.CaseNameMaxLength, 
+            MinimumLength = PropertiesConstants.CaseNameMinLength, 
+            ErrorMessage = ReturnMessages.StringLength)]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Image of the case.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
-        public byte[] Image { get; set; } = new byte[128];
+        [Required(ErrorMessage = ReturnMessages.Required)]
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Price of the case.
         /// </summary>
-        [Required(ErrorMessage = ReturnMessages.REQUIRED)]
+        [Required(ErrorMessage = ReturnMessages.Required)]
         public decimal Price { get; set; }
 
         /// <summary>

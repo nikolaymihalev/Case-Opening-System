@@ -4,26 +4,23 @@ using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaseOpener.Core.Services
 {
     public class TransactionService : ITransactionService
     {
         private readonly IRepository repository;
-        private readonly IAdminService adminService;
 
-        public TransactionService(
-            IRepository _repository,
-            IAdminService _adminService)
+        public TransactionService(IRepository _repository)
         {
             repository = _repository;
-            adminService = _adminService;
         }
 
         public async Task<string> AddTransactionAsync(TransactionModel model)
         {
             if(IsValidEnumValue<TransactionType>(model.Type) == false)
-                return ReturnMessages.INVALID_MODEL;
+                return ReturnMessages.InvalidModel;
 
             var transaction = new Transaction()
             {
@@ -37,71 +34,61 @@ namespace CaseOpener.Core.Services
             await repository.AddAsync(transaction);
             await repository.SaveChangesAsync();
 
-            return string.Format(ReturnMessages.SUCCESSFYLLY_ADDED, "transaction");
+            return string.Format(ReturnMessages.SuccessfullyAdded, "transaction");
         }
 
-        public async Task<string> DeleteTransactionAsync(string adminId, int id)
+        public async Task<string> DeleteTransactionAsync(int id)
         {
-            if(await adminService.CheckUserIsAdmin(adminId))
+            var transaction = await repository.GetByIdAsync<Transaction>(id);
+
+            if (transaction != null)
             {
-                var transaction = await repository.GetByIdAsync<Transaction>(id);
+                await repository.DeleteAsync<Transaction>(id);
+                await repository.SaveChangesAsync();
 
-                if (transaction != null)
-                {
-                    await repository.DeleteAsync<Transaction>(id);
-                    await repository.SaveChangesAsync();
-
-                    return string.Format(ReturnMessages.SUCCESSFULLY_DELETED, "transaction");
-                }
-
-                return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
+                return string.Format(ReturnMessages.SuccessfullyDeleted, "transaction");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
-        public async Task<TransactionModel?> GetTransactionByIdAsync(string userId, int id)
+        public async Task<TransactionModel> GetTransactionByIdAsync(int id)
         {
             var transaction = await repository.GetByIdAsync<Transaction>(id);
 
             if (transaction != null) 
             {
-                if (transaction.UserId == userId || await adminService.CheckUserIsAdmin(userId))
-                    return new TransactionModel()
-                    {
-                        Id = transaction.Id,
-                        UserId = userId,
-                        Type = transaction.Type,
-                        Amount = transaction.Amount,
-                        Date = transaction.Date,
-                        Status = transaction.Status,
-                    };
-                else
-                    throw new ArgumentException(ReturnMessages.UNAUTHORIZED);
+                return new TransactionModel()
+                {
+                    Id = transaction.Id,
+                    UserId = transaction.UserId,
+                    Type = transaction.Type,
+                    Amount = transaction.Amount,
+                    Date = transaction.Date,
+                    Status = transaction.Status,
+                };
             }
 
-            throw new ArgumentException(string.Format(ReturnMessages.DOESNT_EXIST, "Transaction")); ;
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
-        public async Task<string> UpdateTransactionStatusAsync(string adminId, int id, string newStatus)
+        public async Task<string> UpdateTransactionStatusAsync(int id, string newStatus)
         {
-            if (await adminService.CheckUserIsAdmin(adminId))
-            { 
-                var transaction = await repository.GetByIdAsync<Transaction>(id);
+            var transaction = await repository.GetByIdAsync<Transaction>(id);
 
-                if (transaction != null)
-                {
-                    transaction.Status = newStatus;
+            if (transaction != null)
+            {
+                if (IsValidEnumValue<TransactionStatus>(newStatus) == false)
+                    throw new ArgumentException(ReturnMessages.InvalidModel);
 
-                    await repository.SaveChangesAsync();
+                transaction.Status = newStatus;
 
-                    return string.Format(ReturnMessages.SUCCESSFULLY_UPDATED, "transaction");
-                }
+                await repository.SaveChangesAsync();
 
-                return string.Format(ReturnMessages.DOESNT_EXIST, "Transaction");
+                return string.Format(ReturnMessages.SuccessfullyUpdated, "transaction");
             }
 
-            return ReturnMessages.UNAUTHORIZED;
+            throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Transaction"));
         }
 
         private bool IsValidEnumValue<TEnum>(string value) where TEnum : struct, Enum

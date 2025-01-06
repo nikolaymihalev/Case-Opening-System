@@ -20,7 +20,7 @@ namespace CaseOpener.Core.Models.Case
         /// <summary>
         /// Image of the case.
         /// </summary>
-        public string Image { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Price of the case.

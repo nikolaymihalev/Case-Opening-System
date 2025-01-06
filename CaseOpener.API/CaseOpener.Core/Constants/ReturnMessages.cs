@@ -2,24 +2,27 @@
 {
     public static class ReturnMessages
     {
-        public const string REQUIRED = "The field {0} is required!";
-        public const string STRING_LENGTH = "The field {0} is between {2} and {1} characters long!";
+        public const string Required = "The field {0} is required!";
+        public const string StringLength = "The field {0} is between {2} and {1} characters long!";
 
-        public const string SUCCESSFYLLY_ADDED = "Successfully added new {0}!";
-        public const string SUCCESSFULLY_EDITED = "Successfully edited {0}!";
-        public const string SUCCESSFULLY_DELETED = "Successfully deleted {0}!";
-        public const string SUCCESSFULLY_UPDATED = "Successfully updated {0}!";
+        public const string SuccessfullyAdded = "Successfully added new {0}!";
+        public const string SuccessfullyEdited = "Successfully edited {0}!";
+        public const string SuccessfullyDeleted = "Successfully deleted {0}!";
+        public const string SuccessfullyUpdated = "Successfully updated {0}!";
 
-        public const string SUCCESSFULLY_LOGGED_IN = "User successfully logged in!";
-        public const string SUCCESSFULLY_REGISTERED = "You was successfully registered!";
-        public const string UNAUTHORIZED = "Unauthorized!";
+        public const string SuccessfullyLoggedIn = "User successfully logged in!";
+        public const string SuccessfullyRegistered = "You was successfully registered!";
+        public const string Unauthorized = "Unauthorized!";
 
-        public const string SUCCESSFULLY_MODIFIED_BALANCE = "Successfully {0} balance!";
+        public const string SuccessfullyModifiedBalance = "Successfully {0} balance!";
 
-        public const string DOESNT_EXIST = "{0} doesn't exist!";
-        public const string ALREADY_EXIST = "{0} already exists!";
+        public const string SuccessfullyClaimedDailyReward = "Successfully claimed daily reward!";
+        public const string CannotClaimDailyReward = "You can't claim daily reward!";
 
-        public const string INVALID_MODEL = "Invalid model!";
-        public const string INVALID_PASSWORD = "Invalid password!";
+        public const string DoesntExist = "{0} doesn't exist!";
+        public const string AlreadyExist = "{0} already exists!";
+
+        public const string InvalidModel = "Invalid model!";
+        public const string InvalidPassword = "Invalid password!";
     }
 }
