@@ -16,5 +16,8 @@
 
         public const int CaseNameMinLength = 5;
         public const int CaseNameMaxLength = 100;
+
+        public const int CategoryMinLength = 2;
+        public const int CategoryMaxLength = 50;
     }
 }
