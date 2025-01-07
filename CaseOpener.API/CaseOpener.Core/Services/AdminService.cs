@@ -85,7 +85,9 @@ namespace CaseOpener.Core.Services
                     {
                         Id = x.Id,
                         Name = x.Name,
-                    }).ToListAsync();
+                    })
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync();
             }
 
             throw new ArgumentException(ReturnMessages.Unauthorized);
@@ -105,6 +107,7 @@ namespace CaseOpener.Core.Services
                         Balance = x.Balance,
                         DateJoined = x.DateJoined
                     })
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
             }
 
@@ -126,6 +129,7 @@ namespace CaseOpener.Core.Services
                         Date = x.Date,
                         Status = x.Status
                     })
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
             }
 

@@ -119,7 +119,9 @@ namespace CaseOpener.Core.Services
                         Amount = x.Amount,
                         Probability = x.Probability,
                         ImageUrl = x.ImageUrl
-                    }).ToListAsync();
+                    })
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync();
         }
 
         public async Task<InventoryItemModel> GetInventoryItemByIdAsync(int id, string userId)

@@ -106,7 +106,7 @@ namespace CaseOpener.Core.Services
 
         public async Task<IEnumerable<CaseModel>> GetAllCasesAsync()
         {
-            var cases = await repository.AllReadonly<Case>().ToListAsync();
+            var cases = await repository.AllReadonly<Case>().OrderByDescending(x => x.Id).ToListAsync();
 
             return cases.Select(x => new CaseModel()
             {

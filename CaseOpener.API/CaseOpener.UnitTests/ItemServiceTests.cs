@@ -197,8 +197,8 @@ namespace CaseOpener.UnitTests
             var result = await itemService.GetItemsAsync();
 
             Assert.AreEqual(2, result.Count());
-            Assert.AreEqual(item1.Name, result.First().Name);
-            Assert.AreEqual(item2.Name, result.Last().Name);
+            Assert.AreEqual(item1.Name, result.Last().Name);
+            Assert.AreEqual(item2.Name, result.First().Name);
         }
 
         [Test]
