@@ -39,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.AddPolicy("AllowAngular", policy =>
                 {
-                    policy.WithOrigins("") //angular link
+                    policy.WithOrigins("http://localhost:4200/")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
@@ -64,8 +64,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "", //angular link
-                        ValidAudience = "", //angular link
+                        ValidIssuer = "http://localhost:4200/",
+                        ValidAudience = "http://localhost:4200/",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
                     };
                 });
