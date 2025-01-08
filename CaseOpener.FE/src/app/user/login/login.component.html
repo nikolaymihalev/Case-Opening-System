@@ -1,0 +1,32 @@
+<div class="login-container">
+    <div class="form-container">
+        <h2>Sign in to EpicCase</h2>
+        <form class="login-form" #form="ngForm">
+            <div class="field-container">
+                <label for="email">Email</label>
+                <input           
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    placeholder="johndoe@gmail.com" 
+                    required
+                    ngModel 
+                    #inputEmail="ngModel">
+            </div>
+            <div class="field-container">
+                <label for="password">Password</label>
+                <input           
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    required
+                    ngModel 
+                    #inputPassword="ngModel">
+            </div>
+            <button 
+                [disabled]="form.invalid"
+                [style]="{ backgroundColor: form.invalid ? 'grey' : '', border: form.invalid ? 'none' : ''}">Log in</button>
+        </form>
+        <a href="">Create new account!</a>
+    </div>
+</div>
