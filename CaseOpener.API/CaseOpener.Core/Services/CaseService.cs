@@ -104,9 +104,25 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyEdited, "case");
         }
 
-        public async Task<IEnumerable<CaseModel>> GetAllCasesAsync()
+        public async Task<IEnumerable<CaseModel>> GetAllCasesAsync(string? name = null)
         {
-            var cases = await repository.AllReadonly<Case>().OrderByDescending(x => x.Id).ToListAsync();
+            List<Case> cases = new List<Case>();
+
+            if (name != null) 
+            {
+                cases = await repository.AllReadonly<Case>()
+                    .Where(x=>x.Name.ToLower().Contains(name.ToLower()))
+                    .OrderByDescending(x => x.Id)
+                    .ThenBy(x => x.CategoryId)
+                    .ToListAsync();
+            }
+            else
+            {
+                cases = await repository.AllReadonly<Case>()
+                    .OrderByDescending(x => x.Id)
+                    .ThenBy(x => x.CategoryId)
+                    .ToListAsync();
+            }
 
             return cases.Select(x => new CaseModel()
             {

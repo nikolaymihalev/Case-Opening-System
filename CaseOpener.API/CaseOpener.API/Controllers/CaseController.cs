@@ -32,6 +32,14 @@ namespace CaseOpener.API.Controllers
             return Ok(cases);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> GetSearchedCases(string name)
+        {
+            var cases = await caseService.GetAllCasesAsync(name);
+
+            return Ok(cases);
+        }
+
         [HttpGet("get-case")]
         public async Task<IActionResult> GetCase(int id)
         {
