@@ -33,6 +33,10 @@
     color: #E84545;
 }
 
+.nav-container a:hover .daily{
+    color: #fcd600;
+}
+
 .header-container .login{
     padding: 1em 2em;
     text-decoration: none;
