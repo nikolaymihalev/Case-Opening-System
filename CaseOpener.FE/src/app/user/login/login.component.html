@@ -8,7 +8,6 @@
                     type="email" 
                     name="email" 
                     id="email" 
-                    placeholder="johndoe@gmail.com" 
                     required
                     ngModel 
                     #inputEmail="ngModel">
@@ -27,6 +26,6 @@
                 [disabled]="form.invalid"
                 [style]="{ backgroundColor: form.invalid ? 'grey' : '', border: form.invalid ? 'none' : ''}">Log in</button>
         </form>
-        <a href="">Create new account!</a>
+        <a routerLink="/register">Create new account!</a>
     </div>
 </div>

@@ -1,0 +1,51 @@
+<div class="register-container">
+    <div class="form-container">
+        <h2>Register new account</h2>
+        <form class="register-form" #form="ngForm">
+            <div class="field-container">
+                <label for="username">Username</label>
+                <input           
+                    type="text" 
+                    name="text" 
+                    id="username" 
+                    required
+                    ngModel 
+                    #inputUsername="ngModel">
+            </div>
+            <div class="field-container">
+                <label for="email">Email</label>
+                <input           
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    required
+                    ngModel 
+                    #inputEmail="ngModel">
+            </div>
+            <div class="field-container">
+                <label for="password">Password</label>
+                <input           
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    required
+                    ngModel 
+                    #inputPassword="ngModel">
+            </div>
+            <div class="field-container">
+                <label for="confirm-password">Confirm Password</label>
+                <input 
+                    type="password" 
+                    name="confirm-password" 
+                    id="confirm-password" 
+                    required 
+                    ngModel 
+                    #inputConfirmPassword>
+            </div>
+            <button 
+                [disabled]="form.invalid"
+                [style]="{ backgroundColor: form.invalid ? 'grey' : '', border: form.invalid ? 'none' : ''}">Create</button>
+        </form>
+        <a routerLink="/login">Already have an account?</a>
+    </div>
+</div>

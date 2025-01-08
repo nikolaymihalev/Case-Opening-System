@@ -16,6 +16,17 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+html, body {
+    height: 100%; 
+}
+
+.app-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+}
+
+
 h1, h2, h3, h4, h5, h6, a , label, input, button{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
