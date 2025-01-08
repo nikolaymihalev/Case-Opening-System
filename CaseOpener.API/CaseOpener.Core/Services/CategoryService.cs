@@ -51,7 +51,6 @@ namespace CaseOpener.Core.Services
                     Id = x.Id,
                     Name = x.Name,
                 })
-                .OrderByDescending(x => x.Id)
                 .ToListAsync();
         }
 
