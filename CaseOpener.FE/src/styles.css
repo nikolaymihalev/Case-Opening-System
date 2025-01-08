@@ -13,4 +13,9 @@ html{
 
 body{
     background: #2B2E4A;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, a {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
