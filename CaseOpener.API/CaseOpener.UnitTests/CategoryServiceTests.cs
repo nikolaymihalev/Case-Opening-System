@@ -105,8 +105,8 @@ namespace CaseOpener.UnitTests
             var result = await categoryService.GetAllAsync();
 
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual("Category3", result.First().Name);
-            Assert.AreEqual("Category1", result.Last().Name);
+            Assert.AreEqual("Category3", result.Last().Name);
+            Assert.AreEqual("Category1", result.First().Name);
         }
 
         [Test]

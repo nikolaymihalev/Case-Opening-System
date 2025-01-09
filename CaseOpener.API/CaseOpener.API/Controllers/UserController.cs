@@ -1,9 +1,11 @@
-﻿using CaseOpener.Core.Constants;
+﻿using CaseOpener.API.Extensions;
+using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Enums;
 using CaseOpener.Core.Models.Transaction;
 using CaseOpener.Core.Models.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,24 +22,69 @@ namespace CaseOpener.API.Controllers
         private readonly IAdminService adminService;
         private readonly ITransactionService transactionService;
         private readonly ICaseService caseService;
+        private readonly JwtSettings jwtSettings;
 
         public UserController(
             IUserService _userService,
             IConfiguration _configuration,
             IAdminService _adminService,
             ITransactionService _transactionService,
-            ICaseService _caseService)
+            ICaseService _caseService,
+            IOptions<JwtSettings> _jwtSettings)
         {
             userService = _userService;
             configuration = _configuration;
             adminService = _adminService;
             transactionService = _transactionService;
             caseService = _caseService;
+            jwtSettings = _jwtSettings.Value;
 
         }
 
         [HttpGet("get-user")]
-        public async Task<IActionResult> GetUser(string userId)
+        public async Task<IActionResult> GetUser()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized(new { Message = "No token provided" });
+            }
+
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var keyBytes = Encoding.UTF8.GetBytes(jwtSettings.Key);
+
+                var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                }, out var validatedToken);
+
+                var email = principal.FindFirst(ClaimTypes.Name)?.Value;
+
+                if (email is null)
+                    return BadRequest(new { Message = "Email is not valid!" });
+
+                var userInfo = await userService.GetUserByEmailAsync(email);
+
+                if (userInfo is null)
+                    throw new Exception();
+
+                return Ok(userInfo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user-info")]
+        public async Task<IActionResult> GetUserInformation(string userId)
         {
             try
             {
@@ -49,6 +96,14 @@ namespace CaseOpener.API.Controllers
             {
                 return BadRequest(new { ex.Message });
             }
+        }
+
+        [HttpGet("is-admin")]
+        public async Task<IActionResult> IsUserAdmin(string userId)
+        {
+            var result = await adminService.CheckUserIsAdmin(userId);
+
+            return Ok(new { Message = result });
         }
 
         [HttpPost("login")]

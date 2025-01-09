@@ -34,6 +34,23 @@ namespace CaseOpener.Core.Services
             };
         }
 
+        public async Task<UserModel> GetUserByEmailAsync(string email)
+        {
+            var user = await repository.AllReadonly<User>().FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User")); ;
+
+            return new UserModel()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Balance = user.Balance,
+                DateJoined = user.DateJoined,
+                Email = user.Email,
+            };
+        }
+
         public async Task<string> GetUserRoleAsync(string email)
         {
             var roles = await repository.AllReadonly<UserRole>().Include(x => x.User).Where(x => x.User.Email == email).ToListAsync();

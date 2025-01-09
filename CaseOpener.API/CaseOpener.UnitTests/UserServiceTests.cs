@@ -60,6 +60,35 @@ namespace CaseOpener.UnitTests
         }
 
         [Test]
+        public async Task GetUserByEmailAsync_ExistingUser_ReturnsUserModel()
+        {
+            var user = new User
+            {
+                Id = "user123",
+                Username = "testuser",
+                Email = "test@example.com",
+                DateJoined = DateTime.UtcNow,
+                Balance = 1000m
+            };
+
+            await repository.AddAsync(user);
+            await repository.SaveChangesAsync();
+
+            var result = await userService.GetUserByEmailAsync(user.Email);
+
+            Assert.AreEqual(user.Id, result.Id);
+            Assert.AreEqual(user.Username, result.Username);
+            Assert.AreEqual(user.Email, result.Email);
+            Assert.AreEqual(user.Balance, result.Balance);
+        }
+
+        [Test]
+        public async Task GetUserByEmailAsync_NonExistingUser_ThrowsArgumentException()
+        {
+            Assert.ThrowsAsync<ArgumentException>(async () => await userService.GetUserByEmailAsync("nonexistentuser"));
+        }
+
+        [Test]
         public async Task GetUserRoleAsync_ExistingUser_ReturnsRole()
         {
             var user = new User

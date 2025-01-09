@@ -1,4 +1,5 @@
-﻿using CaseOpener.Core.Contracts;
+﻿using CaseOpener.API.Extensions;
+using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Services;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Data;
@@ -70,6 +71,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
                     };
                 });
+
+            services.Configure<JwtSettings>(config.GetSection("Jwt"));
 
             return services;
         }
