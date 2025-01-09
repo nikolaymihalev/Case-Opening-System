@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterLink} from '@angular/router';
 import { UserService } from '../../user/user.service';
 
 @Component({
@@ -9,12 +9,22 @@ import { UserService } from '../../user/user.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit { 
-  isLoggedIn: boolean = false;
+export class HeaderComponent { 
+  menuOpen: boolean = false;
 
-  constructor(private userService: UserService){}
+  get isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
+  }
 
-  ngOnInit(): void {
-    this.isLoggedIn = this.userService.isLoggedIn();    
+  constructor(private userService: UserService, private router: Router){}
+
+  logout(): void{
+    this.userService.logout();
+    this.toggleMenu();
+    this.router.navigate(['/login']);
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }

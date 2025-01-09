@@ -18,12 +18,12 @@
     grid-area: 1/1;
     border: 8px solid;
     border-radius: 50%;
-    border-color: red red #0000 #0000;
+    border-color: #E84545 #E84545 rgb(162, 0, 255) rgb(162, 0, 255);
     mix-blend-mode: darken;
     animation: l14 1s infinite linear;
   }
   .loader::after {
-    border-color: #0000 #0000 blue blue;
+    border-color: rgb(162, 0, 255) rgb(162, 0, 255) #ff00c8 #ff00c8;
     animation-direction: reverse;
   }
   @keyframes l14{ 
