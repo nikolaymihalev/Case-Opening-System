@@ -88,6 +88,19 @@ namespace CaseOpener.API.Controllers
             return BadRequest(new { Message = ReturnMessages.Unauthorized });
         }
 
+        [HttpPost("add-case-item")]
+        public async Task<IActionResult> AddCase(string adminId, int caseId, int itemId, double probability)
+        {
+            if (await adminService.CheckUserIsAdmin(adminId))
+            {
+                string operation = await caseService.AddItemToCaseAsync(caseId, itemId, probability);
+
+                return Ok(new { Message = operation });
+            }
+
+            return BadRequest(new { Message = ReturnMessages.Unauthorized });
+        }
+
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteCase(string adminId, int caseId)
         {

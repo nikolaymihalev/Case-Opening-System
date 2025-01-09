@@ -55,13 +55,6 @@ namespace CaseOpener.Infrastructure.Models
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Probability chance of the item.
-        /// </summary>
-        [Required]
-        [Comment("Item's probability chance")]
-        public double Probability { get; set; }
-
-        /// <summary>
         /// Collection of case openings.
         /// </summary>
         public ICollection<CaseOpening> CaseOpenings { get; set; } = new List<CaseOpening>();
@@ -70,5 +63,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Collection of inventory items.
         /// </summary>
         public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+
+        /// <summary>
+        /// Collection of case items.
+        /// </summary>
+        public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();
     }
 }

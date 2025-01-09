@@ -48,13 +48,6 @@ namespace CaseOpener.Infrastructure.Models
         [Comment("Case's price")]
         public decimal Price { get; set; }
 
-        /// <summary>
-        /// Items in the case.
-        /// </summary>
-        [Required]
-        [Comment("Case's items")]
-        public string Items { get; set; } = string.Empty;
-
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
 
@@ -67,5 +60,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Collection of daily rewards.
         /// </summary>
         public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
+
+        /// <summary>
+        /// Collection of case items.
+        /// </summary>
+        public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();
     }
 }

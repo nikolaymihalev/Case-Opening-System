@@ -21,6 +21,7 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CaseItem> CaseItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace CaseOpener.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new CaseItemConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

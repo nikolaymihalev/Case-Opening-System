@@ -37,8 +37,8 @@ namespace CaseOpener.Core.Models.Case
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Items in the case.
+        /// Case's identifier
         /// </summary>
-        public int[] Items { get; set; } = new int[0];
+        public int CategoryId { get; set; }
     }
 }
