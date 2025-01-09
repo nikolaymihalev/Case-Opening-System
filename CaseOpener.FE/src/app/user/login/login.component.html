@@ -1,7 +1,7 @@
 <div class="login-container">
     <div class="form-container">
         <h2>Sign in to EpicCase</h2>
-        <form class="login-form" #form="ngForm">
+        <form class="login-form" #form="ngForm" (ngSubmit)="login(form)">
             <div class="field-container">
                 <label for="email">Email</label>
                 <input           

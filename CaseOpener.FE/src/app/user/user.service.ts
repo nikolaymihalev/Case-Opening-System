@@ -54,7 +54,7 @@ export class UserService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.userSubject.value;
+    return !!this.user$; 
   }
 
   getCurrentUser(): User | null {
@@ -70,9 +70,12 @@ export class UserService {
             localStorage.setItem('authToken', responce.token);
 
             this.setUser();
-            this.setIsAdmin();
+            this.setIsAdmin();            
           }
-        })
+        },
+        catchError((err: HttpErrorResponse)=>{          
+          return throwError(() => new Error(err.error));
+        }))
       )
   }
   

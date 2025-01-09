@@ -3,6 +3,10 @@
         <img src="logo.png">
         <a href=""><i class="fa-solid fa-suitcase"></i>Cases</a>
         <a href=""><i class="fa-solid fa-star daily"></i>Daily Free</a>
-    </div>    
-    <a routerLink="/login" class="login">Sign in</a>
+    </div>   
+    @if(isLoggedIn){
+
+    }@else {
+        <a routerLink="/login" class="login">Sign in</a>
+    }
 </div>
