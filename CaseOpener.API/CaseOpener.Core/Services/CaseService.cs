@@ -198,7 +198,7 @@ namespace CaseOpener.Core.Services
 
             var itemId = GetRandomItem(items);
 
-            var caseOpening = new CaseOpeningModel()
+            var caseOpening = new CaseOpening()
             {
                 UserId = userId,
                 ItemId = itemId,
