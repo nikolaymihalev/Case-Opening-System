@@ -15,7 +15,7 @@ export class ApiService {
   }
 
   searchCases(name: string){
-    return this.http.get<Case[]>('/api/case/all', {params: {name: name}});
+    return this.http.get<Case[]>('/api/case/search', {params: {name: name}});
   }
 
   getAllCategories(){

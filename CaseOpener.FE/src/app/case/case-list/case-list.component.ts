@@ -17,6 +17,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 export class CaseListComponent implements OnInit{  
   isLoading: boolean = true;
   isSearching: boolean = false;
+  noResults: boolean = false;
 
   categories: Category[] = [];
 
@@ -54,6 +55,10 @@ export class CaseListComponent implements OnInit{
     this.toggleSearchMode();
   }
 
+  backToHome(){
+    this.getAllCases();
+  }
+
   private getAllCases(name?:string){
     this.isLoading = true;
 
@@ -64,6 +69,8 @@ export class CaseListComponent implements OnInit{
         this.rareCases = cases.filter(x=>x.categoryName=="Rare");
         this.graffitiCases = cases.filter(x=>x.categoryName=="Graffiti");
         this.stickerCases = cases.filter(x=>x.categoryName=="Sticker");
+
+        this.noResults = cases.length === 0;
       });
     }else{
       this.apiService.getAllCases().subscribe((cases)=>{
@@ -72,6 +79,8 @@ export class CaseListComponent implements OnInit{
         this.rareCases = cases.filter(x=>x.categoryName=="Rare");
         this.graffitiCases = cases.filter(x=>x.categoryName=="Graffiti");
         this.stickerCases = cases.filter(x=>x.categoryName=="Sticker");
+
+        this.noResults = cases.length === 0;
       });
     }
     this.isLoading = false;
