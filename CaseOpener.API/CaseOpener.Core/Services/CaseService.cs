@@ -5,7 +5,6 @@ using CaseOpener.Core.Models.Item;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace CaseOpener.Core.Services
 {
@@ -25,24 +24,39 @@ namespace CaseOpener.Core.Services
                 Name = model.Name,
                 ImageUrl = model.ImageUrl,
                 Price = model.Price,
+                CategoryId = model.CategoryId,
             };
-
-            var itemsList = new List<Item>();
-
-            for(int i = 0; i < model.Items.Length - 1; i++)
-            {
-                var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
-
-                if(itemEntity != null)
-                    itemsList.Add(itemEntity);
-            }
-
-            caseModel.Items = JsonSerializer.Serialize(itemsList);
 
             await repository.AddAsync(caseModel);
             await repository.SaveChangesAsync();
 
             return string.Format(ReturnMessages.SuccessfullyAdded, "case");
+        }
+
+        public async Task<string> AddItemToCaseAsync(int caseId, int itemId, double probability)
+        {
+            var caseEntity = await repository.GetByIdAsync<Case>(caseId);
+
+            if (caseEntity is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+            var itemEntity = await repository.GetByIdAsync<Item>(itemId);
+
+            if (itemEntity is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
+
+            var caseItem = new CaseItem()
+            {
+                CaseId = caseId,
+                ItemId = itemId,
+                Probability = probability
+            };
+
+            await repository.AddAsync(caseItem);
+
+            await repository.SaveChangesAsync();
+
+            return string.Format(ReturnMessages.SuccessfullyAdded, "item to case");
         }
 
         public async Task<string> DeleteCaseAsync(int id)
@@ -88,42 +102,67 @@ namespace CaseOpener.Core.Services
             caseEntity.Name = model.Name;
             caseEntity.Price = model.Price;
             caseEntity.ImageUrl = model.ImageUrl;
-
-            var itemsList = new List<Item>();
-
-            for (int i = 0; i < model.Items.Length - 1; i++)
-            {
-                var itemEntity = await repository.GetByIdAsync<Item>(model.Items[i]);
-
-                if(itemEntity != null)
-                    itemsList.Add(itemEntity);
-            }
-
-            caseEntity.Items = JsonSerializer.Serialize(itemsList);
+            caseEntity.CategoryId = model.CategoryId;
 
             return string.Format(ReturnMessages.SuccessfullyEdited, "case");
         }
 
-        public async Task<IEnumerable<CaseModel>> GetAllCasesAsync()
+        public async Task<IEnumerable<CasePageModel>> GetAllCasesAsync(string? name = null)
         {
-            var cases = await repository.AllReadonly<Case>().ToListAsync();
+            List<Case> cases = new List<Case>();
 
-            return cases.Select(x => new CaseModel()
+            if (name != null) 
+            {
+                cases = await repository.AllReadonly<Case>()
+                    .Include(x=>x.Category)
+                    .Where(x=>x.Name.ToLower().Contains(name.ToLower()))
+                    .OrderByDescending(x => x.Id)
+                    .ThenBy(x => x.CategoryId)
+                    .ToListAsync();
+            }
+            else
+            {
+                cases = await repository.AllReadonly<Case>()
+                    .Include(x => x.Category)
+                    .OrderByDescending(x => x.Id)
+                    .ThenBy(x => x.CategoryId)
+                    .ToListAsync();
+            }
+
+            return cases.Select(x => new CasePageModel
             {
                 Id = x.Id,
                 Name = x.Name,
                 ImageUrl = x.ImageUrl,
                 Price = x.Price,
-                Items = JsonSerializer.Deserialize<List<ItemModel>>(x.Items) ?? new List<ItemModel>()
+                CategoryName = x.Category.Name
             });
         }
 
         public async Task<CaseModel> GetCaseByIdAsync(int id)
         {
             var caseM = await repository.GetByIdAsync<Case>(id);
+            var items = await repository.AllReadonly<CaseItem>()
+                .Include(x=>x.Item)
+                .Where(x => x.CaseId == id)
+                .Select(x=>new ItemModel()
+                {
+                    Id = x.ItemId,
+                    Amount = x.Item.Amount,
+                    Name = x.Item.Name,
+                    ImageUrl = x.Item.ImageUrl,
+                    Type = x.Item.Type,
+                    Rarity = x.Item.Rarity,
+                })
+                .ToListAsync();
 
             if (caseM is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+            var category = await repository.GetByIdAsync<Category>(caseM.CategoryId);
+
+            if (category is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Category"));
 
             return new CaseModel()
             {
@@ -131,7 +170,8 @@ namespace CaseOpener.Core.Services
                 Name = caseM.Name,
                 ImageUrl = caseM.ImageUrl,
                 Price = caseM.Price,
-                Items = JsonSerializer.Deserialize<List<ItemModel>>(caseM.Items) ?? new List<ItemModel>()
+                Items = items,
+                CategoryName = category.Name
             };
         }
 
@@ -147,14 +187,23 @@ namespace CaseOpener.Core.Services
             if (user is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
-            var items = JsonSerializer.Deserialize<List<ItemModel>>(caseM.Items) ?? new List<ItemModel>();
+            var items = await repository.AllReadonly<CaseItem>()
+                .Where(x => x.CaseId == caseId)
+                .Select(x => new CaseItemModel()
+                {
+                    Id = x.Id,
+                    CaseId = x.CaseId,
+                    ItemId = x.ItemId,
+                    Probability = x.Probability,
+                })
+                .ToListAsync();
 
-            var item = GetRandomItem(items);
+            var itemId = GetRandomItem(items);
 
-            var caseOpening = new CaseOpeningModel()
+            var caseOpening = new CaseOpening()
             {
                 UserId = userId,
-                ItemId = item.Id,
+                ItemId = itemId,
                 CaseId = caseId,
                 DateOpened = DateTime.UtcNow,
             };
@@ -163,7 +212,7 @@ namespace CaseOpener.Core.Services
 
             await repository.SaveChangesAsync();
 
-            return item;
+            return new ItemModel();
         }
 
         public async Task<ItemModel> OpenDailyRewardAsync(string userId)
@@ -223,7 +272,7 @@ namespace CaseOpener.Core.Services
             }           
         }
 
-        private ItemModel GetRandomItem(List<ItemModel> items)
+        private int GetRandomItem(List<CaseItemModel> items)
         {
             var cumulativeProbability = 0.0;
             var weightedItems = items
@@ -237,7 +286,7 @@ namespace CaseOpener.Core.Services
             var random = new Random();
             var randomValue = random.NextDouble() * cumulativeProbability;
 
-            return weightedItems.First(w => randomValue <= w.CumulativeProbability).Item;
+            return weightedItems.First(w => randomValue <= w.CumulativeProbability).Item.ItemId;
         }
     }
 }

@@ -1,0 +1,31 @@
+.wrapper {
+    min-width: 200px;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    animation: l14 4s infinite;
+  }
+  .loader::before,
+  .loader::after {    
+    content: "";
+    grid-area: 1/1;
+    border: 8px solid;
+    border-radius: 50%;
+    border-color: #E84545 #E84545 rgb(162, 0, 255) rgb(162, 0, 255);
+    mix-blend-mode: darken;
+    animation: l14 1s infinite linear;
+  }
+  .loader::after {
+    border-color: rgb(162, 0, 255) rgb(162, 0, 255) #ff00c8 #ff00c8;
+    animation-direction: reverse;
+  }
+  @keyframes l14{ 
+    100%{transform: rotate(1turn)}
+  }

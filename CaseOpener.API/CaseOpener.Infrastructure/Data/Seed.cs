@@ -8,12 +8,14 @@ namespace CaseOpener.Infrastructure.Data
         public List<User> Users { get; set; } = new List<User>();
         public List<Role> Roles { get; set; } = new List<Role>(); 
         public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public List<Category> Categories { get; set; } = new List<Category>();
 
         public Seed()
         {
             SeedUsers();
             SeedRoles();
             SeedUserRoles();
+            SeedCaseCategories();
         }
 
         private void SeedUsers()
@@ -45,6 +47,20 @@ namespace CaseOpener.Infrastructure.Data
             {
                 new UserRole{ UserId = "43e21bc5-9592-44bc-aae2-9ca9a16dd5ba", RoleId = 2 },
                 new UserRole{ UserId = "5a646737-b3ab-4595-9770-2c744e5808c6", RoleId = 1 }
+            };
+        }
+
+        private void SeedCaseCategories()
+        {
+            Categories = new List<Category>()
+            {
+                new Category { Id = 1, Name = "Weapon"},
+                new Category { Id = 2, Name = "Sticker"},
+                new Category { Id = 3, Name = "Graffiti"},
+                new Category { Id = 4, Name = "Souvenir"},
+                new Category { Id = 5, Name = "Operation"},
+                new Category { Id = 6, Name = "Rare"},
+                new Category { Id = 7, Name = "Event"},
             };
         }
     }

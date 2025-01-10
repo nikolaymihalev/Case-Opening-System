@@ -34,10 +34,5 @@
         /// Amount of the item.
         /// </summary>
         public decimal Amount { get; set; }
-
-        /// <summary>
-        /// Probability chance of the item.
-        /// </summary>
-        public double Probability { get; set; }
     }
 }

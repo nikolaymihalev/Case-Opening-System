@@ -46,11 +46,5 @@ namespace CaseOpener.Core.Models.Item
         /// </summary>
         [Required(ErrorMessage = ReturnMessages.Required)]
         public decimal Amount { get; set; }
-
-        /// <summary>
-        /// Probability chance of the item.
-        /// </summary>
-        [Required(ErrorMessage = ReturnMessages.Required)]
-        public double Probability { get; set; }
     }
 }

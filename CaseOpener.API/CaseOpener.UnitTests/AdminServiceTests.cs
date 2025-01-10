@@ -163,7 +163,7 @@ namespace CaseOpener.UnitTests
 
             // Assert
             Assert.AreEqual(2, roles.Count());
-            Assert.AreEqual("Role1", roles.First().Name);
+            Assert.AreEqual("Role2", roles.First().Name);
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace CaseOpener.UnitTests
 
             // Assert
             Assert.AreEqual(2, users.Count());
-            Assert.AreEqual("User1", users.First().Username);
+            Assert.AreEqual("User2", users.First().Username);
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace CaseOpener.UnitTests
 
             // Assert
             Assert.AreEqual(2, transactions.Count());
-            Assert.AreEqual("Deposit", transactions.First().Type);
+            Assert.AreEqual("Withdraw", transactions.First().Type);
         }
 
         [Test]

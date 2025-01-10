@@ -31,15 +31,14 @@ namespace CaseOpener.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Category's identifier");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasComment("Case's image");
-
-                    b.Property<string>("Items")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Case's items");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,9 +52,44 @@ namespace CaseOpener.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Cases", t =>
                         {
                             t.HasComment("Represents the Case");
+                        });
+                });
+
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.CaseItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Case item identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CaseId")
+                        .HasColumnType("int")
+                        .HasComment("Case's identifier");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int")
+                        .HasComment("Item's identifier");
+
+                    b.Property<double>("Probability")
+                        .HasColumnType("float")
+                        .HasComment("Item's probability chance");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("CaseItems", t =>
+                        {
+                            t.HasComment("Represents mapping between case and item");
                         });
                 });
 
@@ -96,6 +130,66 @@ namespace CaseOpener.Infrastructure.Migrations
                     b.ToTable("CaseOpenings", t =>
                         {
                             t.HasComment("Represents case opening");
+                        });
+                });
+
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Category's identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Category's name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories", t =>
+                        {
+                            t.HasComment("Represents the Category");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Weapon"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Sticker"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Graffiti"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Souvenir"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Operation"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Rare"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Event"
                         });
                 });
 
@@ -190,10 +284,6 @@ namespace CaseOpener.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasComment("Item's name");
-
-                    b.Property<double>("Probability")
-                        .HasColumnType("float")
-                        .HasComment("Item's probability chance");
 
                     b.Property<string>("Rarity")
                         .IsRequired()
@@ -334,7 +424,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 0m,
                             DateJoined = new DateTime(2024, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHmbfPIpayyyEgWCXnUEIvnU1VHZr6c3yDTPdCsb7Jr1m7U9dGxERnjN7yF8R7bbJw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC5q0ixLjaEtD9hTkKd4r1dETz78h0Wx8kO6v7kalp2jEJ/hLN33m9X543qxNJPifQ==",
                             Username = "Admin"
                         },
                         new
@@ -343,7 +433,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 1000m,
                             DateJoined = new DateTime(2024, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "johndoe@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIy8S3zuK6nL/f/cymtdVnecQOyXnCpqPNBo02aZgBEgtJMMZE2C5ya2/DtlXW4Lvw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP8EYJ4To9JlPaG0fPuKkdvaoL0Ie7Cmavuy4xqcijyxphgy0Y89ibPAIAhpXMUzdw==",
                             Username = "JohnD"
                         });
                 });
@@ -378,6 +468,36 @@ namespace CaseOpener.Infrastructure.Migrations
                             UserId = "5a646737-b3ab-4595-9770-2c744e5808c6",
                             RoleId = 1
                         });
+                });
+
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.Case", b =>
+                {
+                    b.HasOne("CaseOpener.Infrastructure.Models.Category", "Category")
+                        .WithMany("Cases")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.CaseItem", b =>
+                {
+                    b.HasOne("CaseOpener.Infrastructure.Models.Case", "Case")
+                        .WithMany("CaseItems")
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CaseOpener.Infrastructure.Models.Item", "Item")
+                        .WithMany("CaseItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.CaseOpening", b =>
@@ -477,13 +597,22 @@ namespace CaseOpener.Infrastructure.Migrations
 
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.Case", b =>
                 {
+                    b.Navigation("CaseItems");
+
                     b.Navigation("CaseOpenings");
 
                     b.Navigation("DailyRewards");
                 });
 
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.Category", b =>
+                {
+                    b.Navigation("Cases");
+                });
+
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.Item", b =>
                 {
+                    b.Navigation("CaseItems");
+
                     b.Navigation("CaseOpenings");
 
                     b.Navigation("InventoryItems");

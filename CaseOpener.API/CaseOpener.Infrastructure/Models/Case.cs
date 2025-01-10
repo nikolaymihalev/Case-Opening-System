@@ -1,6 +1,7 @@
 ﻿using CaseOpener.Infrastructure.Constants;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CaseOpener.Infrastructure.Models
 {
@@ -26,6 +27,13 @@ namespace CaseOpener.Infrastructure.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// Unique identifier for the category.
+        /// </summary>
+        [Required]
+        [Comment("Category's identifier")]
+        public int CategoryId { get; set; }
+
+        /// <summary>
         /// Image of the case.
         /// </summary>
         [Required]
@@ -40,12 +48,8 @@ namespace CaseOpener.Infrastructure.Models
         [Comment("Case's price")]
         public decimal Price { get; set; }
 
-        /// <summary>
-        /// Items in the case.
-        /// </summary>
-        [Required]
-        [Comment("Case's items")]
-        public string Items { get; set; } = string.Empty;
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
 
         /// <summary>
         /// Collection of case openings.
@@ -56,5 +60,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Collection of daily rewards.
         /// </summary>
         public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
+
+        /// <summary>
+        /// Collection of case items.
+        /// </summary>
+        public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();
     }
 }

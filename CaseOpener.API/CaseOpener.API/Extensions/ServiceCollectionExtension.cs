@@ -1,4 +1,5 @@
-﻿using CaseOpener.Core.Contracts;
+﻿using CaseOpener.API.Extensions;
+using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Services;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Data;
@@ -29,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICaseService, CaseService>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }
@@ -39,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.AddPolicy("AllowAngular", policy =>
                 {
-                    policy.WithOrigins("") //angular link
+                    policy.WithOrigins("http://localhost:4200")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
@@ -64,11 +66,13 @@ namespace Microsoft.Extensions.DependencyInjection
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "", //angular link
-                        ValidAudience = "", //angular link
+                        ValidIssuer = "http://localhost:4200",
+                        ValidAudience = "http://localhost:4200",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!))
                     };
                 });
+
+            services.Configure<JwtSettings>(config.GetSection("Jwt"));
 
             return services;
         }

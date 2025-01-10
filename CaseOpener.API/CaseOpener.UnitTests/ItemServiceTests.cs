@@ -71,7 +71,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Weapon",
                 Rarity = "Industrial",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -98,7 +97,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Skin",
                 Rarity = "Industrial",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -147,7 +145,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Weapon",
                 Rarity = "Epic",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -175,7 +172,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item 1",
                 Type = "Weapon",
                 Rarity = "Epic",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item1.png",
                 Amount = 5
             };
@@ -185,7 +181,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item 2",
                 Type = "Armor",
                 Rarity = "Rare",
-                Probability = 0.2,
                 ImageUrl = "http://example.com/item2.png",
                 Amount = 10
             };
@@ -197,8 +192,8 @@ namespace CaseOpener.UnitTests
             var result = await itemService.GetItemsAsync();
 
             Assert.AreEqual(2, result.Count());
-            Assert.AreEqual(item1.Name, result.First().Name);
-            Assert.AreEqual(item2.Name, result.Last().Name);
+            Assert.AreEqual(item1.Name, result.Last().Name);
+            Assert.AreEqual(item2.Name, result.First().Name);
         }
 
         [Test]
@@ -209,7 +204,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Weapon",
                 Rarity = "Epic",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -236,7 +230,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Weapon",
                 Rarity = "Epic",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };

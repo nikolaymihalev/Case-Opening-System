@@ -32,6 +32,14 @@ namespace CaseOpener.API.Controllers
             return Ok(cases);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> GetSearchedCases(string name)
+        {
+            var cases = await caseService.GetAllCasesAsync(name);
+
+            return Ok(cases);
+        }
+
         [HttpGet("get-case")]
         public async Task<IActionResult> GetCase(int id)
         {
@@ -75,6 +83,19 @@ namespace CaseOpener.API.Controllers
                 {
                     return BadRequest(ex.Message);
                 }
+            }
+
+            return BadRequest(new { Message = ReturnMessages.Unauthorized });
+        }
+
+        [HttpPost("add-case-item")]
+        public async Task<IActionResult> AddCase(string adminId, int caseId, int itemId, double probability)
+        {
+            if (await adminService.CheckUserIsAdmin(adminId))
+            {
+                string operation = await caseService.AddItemToCaseAsync(caseId, itemId, probability);
+
+                return Ok(new { Message = operation });
             }
 
             return BadRequest(new { Message = ReturnMessages.Unauthorized });

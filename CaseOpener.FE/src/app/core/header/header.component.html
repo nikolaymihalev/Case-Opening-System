@@ -1,0 +1,31 @@
+<div class="header-container">
+    <div class="nav-container">
+        <img src="logo.png">
+        <a routerLink="/"><i class="fa-solid fa-suitcase"></i>Cases</a>
+        <a routerLink="/"><i class="fa-solid fa-star daily"></i>Daily Free</a>
+    </div>   
+    @if(isLoggedIn){
+        <button class="bars" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button>        
+    }@else {
+        <a routerLink="/login" class="login">Sign in</a>
+    }
+</div>
+<div class="floating-menu" [class.open]="menuOpen">
+    <div class="floating-toggle">
+        <button (click)="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul>
+        <li>
+            <a routerLink="/">Inventory</a>
+        </li>
+        <li>
+            <a routerLink="/">Transactions</a>
+        </li>
+        <li>
+            <a routerLink="/">Settings</a>
+        </li>
+        <li>
+            <button (click)="logout()">Sign out</button>
+        </li>
+    </ul>
+</div>

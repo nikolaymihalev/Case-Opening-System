@@ -27,7 +27,6 @@ namespace CaseOpener.Core.Services
                 Name = model.Name,
                 Type = model.Type,
                 Rarity = model.Rarity,
-                Probability = model.Probability,
                 ImageUrl = model.ImageUrl,
                 Amount = model.Amount,
             };
@@ -81,7 +80,6 @@ namespace CaseOpener.Core.Services
             item.Name = model.Name;
             item.Type = model.Type;
             item.ImageUrl = model.ImageUrl;
-            item.Probability = model.Probability;
 
             await repository.SaveChangesAsync();
 
@@ -102,7 +100,6 @@ namespace CaseOpener.Core.Services
                 Rarity = item.Rarity,
                 Type = item.Type,
                 Amount = item.Amount,
-                Probability = item.Probability,
                 ImageUrl = item.ImageUrl
             };
         }
@@ -117,9 +114,10 @@ namespace CaseOpener.Core.Services
                         Rarity = x.Rarity,
                         Type = x.Type,
                         Amount = x.Amount,
-                        Probability = x.Probability,
                         ImageUrl = x.ImageUrl
-                    }).ToListAsync();
+                    })
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync();
         }
 
         public async Task<InventoryItemModel> GetInventoryItemByIdAsync(int id, string userId)
@@ -177,7 +175,6 @@ namespace CaseOpener.Core.Services
                 ImageUrl = x.ImageUrl,
                 Type = x.Type,
                 Rarity = x.Rarity,
-                Probability = x.Probability,
                 Amount = x.Amount,
             });
         }

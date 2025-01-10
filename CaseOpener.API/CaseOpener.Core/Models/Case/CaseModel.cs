@@ -28,6 +28,11 @@ namespace CaseOpener.Core.Models.Case
         public decimal Price { get; set; }
 
         /// <summary>
+        /// Name of the category.
+        /// </summary>
+        public string CategoryName { get; set; } = string.Empty;
+
+        /// <summary>
         /// Items in the case.
         /// </summary>
         public List<ItemModel> Items { get; set; } = new List<ItemModel>();

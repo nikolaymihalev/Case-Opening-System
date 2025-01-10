@@ -8,6 +8,7 @@ namespace CaseOpener.Core.Contracts
         Task<UserModel> RegisterAsync(RegisterModel model);
         Task<string> UpdateUserInformationAsync(UserModel model);
         Task<string> UpdateUserBalanceAsync(string userId, string operation, decimal amount);
+        Task<UserModel> GetUserByEmailAsync(string email);
         Task<UserModel> GetUserAsync(string userId);
         Task<string> GetUserRoleAsync(string email);
     }

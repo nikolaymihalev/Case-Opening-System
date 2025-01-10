@@ -1,0 +1,128 @@
+.header-container{
+    background: #161726;   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8em 2em;
+}
+
+.header-container a{
+    color: #dedede;    
+}
+
+.nav-container{
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.nav-container img{
+    width: 70px;
+}
+
+.nav-container a{
+    text-decoration: none;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.nav-container a i{
+    color: #9e9e9e;
+    margin-right: 0.3em;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.nav-container a:hover{
+  color: #fff;
+}
+
+.nav-container a:hover i{
+    color: #E84545;    
+}
+
+.nav-container a:hover .daily{
+    color: #fcd600;
+}
+
+.header-container .login{
+    padding: 1em 2em;
+    text-decoration: none;
+    border-radius: 0.3em;
+    border: 2px solid #903749;
+    background: #E84545;
+    text-transform: uppercase;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.header-container .login:hover{
+    background: #903749;
+    border-color: #E84545;
+}
+
+.bars{
+    background: none;
+    border: none;
+    color: #dedede;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.floating-menu {
+    position: fixed;
+    top: 0;
+    right: -250px; 
+    width: 250px;
+    height: 100%;
+    background-color: #252741;
+    color: white;
+    padding: 20px;
+    transition: right 0.3s ease; 
+    border-left: 1px solid #000;
+  }
+  
+  .floating-menu.open {
+    right: 0; 
+  }
+  
+  .floating-menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .floating-menu li {
+    margin: 30px 0;
+  }
+  
+  .floating-menu a {
+    color: #dedede;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+
+  .floating-menu button{
+    color: #dedede;
+    background: none;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .floating-menu a:hover,
+  .floating-menu button:hover {
+    text-decoration: underline;
+  }
+
+  .floating-toggle{
+    width: 100%;
+    text-align: end;
+  }
+
+  .floating-toggle button{
+    background: none;
+    border: none;    
+    cursor: pointer;
+  }
+
+  .floating-toggle button i{
+    color: #dedede;
+    font-size: 2rem;  
+  }
