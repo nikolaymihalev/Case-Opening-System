@@ -25,10 +25,22 @@
     background: none;
     border: none;
     cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    padding: 0.5em;
+    border-radius: 0.3em;
 }
 
 .search-btn i{
     color: #dedede;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.list-nav-menu .search-btn:hover{
+    background-color: #53559c;
+}
+
+.list-nav-menu .search-btn:hover i{
+    color: #fff;
 }
 
 .categories button{
@@ -127,4 +139,19 @@
 .case:hover .price-container h3,
 .case:hover .price-container p{
     color: #fff;
+}
+
+.search-form{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.search-form input{
+    padding: 0.5em;
+    background-color: #161726;
+    color: #E84545;
+    border: none;
+    border-radius: 0.3em;
+    border: 1px solid #000;
 }

@@ -3,7 +3,20 @@
 }@else {
     <div class="list-container">
         <div class="list-nav-menu">
-            <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            @if(isSearching){
+                <form class="search-form" #form="ngForm" (ngSubmit)="searchCases(form)">
+                    <input 
+                    type="text" 
+                    name="search" 
+                    id="search"
+                    ngModel
+                    placeholder="Search"
+                    #inputSearch>
+                    <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            }@else {
+                <button class="search-btn" (click)="toggleSearchMode()"><i class="fa-solid fa-magnifying-glass"></i></button>
+            }
             <div class="categories">
                 @for (category of categories; track $index) {
                     <button (click)="scrollToCategory(category.name.toLowerCase())">{{category.name}}</button>

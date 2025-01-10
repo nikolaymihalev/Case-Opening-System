@@ -5,16 +5,19 @@ import { ApiService } from '../api.service';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../types/category';
 import { SlicePipe } from '../../shared/pipes/slice.pipe';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-case-list',
   standalone: true,
-  imports: [LoaderComponent, RouterLink, SlicePipe],
+  imports: [LoaderComponent, RouterLink, SlicePipe, FormsModule],
   templateUrl: './case-list.component.html',
   styleUrl: './case-list.component.css'
 })
 export class CaseListComponent implements OnInit{  
   isLoading: boolean = true;
+  isSearching: boolean = false;
+
   categories: Category[] = [];
 
   weaponCases: Case[] = [];
@@ -37,18 +40,40 @@ export class CaseListComponent implements OnInit{
     }
   }
 
-  private getAllCases(){
+  toggleSearchMode(){
+    this.isSearching = !this.isSearching;
+  }
+
+  searchCases(form: NgForm){
+    if(form.invalid)
+      return;
+
+    const {search} = form.value;
+    
+    this.getAllCases(search);
+    this.toggleSearchMode();
+  }
+
+  private getAllCases(name?:string){
     this.isLoading = true;
 
-    this.apiService.getAllCases().subscribe((cases)=>{
-      console.log(cases);
-      
-      this.weaponCases = cases.filter(x=>x.categoryName=="Weapon");
-      this.operationCases = cases.filter(x=>x.categoryName=="Operation");
-      this.rareCases = cases.filter(x=>x.categoryName=="Rare");
-      this.graffitiCases = cases.filter(x=>x.categoryName=="Graffiti");
-      this.stickerCases = cases.filter(x=>x.categoryName=="Sticker");
-    });
+    if(name){
+      this.apiService.searchCases(name).subscribe((cases)=>{
+        this.weaponCases = cases.filter(x=>x.categoryName=="Weapon");
+        this.operationCases = cases.filter(x=>x.categoryName=="Operation");
+        this.rareCases = cases.filter(x=>x.categoryName=="Rare");
+        this.graffitiCases = cases.filter(x=>x.categoryName=="Graffiti");
+        this.stickerCases = cases.filter(x=>x.categoryName=="Sticker");
+      });
+    }else{
+      this.apiService.getAllCases().subscribe((cases)=>{
+        this.weaponCases = cases.filter(x=>x.categoryName=="Weapon");
+        this.operationCases = cases.filter(x=>x.categoryName=="Operation");
+        this.rareCases = cases.filter(x=>x.categoryName=="Rare");
+        this.graffitiCases = cases.filter(x=>x.categoryName=="Graffiti");
+        this.stickerCases = cases.filter(x=>x.categoryName=="Sticker");
+      });
+    }
     this.isLoading = false;
   }
 
