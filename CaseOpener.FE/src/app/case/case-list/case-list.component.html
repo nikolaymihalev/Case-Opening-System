@@ -1,0 +1,89 @@
+@if(isLoading){
+    <app-loader/>
+}@else {
+    <div class="list-container">
+        <div class="list-nav-menu">
+            <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="categories">
+                @for (category of categories; track $index) {
+                    <button (click)="scrollToCategory(category.name.toLowerCase())">{{category.name}}</button>
+                }
+            </div>
+        </div>
+        <div id="weapon-cases" class="cases-container">       
+            <h4><i class="fa-solid fa-gun"></i> Weapon Cases</h4>  
+            <div class="section-cases">
+                @for (case of weaponCases; track $index) {
+                    <a class="case" routerLink="/home">
+                        <img src={{case.imageUrl}}/>
+                        <h5>{{case.name | slice: 20}}</h5>
+                        <div class="price-container">
+                            <h3>{{case.price}}</h3>
+                            <p>$</p>
+                        </div>
+                    </a>
+                }
+            </div> 
+        </div>
+        <div id="operation-cases" class="cases-container">
+            <h4><i class="fa-solid fa-jet-fighter-up"></i> Operation Cases</h4>
+            <div class="section-cases">
+                @for (case of operationCases; track $index) {
+                    <a class="case" routerLink="/home">
+                        <img src={{case.imageUrl}}/>
+                        <h5>{{case.name | slice: 20}}</h5>
+                        <div class="price-container">
+                            <h3>{{case.price}}</h3>
+                            <p>$</p>
+                        </div>
+                    </a>
+                }
+            </div> 
+        </div>
+        <div id="rare-cases" class="cases-container">
+            <h4><i class="fa-regular fa-gem"></i> Rare Cases</h4>
+            <div class="section-cases">
+                @for (case of rareCases; track $index) {
+                    <a class="case" routerLink="/home">
+                        <img src={{case.imageUrl}}/>
+                        <h5>{{case.name | slice: 20}}</h5>
+                        <div class="price-container">
+                            <h3>{{case.price}}</h3>
+                            <p>$</p>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+        <div id="sticker-cases" class="cases-container">
+            <h4><i class="fa-regular fa-note-sticky"></i> Sticker Capsules</h4>
+            <div class="section-cases">
+                @for (case of stickerCases; track $index) {
+                    <a class="case" routerLink="/home">
+                        <img src={{case.imageUrl}}/>
+                        <h5>{{case.name | slice: 20}}</h5>
+                        <div class="price-container">
+                            <h3>{{case.price}}</h3>
+                            <p>$</p>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+        <div id="graffiti-cases" class="cases-container">
+            <h4><i class="fa-solid fa-spray-can"></i> Graffiti Boxes</h4>
+            <div class="section-cases">
+                @for (case of graffitiCases; track $index) {
+                    <a class="case" routerLink="/home">
+                        <img src={{case.imageUrl}}/>
+                        <h5>{{case.name | slice: 20}}</h5>
+                        <div class="price-container">
+                            <h3>{{case.price}}</h3>
+                            <p>$</p>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}

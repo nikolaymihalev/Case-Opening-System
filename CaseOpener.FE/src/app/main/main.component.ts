@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { LoaderComponent } from '../shared/loader/loader.component';
+import { CaseListComponent } from '../case/case-list/case-list.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [LoaderComponent],
+  imports: [CaseListComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
 export class MainComponent {
-
 }

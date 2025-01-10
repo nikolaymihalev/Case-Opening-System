@@ -107,13 +107,14 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyEdited, "case");
         }
 
-        public async Task<IEnumerable<CaseFormModel>> GetAllCasesAsync(string? name = null)
+        public async Task<IEnumerable<CasePageModel>> GetAllCasesAsync(string? name = null)
         {
             List<Case> cases = new List<Case>();
 
             if (name != null) 
             {
                 cases = await repository.AllReadonly<Case>()
+                    .Include(x=>x.Category)
                     .Where(x=>x.Name.ToLower().Contains(name.ToLower()))
                     .OrderByDescending(x => x.Id)
                     .ThenBy(x => x.CategoryId)
@@ -122,18 +123,19 @@ namespace CaseOpener.Core.Services
             else
             {
                 cases = await repository.AllReadonly<Case>()
+                    .Include(x => x.Category)
                     .OrderByDescending(x => x.Id)
                     .ThenBy(x => x.CategoryId)
                     .ToListAsync();
             }
 
-            return cases.Select(x => new CaseFormModel()
+            return cases.Select(x => new CasePageModel
             {
                 Id = x.Id,
                 Name = x.Name,
                 ImageUrl = x.ImageUrl,
                 Price = x.Price,
-                CategoryId = x.CategoryId,
+                CategoryName = x.Category.Name
             });
         }
 

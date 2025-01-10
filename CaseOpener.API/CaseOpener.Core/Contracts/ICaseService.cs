@@ -5,7 +5,7 @@ namespace CaseOpener.Core.Contracts
 {
     public interface ICaseService
     {
-        Task<IEnumerable<CaseFormModel>> GetAllCasesAsync(string? name = null);
+        Task<IEnumerable<CasePageModel>> GetAllCasesAsync(string? name = null);
         Task<CaseModel> GetCaseByIdAsync(int id);
         Task SubscribeUserToDailyRewardAsync(string userId);
         Task<string> AddCaseAsync(CaseFormModel model);
