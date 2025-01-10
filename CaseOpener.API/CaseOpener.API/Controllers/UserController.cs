@@ -163,7 +163,7 @@ namespace CaseOpener.API.Controllers
                 {
                     UserId = user.Id,
                     Type = TransactionType.Deposit.ToString(),
-                    Amount = 1000m,
+                    Amount = 500m,
                     Date = DateTime.UtcNow,
                     Status = TransactionStatus.Completed.ToString()
                 };

@@ -7,6 +7,6 @@
         Gloves,
         Sticker,
         Case,
-        Key
+        Graffiti
     }
 }
