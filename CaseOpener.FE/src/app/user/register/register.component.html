@@ -1,7 +1,7 @@
 <div class="register-container">
     <div class="form-container">
         <h2>Register new account</h2>
-        <form class="register-form" #form="ngForm" appMatchPassword>
+        <form class="register-form" #form="ngForm" appMatchPassword (ngSubmit)="register(form)">
             <div class="field-container">
                 <label for="username">Username</label>
                 <input           

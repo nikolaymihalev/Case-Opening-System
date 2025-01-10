@@ -35,8 +35,6 @@ export class LoginComponent implements OnInit{
     this.userService.login(email, password).subscribe({
       next:()=>{
         this.router.navigate(['/home']); // CHANGE
-      },
-      error: ()=>{  
       }
     });
   }
