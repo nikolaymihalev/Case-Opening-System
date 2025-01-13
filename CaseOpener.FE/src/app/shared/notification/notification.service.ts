@@ -9,6 +9,6 @@ export class NotificationService {
   notification$ = this.notificationSource.asObservable();
 
   showNotification(message: string, type: string = 'success') {
-    this.notificationSource.next({ message, type });
+    this.notificationSource.next({ message, type });        
   }
 }

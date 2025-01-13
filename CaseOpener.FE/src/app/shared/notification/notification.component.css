@@ -1,13 +1,8 @@
 .notification {
-    position: absolute;
     display: flex;
     align-items: center;
     gap: 1em;
-    top: 0;
-    right: 0;
     width: 400px;
-    margin-top: 13em;
-    margin-right: 1em;
     color: #fff;
     padding: 0.3em 0.5em;
     border-radius: 0.3em;
@@ -15,7 +10,7 @@
 }
     
 .notification i{
-font-size: 2rem;
+    font-size: 2rem;
 }
 
 .error-not{

@@ -91,3 +91,6 @@
         <a routerLink="/login">Already have an account?</a>
     </div>
 </div>
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
+}

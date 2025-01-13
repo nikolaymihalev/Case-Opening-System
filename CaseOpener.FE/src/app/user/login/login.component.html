@@ -54,3 +54,6 @@
         <a routerLink="/register">Create new account!</a>
     </div>
 </div>
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
+}

@@ -22,6 +22,6 @@ export class NotificationComponent implements OnInit{
     this.isVisible = true;
     setTimeout(()=>{
       this.isVisible = false;
-    }, 2000);
+    }, 3000);
   }
 }
