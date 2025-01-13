@@ -4,9 +4,6 @@ using CaseOpener.Core.Services;
 using CaseOpener.Infrastructure.Common;
 using CaseOpener.Infrastructure.Data;
 using CaseOpener.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace CaseOpener.UnitTests
 {

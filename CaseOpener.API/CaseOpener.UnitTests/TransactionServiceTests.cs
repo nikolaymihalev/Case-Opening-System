@@ -51,7 +51,7 @@ namespace CaseOpener.UnitTests
             var model = new TransactionModel
             {
                 UserId = "user123",
-                Type = "InvalidType", // Invalid enum value
+                Type = "InvalidType", 
                 Amount = 100.50m,
                 Status = "Completed"
             };
@@ -84,7 +84,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task DeleteTransactionAsync_NonExistingTransaction_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.DeleteTransactionAsync(999)); // Non-existing transaction ID
+            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.DeleteTransactionAsync(999)); 
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task GetTransactionByIdAsync_NonExistingTransaction_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.GetTransactionByIdAsync(999)); // Non-existing transaction ID
+            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.GetTransactionByIdAsync(999)); 
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task UpdateTransactionStatusAsync_NonExistingTransaction_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.UpdateTransactionStatusAsync(999, "Completed")); // Non-existing transaction ID
+            Assert.ThrowsAsync<ArgumentException>(async () => await transactionService.UpdateTransactionStatusAsync(999, "Completed"));
         }
     }
 

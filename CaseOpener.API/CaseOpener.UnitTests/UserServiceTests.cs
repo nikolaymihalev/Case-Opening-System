@@ -207,7 +207,7 @@ namespace CaseOpener.UnitTests
             var model = new RegisterModel
             {
                 Username = "newuser",
-                Email = "test@example.com", // Already exists
+                Email = "test@example.com", 
                 Password = "password123"
             };
 

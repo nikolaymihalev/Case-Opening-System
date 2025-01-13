@@ -8,7 +8,7 @@ namespace CaseOpener.UnitTests
         public static ApplicationDbContext Create()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString()) // Уникална база данни за всеки тест
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()) 
                 .Options;
 
             return new ApplicationDbContext(options);
