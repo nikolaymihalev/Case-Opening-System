@@ -1,8 +1,13 @@
 .notification {
+    position: absolute;
     display: flex;
     align-items: center;
     gap: 1em;
+    top: 0;
+    right: 0;
     width: 400px;
+    margin-top: 13em;
+    margin-right: 1em;
     color: #fff;
     padding: 0.3em 0.5em;
     border-radius: 0.3em;
@@ -13,22 +18,22 @@
     font-size: 2rem;
 }
 
-.error-not{
-    color: #c20000;
-    background-color: #ffa696;
+.notification{
+    color: #2B2E4A;
 }
 
-.success-not{
-    color: #0f6600;
-    background-color: #91ff91;
+.error{
+    background-color: #ffa5a5;
 }
 
-.info-not{
-    color: #004b73;
-    background-color: #82d3ff;
+.success{
+    background-color: #bcf8bc;
 }
 
-.warning-not{
-    color: #b87d00;
-    background-color: #ffdb8c;
+.info{
+    background-color: #c5deff;
+}
+
+.warning{
+    background-color: #ffefb6;
 }
