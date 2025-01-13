@@ -38,10 +38,8 @@ namespace CaseOpener.UnitTests
                 Name = "Test Case",
                 ImageUrl = "http://example.com/image.png",
                 Price = 10.0m,
-              //  Items = new int[] { 1, 2 }
             };
 
-            // Add some items to the in-memory database
             context.Items.Add(new Item { Id = 1, Name = "Item 1" });
             context.Items.Add(new Item { Id = 2, Name = "Item 2" });
             await context.SaveChangesAsync();
@@ -97,7 +95,6 @@ namespace CaseOpener.UnitTests
                 Name = "Edited Test Case",
                 ImageUrl = "http://example.com/edited_image.png",
                 Price = 15.0m,
-               // Items = new int[] { 1 }
             };
 
             var result = await caseService.EditCaseAsync(model);

@@ -37,7 +37,6 @@ namespace CaseOpener.UnitTests
                 Name = "Test Item",
                 Type = "Skin",
                 Rarity = "Industrial",
-                Probability = 0.1,
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -54,8 +53,7 @@ namespace CaseOpener.UnitTests
             {
                 Name = "Test Item",
                 Type = "Weapon",
-                Rarity = "InvalidRarity", // Invalid enum value
-                Probability = 0.1,
+                Rarity = "InvalidRarity",
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -86,7 +84,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task DeleteItemAsync_NonExistingItem_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.DeleteItemAsync(999)); // Non-existing item ID
+            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.DeleteItemAsync(999)); 
         }
 
         [Test]
@@ -110,7 +108,6 @@ namespace CaseOpener.UnitTests
                 Name = "Updated Item",
                 Type = "Gloves",
                 Rarity = "Covert",
-                Probability = 0.2,
                 ImageUrl = "http://example.com/updated-item.png",
                 Amount = 10
             };
@@ -125,11 +122,10 @@ namespace CaseOpener.UnitTests
         {
             var model = new ItemFormModel
             {
-                Id = 999, // Non-existing item ID
+                Id = 999,
                 Name = "Updated Item",
                 Type = "Armor",
                 Rarity = "Rare",
-                Probability = 0.2,
                 ImageUrl = "http://example.com/updated-item.png",
                 Amount = 10
             };
@@ -161,7 +157,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task GetItemByIdAsync_NonExistingItem_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.GetItemByIdAsync(999)); // Non-existing item ID
+            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.GetItemByIdAsync(999));
         }
 
         [Test]
@@ -254,7 +250,7 @@ namespace CaseOpener.UnitTests
         [Test]
         public async Task RemoveItemFromInventoryAsync_NonExistingInventoryItem_ThrowsArgumentException()
         {
-            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.RemoveItemFromInventoryAsync(999, "user123")); // Non-existing inventory item
+            Assert.ThrowsAsync<ArgumentException>(async () => await itemService.RemoveItemFromInventoryAsync(999, "user123")); 
         }
     }
 
