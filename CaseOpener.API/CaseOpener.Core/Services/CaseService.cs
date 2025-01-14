@@ -141,7 +141,7 @@ namespace CaseOpener.Core.Services
 
         public async Task<CaseModel> GetCaseByIdAsync(int id)
         {
-            var caseM = await repository.GetByIdAsync<Case>(id);
+            var caseE = await repository.GetByIdAsync<Case>(id);
             var items = await repository.AllReadonly<CaseItem>()
                 .Include(x=>x.Item)
                 .Where(x => x.CaseId == id)
@@ -156,22 +156,27 @@ namespace CaseOpener.Core.Services
                 })
                 .ToListAsync();
 
-            if (caseM is null)
+            if (caseE is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
 
-            var category = await repository.GetByIdAsync<Category>(caseM.CategoryId);
+            var category = await repository.GetByIdAsync<Category>(caseE.CategoryId);
 
             if (category is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Category"));
 
+            var caseM = new CasePageModel()
+            {
+                Id = caseE.Id,
+                Name = caseE.Name,
+                ImageUrl = caseE.ImageUrl,
+                Price = caseE.Price,
+                CategoryName = category.Name
+            };
+
             return new CaseModel()
             {
-                Id = caseM.Id,
-                Name = caseM.Name,
-                ImageUrl = caseM.ImageUrl,
-                Price = caseM.Price,
+                Case = caseM,
                 Items = items,
-                CategoryName = category.Name
             };
         }
 

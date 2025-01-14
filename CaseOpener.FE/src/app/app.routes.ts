@@ -21,4 +21,14 @@ export const routes: Routes = [
         import('./inventory/inventory.component').then(
         (c) => c.InventoryComponent), canActivate: [AuthGuard],
     },
+    {
+        path: 'case',
+        children: [
+          {
+            path: ':caseId',
+            loadComponent: () =>
+                import('./case/case-details/case-details.component').then((c) => c.CaseDetailsComponent)
+          },
+        ],
+      },
 ];

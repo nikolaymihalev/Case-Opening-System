@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Case } from './types/case';
+import { Case, CaseDetails } from './types/case';
 import { Category } from './types/category';
 
 @Injectable({
@@ -20,5 +20,9 @@ export class ApiService {
 
   getAllCategories(){
     return this.http.get<Category[]>('/api/category/all');
+  }
+
+  getCase(id: number){
+    return this.http.get<CaseDetails>('/api/case/get-case', {params: {id: id}});
   }
 }
