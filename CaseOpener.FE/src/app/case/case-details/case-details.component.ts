@@ -3,16 +3,18 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { ApiService } from '../../api.service';
 import { CaseDetails } from '../../types/case';
+import { LoaderComponent } from '../../shared/loader/loader.component';
 
 @Component({
   selector: 'app-case-details',
   standalone: true,
-  imports: [],
+  imports: [LoaderComponent],
   templateUrl: './case-details.component.html',
   styleUrl: './case-details.component.css'
 })
 export class CaseDetailsComponent implements OnInit {
   caseDetails: CaseDetails | undefined;
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute, 
@@ -27,8 +29,10 @@ export class CaseDetailsComponent implements OnInit {
 
 
   private getCase(id: number){
+    this.isLoading = true;
     this.apiService.getCase(id).subscribe((data)=>{   
       this.caseDetails = data;
+      this.isLoading = false;
     });
   }
 }

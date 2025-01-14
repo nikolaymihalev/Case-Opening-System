@@ -1,4 +1,8 @@
-<p>{{caseDetails?.case?.name}}</p>
-@for (item of caseDetails?.items; track $index) {
-    <h3>{{item.name}}</h3>
+@if (isLoading) {
+    <app-loader/>
+}@else {
+    <p>{{caseDetails?.case?.name}}</p>
+    @for (item of caseDetails?.items; track $index) {
+        <h3>{{item.name}}</h3>
+    }
 }
