@@ -154,5 +154,88 @@ namespace CaseOpener.UnitTests
             var exception = Assert.ThrowsAsync<ArgumentException>(async () => await caseService.OpenCaseAsync(1, "invalidUser"));
             Assert.AreEqual(string.Format(ReturnMessages.DoesntExist, "Case"), exception.Message);
         }
+
+        [Test]
+        public async Task GetUserOpenedCasesAsync_UserHasOpenedCases_ReturnsListOfCaseOpeningModels()
+        {
+            // Arrange
+            var userId = "test-user-id";
+
+            var category = new Category { Id = 1, Name = "Weapons" };
+            var @case = new Case { Id = 1, Name = "Case1", Price = 10.0m, ImageUrl = "image1.jpg", CategoryId = category.Id };
+            var item = new Item { Id = 1, Name = "Item1", ImageUrl = "item1.jpg", Amount = 1, Rarity = "Rare", Type = "Weapon" };
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = item.Id, DateOpened = DateTime.UtcNow };
+
+            await repository.AddAsync(category);
+            await repository.AddAsync(@case);
+            await repository.AddAsync(item);
+            await repository.AddAsync(caseOpening);
+            await repository.SaveChangesAsync();
+
+            // Act
+            var result = await caseService.GetUserOpenedCasesAsync(userId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count());
+            var opening = result.First();
+            Assert.AreEqual(caseOpening.Id, opening.Id);
+            Assert.AreEqual(userId, opening.UserId);
+            Assert.AreEqual(@case.Id, opening.Case.Id);
+            Assert.AreEqual(item.Id, opening.Item.Id);
+        }
+
+        [Test]
+        public async Task GetUserOpenedCasesAsync_UserHasNoOpenedCases_ReturnsEmptyList()
+        {
+            // Arrange
+            var userId = "test-user-id";
+
+            // Act
+            var result = await caseService.GetUserOpenedCasesAsync(userId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [Test]
+        public void GetUserOpenedCasesAsync_InvalidCase_ThrowsArgumentException()
+        {
+            // Arrange
+            var userId = "test-user-id";
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = 999, ItemId = 1, DateOpened = DateTime.UtcNow };
+
+            repository.AddAsync(caseOpening).Wait();
+            repository.SaveChangesAsync().Wait();
+
+            // Act & Assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () =>
+                await caseService.GetUserOpenedCasesAsync(userId));
+
+            Assert.AreEqual(string.Format(ReturnMessages.DoesntExist, "Case"), exception.Message);
+        }
+
+        [Test]
+        public void GetUserOpenedCasesAsync_InvalidItem_ThrowsArgumentException()
+        {
+            // Arrange
+            var userId = "test-user-id";
+
+            var category = new Category { Id = 1, Name = "Weapons" };
+            var @case = new Case { Id = 1, Name = "Case1", Price = 10.0m, ImageUrl = "image1.jpg", CategoryId = category.Id };
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = 999, DateOpened = DateTime.UtcNow };
+
+            repository.AddAsync(category).Wait();
+            repository.AddAsync(@case).Wait();
+            repository.AddAsync(caseOpening).Wait();
+            repository.SaveChangesAsync().Wait();
+
+            // Act & Assert
+            var exception = Assert.ThrowsAsync<ArgumentException>(async () =>
+                await caseService.GetUserOpenedCasesAsync(userId));
+
+            Assert.AreEqual(string.Format(ReturnMessages.DoesntExist, "Item"), exception.Message);
+        }
     }
 }

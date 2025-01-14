@@ -174,5 +174,20 @@ namespace CaseOpener.API.Controllers
 
             return Ok(new { Message = result.ToString() });
         }
+
+        [HttpGet("user-opened-cases")]
+        public async Task<IActionResult> GetUserOpenedCases(string userId)
+        {
+            try
+            {
+                var cases = await caseService.GetUserOpenedCasesAsync(userId);
+
+                return Ok(cases);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

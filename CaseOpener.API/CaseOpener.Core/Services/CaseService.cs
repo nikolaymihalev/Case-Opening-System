@@ -175,6 +175,65 @@ namespace CaseOpener.Core.Services
             };
         }
 
+        public async Task<IEnumerable<CaseOpeningModel>> GetUserOpenedCasesAsync(string userId)
+        {
+            var caseOpenings = await repository.AllReadonly<CaseOpening>()
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+
+            var list = new List<CaseOpeningModel>();
+
+            foreach(var item in caseOpenings)
+            {
+                var caseM = await repository.GetByIdAsync<Case>(item.CaseId);
+
+                if(caseM == null)
+                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+                var categoryM = await repository.GetByIdAsync<Category>(caseM.CategoryId);
+
+                if (categoryM == null)
+                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Category"));
+
+                var listCase = new CasePageModel()
+                {
+                    Id = caseM.Id,
+                    Name = caseM.Name,
+                    ImageUrl = caseM.ImageUrl,
+                    Price = caseM.Price,
+                    CategoryName = categoryM.Name
+                };
+
+                var itemM = await repository.GetByIdAsync<Item>(item.ItemId);
+
+                if (itemM == null)
+                    throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
+
+                var listItem = new ItemModel()
+                {
+                    Id = itemM.Id,
+                    Name = itemM.Name,
+                    ImageUrl = itemM.ImageUrl,
+                    Amount = itemM.Amount,
+                    Rarity = itemM.Rarity,
+                    Type = itemM.Type,
+                };
+
+                var listCaseOpening = new CaseOpeningModel()
+                {
+                    Id = item.Id,
+                    UserId = item.UserId,
+                    Case = listCase,
+                    Item = listItem,
+                    DateOpened = item.DateOpened
+                };
+
+                list.Add(listCaseOpening);
+            }
+
+            return list;
+        }
+
         public async Task<ItemModel> OpenCaseAsync(int caseId, string userId)
         {
             var caseM = await repository.GetByIdAsync<Case>(caseId);
