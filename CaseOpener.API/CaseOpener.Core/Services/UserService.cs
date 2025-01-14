@@ -138,15 +138,14 @@ namespace CaseOpener.Core.Services
             }
         }
 
-        public async Task<string> UpdateUserInformationAsync(UserModel model)
+        public async Task<string> UpdateUserInformationAsync(string userId, string username)
         {
-            var user = await repository.All<User>()
-                    .FirstOrDefaultAsync(x => x.Email == model.Email);
+            var user = await repository.GetByIdAsync<User>(userId);
 
-            if (user == null || user.Email != model.Email)
+            if (user == null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
 
-            user.Username = model.Username;
+            user.Username = username;
 
             await repository.SaveChangesAsync();
 

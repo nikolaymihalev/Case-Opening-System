@@ -1,4 +1,5 @@
-.profile-container{
+.profile-container,
+.edit-user-form{
     margin: 5em auto;
     width: 500px;
     background: #161726;
@@ -9,16 +10,19 @@
     text-align: center;
 }
 
+.edit-user-form h2,
 .profile-container h2{
     font-size: 2rem;
 }
 
-.user-info-container{
+.user-info-container,
+.edit-field{
     margin: 2em 0;
     display: flex;
     text-align: start;
     gap: 2em; 
     font-size: 1.3rem;   
+    align-items: center;
 }
 
 .user-labels,
@@ -34,4 +38,48 @@
 
 .user-info{
     color: #dedede;
+}
+
+.profile-btn{
+    padding: 1em 2em;
+    border-radius: 0.3em;
+    color: #dedede;
+    cursor: pointer;
+    font-size: 1rem;
+    border: 2px solid #903749;
+    background: #E84545;
+    text-transform: uppercase;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.profile-btn:hover{
+    background: #903749;
+    border-color: #E84545;
+}
+
+.edit-field label{
+    color: #E84545;
+}
+
+.edit-field input{
+    padding: 0.3em 0.5em;
+    border-radius: 0.3em;
+    border: none;
+    font-size: 1rem;
+    background-color: #53354A;
+    color: #E84545;
+}
+
+.btns-container{
+    margin-top: 2em;
+}
+
+.edit-field{
+    margin-bottom: 1em;
+}
+
+.btns-container {
+    display: flex;
+    gap: 2em;
+    justify-content: center;
 }

@@ -58,12 +58,20 @@ export class UserService {
   
   register(username: string, email: string, password: string, confirmPassword: string){
     return this.http
-    .post('/api/user/register', {username, email, password, confirmPassword}, { withCredentials: true })
-    .pipe(
-      catchError((err: HttpErrorResponse)=>{          
+      .post('/api/user/register', {username, email, password, confirmPassword}, { withCredentials: true })
+      .pipe(
+        catchError((err: HttpErrorResponse)=>{          
+          return throwError(() => new Error(err.error));
+        })
+      );
+  }
+
+  updateInfo(userId: string, username: string){
+    return this.http
+      .put('/api/user/update-info', null, {params:{userId, username}, withCredentials: true })
+      .pipe( catchError((err: HttpErrorResponse)=>{          
         return throwError(() => new Error(err.error));
-      })
-    );
+      }));
   }
   
   logout(){
