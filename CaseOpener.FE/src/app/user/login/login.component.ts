@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit{
         this.hasNotification = true;
 
         setTimeout(()=>{
-          this.router.navigate(['/home']); // CHANGE
+          this.router.navigate(['/home']);
         }, 3000);
 
       },
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit{
 
   private checkLoggedIn(){
     if(this.userService.isLoggedIn())
-      this.router.navigate(['/register']); // CHANGE
+      this.router.navigate(['/settings']);
   }
 
   private subscribeToNotification(): void{

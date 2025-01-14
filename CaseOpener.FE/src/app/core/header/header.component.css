@@ -126,3 +126,18 @@
     color: #dedede;
     font-size: 2rem;  
   }
+
+.logged-in-btns{
+  display: flex;
+  gap: 2.5em;
+  align-items: center;
+}
+
+.user-balance-container{
+  color: #dedede;
+  padding: 0.3em 0.5em;
+  border: 2px solid #07b307;
+  border-radius: 0.2em;
+  display: flex;
+  gap: 0.5em;
+}

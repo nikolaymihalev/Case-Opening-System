@@ -1,1 +1,21 @@
-<p>profile works!</p>
+@if(isLoading){
+    <app-loader/>
+}@else {
+    <div class="profile-container">
+        <h2>Hello, {{user?.username}}</h2>
+        <div class="user-info-container">
+            <div class="user-labels">
+                <h4>Email:</h4>
+                <h4>Username:</h4>
+                <h4>Balance:</h4>
+                <h4>Joined:</h4>
+            </div>
+            <div class="user-info">
+                <h4>{{user?.email}}</h4>
+                <h4>{{user?.username}}</h4>
+                <h4>{{user?.balance?.toFixed(2)}} $</h4>
+                <h4>{{joinedDate}}</h4>
+            </div>
+        </div>
+    </div>
+}

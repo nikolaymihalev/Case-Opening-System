@@ -16,6 +16,12 @@ export class HeaderComponent {
     return this.userService.isLoggedIn();
   }
 
+  get balance(): number{
+    let balanceM = 0;
+    this.userService.user$.subscribe((user)=>balanceM = user?.balance?user?.balance:0)
+    return balanceM;
+  }
+
   constructor(private userService: UserService, private router: Router){}
 
   logout(): void{

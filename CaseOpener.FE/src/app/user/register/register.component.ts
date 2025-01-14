@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit{
 
   private checkLoggedIn(){
     if(this.userService.isLoggedIn())
-      this.router.navigate(['/home']); // CHANGE
+      this.router.navigate(['/settings']);
   }
 
   private subscribeToNotification(): void{

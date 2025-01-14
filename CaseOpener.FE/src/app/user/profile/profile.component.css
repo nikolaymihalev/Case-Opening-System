@@ -1,0 +1,37 @@
+.profile-container{
+    margin: 5em auto;
+    width: 500px;
+    background: #161726;
+    padding: 2em 3em;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #fff;
+    text-align: center;
+}
+
+.profile-container h2{
+    font-size: 2rem;
+}
+
+.user-info-container{
+    margin: 2em 0;
+    display: flex;
+    text-align: start;
+    gap: 2em; 
+    font-size: 1.3rem;   
+}
+
+.user-labels,
+.user-info{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.user-labels{
+    color: #E84545;
+}
+
+.user-info{
+    color: #dedede;
+}

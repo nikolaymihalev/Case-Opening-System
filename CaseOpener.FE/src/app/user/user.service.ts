@@ -7,13 +7,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  
+  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);  
+
   public user$: Observable<User | null> = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.setUser();
+  }
 
-  private setUser(): void {
+  private setUser(): void {    
     const token = localStorage.getItem('authToken');
 
     if (token) {

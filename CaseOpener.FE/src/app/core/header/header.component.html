@@ -5,7 +5,12 @@
         <a routerLink="/"><i class="fa-solid fa-star daily"></i>Daily Free</a>
     </div>   
     @if(isLoggedIn){
-        <button class="bars" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button>        
+        <div class="logged-in-btns">
+            <div class="user-balance-container">
+                <h4>{{balance.toFixed(2)}} $</h4>
+            </div>
+            <button class="bars" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button>        
+        </div>
     }@else {
         <a routerLink="/login" class="login">Sign in</a>
     }
