@@ -1,7 +1,7 @@
 <div class="header-container">
     <div class="nav-container">
         <img src="logo.png">
-        <a routerLink="/"><i class="fa-solid fa-suitcase"></i>Cases</a>
+        <a routerLink="/home"><i class="fa-solid fa-suitcase"></i>Cases</a>
         <a routerLink="/"><i class="fa-solid fa-star daily"></i>Daily Free</a>
     </div>   
     @if(isLoggedIn){
@@ -16,13 +16,13 @@
     </div>
     <ul>
         <li>
-            <a routerLink="/">Inventory</a>
+            <a routerLink="/" (click)="toggleMenu()">Inventory</a>
         </li>
         <li>
-            <a routerLink="/">Transactions</a>
+            <a routerLink="/history" (click)="toggleMenu()">History</a>
         </li>
         <li>
-            <a routerLink="/">Settings</a>
+            <a routerLink="/settings" (click)="toggleMenu()">Settings</a>
         </li>
         <li>
             <button (click)="logout()">Sign out</button>
