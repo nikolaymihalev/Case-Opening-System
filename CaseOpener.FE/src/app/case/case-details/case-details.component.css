@@ -2,7 +2,6 @@
     text-align: center;
 }
 
-
 .details{
     margin: 2em 0;
     display: flex;
@@ -81,15 +80,17 @@
 
 .item{
     flex: 0 0 200px;
-    background-color: red;
     border-radius: 0.3em;
-    padding: 0.3em 0;
     transition: transform 0.5s ease;
     cursor: pointer;
+    border-top: 5px solid #000;
 }
 
 .item h3{
     color: #dedede;
+    display: block;
+    padding: 0 0.5em;
+    font-size: 1.2rem;
 }
 
 .item img{

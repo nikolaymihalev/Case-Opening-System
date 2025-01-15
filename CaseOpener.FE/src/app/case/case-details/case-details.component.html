@@ -12,7 +12,18 @@
             <h3><i class="fa-solid fa-suitcase"></i> Case Contains</h3>
             <div class="items-wrapper">
                 @for (item of caseDetails?.items; track $index) {
-                    <div class="item">
+                    <div class="item" [style]="{
+                        borderColor: 
+                            item.rarity === 'MilSpec' ? 'darkblue':
+                            item.rarity === 'Restricted' ? 'purple':
+                            item.rarity === 'Classified' ? 'plum' :
+                            item.rarity === 'Covert'? 'red':
+                            'gold',
+                        backgroundColor: item.rarity === 'MilSpec' ? '#000024':
+                            item.rarity === 'Restricted' ? '#13002b':
+                            item.rarity === 'Classified' ? '#2b0017' :
+                            item.rarity === 'Covert'? '#2b0000':
+                            '#2b2000'   }">
                         <h3>{{item.name}}</h3>
                         <img src={{item.imageUrl}}>
                     </div>

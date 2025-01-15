@@ -24,8 +24,15 @@ export class UserService {
       this.http.get<User>('/api/user/get-user', { headers }).pipe(
         tap((user)=>{
           this.userSubject.next(user);  
+        }),
+        catchError((err: HttpErrorResponse)=>{   
+          this.logout();
+          return throwError(() => new Error(err.error));
         })
       ).subscribe();
+    }
+    else{
+      this.logout();
     }
   }
 
@@ -50,7 +57,7 @@ export class UserService {
             this.setUser();   
           }
         },
-        catchError((err: HttpErrorResponse)=>{          
+        catchError((err: HttpErrorResponse)=>{   
           return throwError(() => new Error(err.error));
         }))
       )
