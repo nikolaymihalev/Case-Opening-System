@@ -12,3 +12,11 @@ export interface CaseDetails{
     case: Case,
     items: Item[]
 }
+
+export interface CaseUser{
+    id: number,
+    caseId: number,
+    userId: string, 
+    quantity: number,
+    case: Case
+}

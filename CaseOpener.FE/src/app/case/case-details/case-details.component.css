@@ -11,7 +11,7 @@
 }
 
 .details h2{
-    color: #dedede;
+    color: #fff;
     font-size: 2.5rem;
 }
 
@@ -20,7 +20,7 @@
     height: 400px;
 }
 
-.details a{
+.details button{
     display: block;
     padding: 0.3em 0.5em;
     border-radius: 0.2em;
@@ -28,12 +28,11 @@
     background-color: #3a6d3a;
     color: #dedede;
     cursor: pointer;
-    text-decoration: none;
     font-size: 1.3rem;
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.details a:hover{
+.details button:hover{
     background-color: #07b307;
     color: #fff;
 }
@@ -100,4 +99,32 @@
 
 .item:hover{
     transform: scale(1.1);
+}
+
+.buy-container{
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.buy-container .quantity-container{
+    display: flex;
+    gap: 1em;
+}
+
+.quantity-container button{
+    padding: 1em;
+    border: none;
+    border-radius: 0.3em;
+    cursor: pointer;
+    border: 2px solid #903749;
+    background-color: #161726;
+    color: #E84545;
+    transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+    font-size: 0.9rem;
+}
+
+.quantity-container button:hover{
+    transform: scale(1.1);
+    background-color: #903749;
 }

@@ -45,7 +45,7 @@ export class UserService {
     const token = localStorage.getItem('authToken');
     return !!this.user$ && !!token;
   }
-
+  
   login(email: string, password: string){
     return this.http
       .post<{token:string}>('/api/user/login', { email, password }, { withCredentials: true })
@@ -81,6 +81,14 @@ export class UserService {
       }));
   }
   
+  updateBalance(userId: string, operation: string, amount: number){
+    return this.http
+      .put('/api/user/update-balance', null, {params:{userId, operation, amount}, withCredentials: true })
+      .pipe( catchError((err: HttpErrorResponse)=>{          
+        return throwError(() => new Error(err.error));
+      }));
+  }
+
   logout(){
     this.clearSubscriptions();
   }

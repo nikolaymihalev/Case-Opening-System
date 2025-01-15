@@ -6,10 +6,17 @@
         <div class="details">
             <h2>{{caseDetails?.case?.name}}</h2>
             <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
-            @if(doesUserHaveCase){
-                <a>Open</a>
+            @if(doesUserHaveCaseCount>0){
+                <button>Open</button>
             }@else {
-                <a>Buy {{caseDetails?.case?.price}} $</a>
+                <div class="buy-container">
+                    <div class="quantity-container">
+                        @for (quantity of quantityArray; track $index) {
+                            <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
+                        }
+                    </div>
+                    <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
+                </div>
             }
         </div>
         <div class="items-container">
@@ -35,4 +42,7 @@
             </div>
         </div>
     </div>
+}
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
 }

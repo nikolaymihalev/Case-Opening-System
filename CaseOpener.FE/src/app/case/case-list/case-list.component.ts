@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Category } from '../../types/category';
 import { SlicePipe } from '../../shared/pipes/slice.pipe';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ApiService } from '../../api.service';
+import { ApiService } from '../../shared/api.service';
 
 @Component({
   selector: 'app-case-list',
