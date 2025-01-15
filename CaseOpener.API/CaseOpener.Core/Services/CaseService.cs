@@ -281,6 +281,7 @@ namespace CaseOpener.Core.Services
                     Id = x.Id,
                     UserId = x.UserId,
                     CaseId = x.CaseId,
+                    Quantity = x.Quantity,
                     Case = new CasePageModel()
                     {
                         Id = x.Case.Id,

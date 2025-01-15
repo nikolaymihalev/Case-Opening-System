@@ -1,1 +1,16 @@
-<p>bought-cases works!</p>
+@if(isLoading){
+    <app-loader/>
+}@else {
+    <div class="bougth-cases-container">        
+        @for (case of cases; track $index) {
+            <div class="bought-case">
+                <h3>{{case.case.name}}</h3>
+                <div class="case-details">
+                    <img src={{case.case.imageUrl}}>
+                    <p>Qty: {{case.quantity}}</p>
+                    <a [routerLink]="['/case', case.case.id]">Open</a>
+                </div>
+            </div>
+        }
+    </div>
+}

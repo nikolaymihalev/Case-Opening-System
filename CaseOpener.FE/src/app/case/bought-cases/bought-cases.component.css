@@ -1,0 +1,51 @@
+.bougth-cases-container{
+    width: 1200px;
+    margin: 2em auto;
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+}
+
+.bought-case{
+    background-color: #161726;
+    padding: 1em 2em;
+    border-radius: 0.3em;
+}
+
+.bought-case h3{
+    font-size: 1.5rem;
+    color: #dedede;
+}
+
+.bought-case .case-details{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.bought-case .case-details img{
+    width: 150px;
+    height: 150px;
+}
+
+.bought-case .case-details p{
+    font-weight: bold;
+    color: #dedede;
+}
+
+.bought-case .case-details a{
+    padding: 0.3em 0.5em;
+    border-radius: 0.2em;
+    border: 2px solid #07b307;
+    background-color: #3a6d3a;
+    color: #dedede;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    font-size: 1rem;
+}
+
+.bought-case .case-details a:hover{
+    background-color: #07b307;
+    color: #fff;
+}
