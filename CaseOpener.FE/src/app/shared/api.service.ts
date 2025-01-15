@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { Case, CaseDetails } from '../types/case';
+import { Case, CaseDetails, CaseUser } from '../types/case';
 import { Category } from '../types/category';
 
 @Injectable({
@@ -39,5 +39,14 @@ export class ApiService {
           return throwError(() => new Error(err.error));
         })
       );
+  }
+
+  getUserBoughtCases(userId: string){
+    return this.http.get<CaseUser[]>('/api/case/bought-cases', {params: {userId}})
+    .pipe(
+      catchError((err: HttpErrorResponse)=>{          
+        return throwError(() => new Error(err.error));
+      })
+    );
   }
 }
