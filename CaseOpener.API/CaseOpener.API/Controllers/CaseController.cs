@@ -2,6 +2,7 @@
 using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Models.Case;
 using CaseOpener.Core.Models.Item;
+using CaseOpener.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseOpener.API.Controllers
@@ -170,9 +171,46 @@ namespace CaseOpener.API.Controllers
         [HttpGet("user-has-case")]
         public async Task<IActionResult> UserHasCase(int caseId, string userId) 
         {
-            bool result = await caseService.DoesUserHaveCase(userId, caseId);
+            int result = await caseService.DoesUserHaveCaseAsync(userId, caseId);
 
-            return Ok(new { Message = result.ToString() });
+            return Ok(result);
+        }
+
+        [HttpPost("buy-case")]
+        public async Task<IActionResult> BuyCase(int caseId, string userId, int? quantity)
+        {
+            try
+            {
+                int quantityC = 1;
+
+                if (quantity != null)
+                {
+                    quantityC = (int)quantity;
+                }
+
+                string operation = await caseService.BuyCaseAsync(caseId, userId, quantityC);
+
+                return Ok(new { Message = operation });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("bought-cases")]
+        public async Task<IActionResult> GetBoughtCases(string userId)
+        {
+            try
+            {
+                var cases = await caseService.GetUsersCasesAsync(userId);
+
+                return Ok(cases);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("user-opened-cases")]

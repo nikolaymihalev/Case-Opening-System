@@ -15,6 +15,8 @@ namespace CaseOpener.Core.Contracts
         Task<string> AddItemToCaseAsync(int caseId, int itemId, double probability);
         Task<ItemModel> OpenCaseAsync(int caseId, string userId);
         Task<ItemModel> OpenDailyRewardAsync(string userId);
-        Task<bool> DoesUserHaveCase(string userId, int caseId);
+        Task<int> DoesUserHaveCaseAsync(string userId, int caseId);
+        Task<string> BuyCaseAsync(int caseId, string userId, int quantity);
+        Task<IEnumerable<CaseUserModel>> GetUsersCasesAsync(string userId);
     }
 }

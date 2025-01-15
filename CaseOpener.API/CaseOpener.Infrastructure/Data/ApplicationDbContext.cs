@@ -22,7 +22,7 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CaseItem> CaseItems { get; set; }
-        public DbSet<CaseItem> CaseUsers { get; set; }
+        public DbSet<CaseUser> CaseUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

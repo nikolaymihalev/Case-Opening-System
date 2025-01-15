@@ -59,6 +59,42 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyAdded, "item to case");
         }
 
+        public async Task<string> BuyCaseAsync(int caseId, string userId, int quantity)
+        {
+            var caseEntity = await repository.GetByIdAsync<Case>(caseId);
+
+            if (caseEntity is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+            var userEntity = await repository.GetByIdAsync<User>(userId);
+
+            if (userEntity is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
+
+            var model = await repository.All<CaseUser>()
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.CaseId == caseId);
+
+            if (model is null)
+            {
+                var entity = new CaseUser()
+                {
+                    CaseId = caseId,
+                    UserId = userId,
+                    Quantity = quantity
+                };
+
+                await repository.AddAsync(entity);
+            }
+            else
+            {
+                model.Quantity += quantity;
+            }
+
+            await repository.SaveChangesAsync();
+
+            return string.Format(ReturnMessages.SuccessfullyAdded, "case to user");
+        }
+
         public async Task<string> DeleteCaseAsync(int id)
         {
             var caseEntity = await repository.GetByIdAsync<Case>(id);
@@ -72,24 +108,15 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyDeleted, "case");
         }
 
-        public async Task<bool> DoesUserHaveCase(string userId, int caseId)
+        public async Task<int> DoesUserHaveCaseAsync(string userId, int caseId)
         {
-            var user = await repository.GetByIdAsync<User>(userId);
+            var model = await repository.AllReadonly<CaseUser>()
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.CaseId == caseId);
 
-            if (user is null)
-                return false;
+            if (model is null)
+                return 0;
 
-            var caseM = await repository.GetByIdAsync<Case>(caseId);
-
-            if (caseM is null)
-                return false;
-
-            var userInventoryItems = await repository.AllReadonly<InventoryItem>()
-                .Include(x=>x.Item)
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
-
-            return userInventoryItems.Any(x => x.Item.Name == caseM.Name);
+            return model.Quantity;
         }
 
         public async Task<string> EditCaseAsync(CaseFormModel model)
@@ -239,6 +266,32 @@ namespace CaseOpener.Core.Services
             return list;
         }
 
+        public async Task<IEnumerable<CaseUserModel>> GetUsersCasesAsync(string userId)
+        {
+            var user = await repository.GetByIdAsync<User>(userId);
+
+            if (user is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
+
+            return await repository.AllReadonly<CaseUser>()
+                .Include(x => x.Case)
+                .Where(x => x.UserId == userId)
+                .Select(x => new CaseUserModel()
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    CaseId = x.CaseId,
+                    Case = new CasePageModel()
+                    {
+                        Id = x.Case.Id,
+                        Name = x.Case.Name,
+                        ImageUrl = x.Case.ImageUrl,
+                        Price = x.Case.Price,
+                    }
+                })
+                .ToListAsync();
+        }
+
         public async Task<ItemModel> OpenCaseAsync(int caseId, string userId)
         {
             var caseM = await repository.GetByIdAsync<Case>(caseId);
@@ -250,6 +303,14 @@ namespace CaseOpener.Core.Services
 
             if (user is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
+
+            var caseUserModel = await repository.All<CaseUser>()
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.CaseId == caseId);
+
+            if(caseUserModel == null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
+
+            await repository.DeleteAsync<CaseUser>(caseUserModel.Id);
 
             var items = await repository.AllReadonly<CaseItem>()
                 .Where(x => x.CaseId == caseId)
