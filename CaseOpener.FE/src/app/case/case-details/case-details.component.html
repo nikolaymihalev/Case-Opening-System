@@ -1,8 +1,23 @@
 @if (isLoading) {
     <app-loader/>
 }@else {
-    <p>{{caseDetails?.case?.name}}</p>
-    @for (item of caseDetails?.items; track $index) {
-        <h3>{{item.name}}</h3>
-    }
+    <div class="case-details-container">
+        <img class="back" src="case_details_back.png" >
+        <div class="details">
+            <h2>{{caseDetails?.case?.name}}</h2>
+            <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
+            <a>Buy {{caseDetails?.case?.price}} $</a>
+        </div>
+        <div class="items-container">
+            <h3><i class="fa-solid fa-suitcase"></i> Case Contains</h3>
+            <div class="items-wrapper">
+                @for (item of caseDetails?.items; track $index) {
+                    <div class="item">
+                        <h3>{{item.name}}</h3>
+                        <img src={{item.imageUrl}}>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }
