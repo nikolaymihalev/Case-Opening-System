@@ -6,7 +6,11 @@
         <div class="details">
             <h2>{{caseDetails?.case?.name}}</h2>
             <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
-            <a>Buy {{caseDetails?.case?.price}} $</a>
+            @if(doesUserHaveCase){
+                <a>Open</a>
+            }@else {
+                <a>Buy {{caseDetails?.case?.price}} $</a>
+            }
         </div>
         <div class="items-container">
             <h3><i class="fa-solid fa-suitcase"></i> Case Contains</h3>

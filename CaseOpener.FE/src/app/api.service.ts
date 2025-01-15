@@ -25,4 +25,8 @@ export class ApiService {
   getCase(id: number){
     return this.http.get<CaseDetails>('/api/case/get-case', {params: {id: id}});
   }
+
+  doesUserHaveCase(caseId: number, userId: string){
+    return this.http.get<{message: string}>('/api/case/user-has-case', {params: {caseId, userId}});
+  }
 }

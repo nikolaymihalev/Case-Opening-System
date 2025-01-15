@@ -80,5 +80,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Roles for user.
         /// </summary>
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+
+        /// <summary>
+        /// Collection of case users.
+        /// </summary>
+        public ICollection<CaseUser> CaseUsers { get; set; } = new List<CaseUser>();
     }
 }

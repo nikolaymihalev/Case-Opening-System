@@ -37,7 +37,7 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyAdded, "item");
          }
 
-        public async Task<string> AddItemToInventoryAsync(InventoryItem model)
+        public async Task<string> AddItemToInventoryAsync(InventoryItemModel model)
         {
             var inventoryItem = new InventoryItem()
             {

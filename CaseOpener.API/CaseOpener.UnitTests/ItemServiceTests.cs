@@ -207,7 +207,7 @@ namespace CaseOpener.UnitTests
             await repository.AddAsync(item);
             await repository.SaveChangesAsync();
 
-            var inventoryItem = new InventoryItem
+            var inventoryItem = new InventoryItemModel
             {
                 UserId = "user123",
                 ItemId = item.Id

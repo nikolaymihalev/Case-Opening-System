@@ -110,7 +110,7 @@ namespace CaseOpener.API.Controllers
         }
 
         [HttpPost("add-item-inventory")]
-        public async Task<IActionResult> AddItemToInventory([FromBody] InventoryItem model)
+        public async Task<IActionResult> AddItemToInventory([FromBody] InventoryItemModel model)
         {
             string operation = await itemService.AddItemToInventoryAsync(model);
 

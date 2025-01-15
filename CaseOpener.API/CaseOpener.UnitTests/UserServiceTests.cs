@@ -278,7 +278,7 @@ namespace CaseOpener.UnitTests
                 Username = "updateduser"
             };
 
-            var result = await userService.UpdateUserInformationAsync(model);
+            var result = await userService.UpdateUserInformationAsync(model.Id, model.Username);
 
             Assert.AreEqual(string.Format(ReturnMessages.SuccessfullyUpdated, "information"), result);
             Assert.AreEqual("updateduser", user.Username);
@@ -294,7 +294,7 @@ namespace CaseOpener.UnitTests
                 Username = "updateduser"
             };
 
-            Assert.ThrowsAsync<ArgumentException>(async () => await userService.UpdateUserInformationAsync(model));
+            Assert.ThrowsAsync<ArgumentException>(async () => await userService.UpdateUserInformationAsync(model.Id, model.Username));
         }
     }
 

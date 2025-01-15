@@ -1,7 +1,7 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Models.Case;
-using CaseOpener.Infrastructure.Models;
+using CaseOpener.Core.Models.Item;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseOpener.API.Controllers
@@ -128,7 +128,7 @@ namespace CaseOpener.API.Controllers
             {
                 var openedItem = await caseService.OpenCaseAsync(caseId, userId);
 
-                var inventoryItem = new InventoryItem()
+                var inventoryItem = new InventoryItemModel()
                 {
                     UserId = userId,
                     ItemId = openedItem.Id
@@ -151,7 +151,7 @@ namespace CaseOpener.API.Controllers
             {
                 var openedItem = await caseService.OpenDailyRewardAsync(userId);
 
-                var inventoryItem = new InventoryItem()
+                var inventoryItem = new InventoryItemModel()
                 {
                     UserId = userId,
                     ItemId = openedItem.Id
