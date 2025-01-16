@@ -207,6 +207,20 @@ namespace CaseOpener.Core.Services
             };
         }
 
+        public async Task<IEnumerable<CaseItemModel>> GetCaseItemsProbabilities(int caseId)
+        {
+            return await repository.AllReadonly<CaseItem>()
+                .Where(x => x.CaseId == caseId)
+                .Select(x => new CaseItemModel()
+                {
+                    Id = x.Id,
+                    CaseId = x.CaseId,
+                    ItemId = x.ItemId,
+                    Probability = x.Probability,
+                })
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<CaseOpeningModel>> GetUserOpenedCasesAsync(string userId)
         {
             var caseOpenings = await repository.AllReadonly<CaseOpening>()
@@ -313,18 +327,14 @@ namespace CaseOpener.Core.Services
 
             await repository.DeleteAsync<CaseUser>(caseUserModel.Id);
 
-            var items = await repository.AllReadonly<CaseItem>()
-                .Where(x => x.CaseId == caseId)
-                .Select(x => new CaseItemModel()
-                {
-                    Id = x.Id,
-                    CaseId = x.CaseId,
-                    ItemId = x.ItemId,
-                    Probability = x.Probability,
-                })
-                .ToListAsync();
+            var items = await GetCaseItemsProbabilities(caseM.Id);
 
-            var itemId = GetRandomItem(items);
+            var itemId = GetRandomItem(items.ToList());
+
+            var item = await repository.GetByIdAsync<Item>(itemId);
+
+            if (item is null)
+                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Item"));
 
             var caseOpening = new CaseOpening()
             {
@@ -338,7 +348,15 @@ namespace CaseOpener.Core.Services
 
             await repository.SaveChangesAsync();
 
-            return new ItemModel();
+            return new ItemModel() 
+            {
+                Id = item.Id,
+                Name = item.Name,
+                ImageUrl = item.ImageUrl,
+                Rarity = item.Rarity,
+                Type = item.Type,
+                Amount = item.Amount,
+            };
         }
 
         public async Task<ItemModel> OpenDailyRewardAsync(string userId)
@@ -412,7 +430,7 @@ namespace CaseOpener.Core.Services
             var random = new Random();
             var randomValue = random.NextDouble() * cumulativeProbability;
 
-            return weightedItems.First(w => randomValue <= w.CumulativeProbability).Item.ItemId;
+            return weightedItems.First(w => randomValue <= w.CumulativeProbability).Item.Id;
         }
     }
 }

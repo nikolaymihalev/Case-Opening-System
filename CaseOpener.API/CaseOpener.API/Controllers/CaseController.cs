@@ -137,7 +137,13 @@ namespace CaseOpener.API.Controllers
 
                 string operation = await itemService.AddItemToInventoryAsync(inventoryItem);
 
-                return Ok(new { Message = operation });
+                if(operation == string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory"))
+                {
+                    return Ok(openedItem);
+                }
+
+                throw new ArgumentException(ReturnMessages.OperationFailed);
+
             }
             catch (Exception ex)
             {
@@ -160,12 +166,25 @@ namespace CaseOpener.API.Controllers
 
                 string operation = await itemService.AddItemToInventoryAsync(inventoryItem);
 
-                return Ok(new { Message = operation });
+                if (operation == string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory"))
+                {
+                    return Ok(openedItem);
+                }
+
+                throw new ArgumentException(ReturnMessages.OperationFailed);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("item-probabilities")]
+        public async Task<IActionResult> GetCaseItemProbabilities(int caseId)
+        {
+            var items = await caseService.GetCaseItemsProbabilities(caseId);
+
+            return Ok(items);
         }
 
         [HttpGet("user-has-case")]

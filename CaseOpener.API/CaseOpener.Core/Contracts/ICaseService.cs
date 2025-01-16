@@ -7,6 +7,7 @@ namespace CaseOpener.Core.Contracts
     {
         Task<IEnumerable<CasePageModel>> GetAllCasesAsync(string? name = null);
         Task<IEnumerable<CaseOpeningModel>> GetUserOpenedCasesAsync(string userId);
+        Task<IEnumerable<CaseItemModel>> GetCaseItemsProbabilities(int caseId);
         Task<CaseModel> GetCaseByIdAsync(int id);
         Task SubscribeUserToDailyRewardAsync(string userId);
         Task<string> AddCaseAsync(CaseFormModel model);

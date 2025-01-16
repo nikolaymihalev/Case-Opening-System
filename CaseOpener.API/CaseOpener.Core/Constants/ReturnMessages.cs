@@ -4,6 +4,7 @@
     {
         public const string Required = "The field {0} is required!";
         public const string StringLength = "The field {0} is between {2} and {1} characters long!";
+        public const string OperationFailed = "Operation failed! Try again later.";
 
         public const string SuccessfullyAdded = "Successfully added new {0}!";
         public const string SuccessfullyEdited = "Successfully edited {0}!";
