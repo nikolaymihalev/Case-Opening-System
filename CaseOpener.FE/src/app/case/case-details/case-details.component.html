@@ -5,9 +5,7 @@
         <img class="back" src="case_details_back.png" >
         <div class="details">
             <h2>{{caseDetails?.case?.name}}</h2>
-            <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
-            @if(doesUserHaveCaseCount>0){
-                <button>Open</button>
+            @if(isOpening){
                 <div class="case-opening-container">
                     <div class="case-items" [style]="{ animationDuration: animationDuration + 's' }">
                       <div>
@@ -17,6 +15,13 @@
                       </div>
                     </div>
                 </div>
+            }@else {
+                <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
+            }
+            @if(doesUserHaveCaseCount>0){
+                @if(isOpening === false){
+                    <button (click)="startOpening()">Open</button>                
+                }
             }@else {
                 <div class="buy-container">
                     <div class="quantity-container">

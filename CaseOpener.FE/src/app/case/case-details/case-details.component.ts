@@ -23,6 +23,7 @@ export class CaseDetailsComponent implements OnInit {
   quantityArray: number[] = [1, 2, 3, 4, 5];
   
   isLoading: boolean = true;
+  isOpening: boolean = false;
   doesUserHaveCaseCount: number = 0;
 
   caseQuantity: number = 1;
@@ -52,7 +53,7 @@ export class CaseDetailsComponent implements OnInit {
     this.setUser();
     this.getCase(id);
     this.checkDoesUserHaveCase(id);
-    this.subscribeToNotification();
+    this.subscribeToNotification();    
   }
 
   buy(){    
@@ -87,7 +88,10 @@ export class CaseDetailsComponent implements OnInit {
   }
 
   startOpening() {
-    //this.generateDisplayedItems();
+    this.isOpening = true;
+    this.apiService.getCaseProbabilities(this.caseDetails?.case.id!).subscribe((probabilities)=>{      
+      this.generateDisplayedItems(probabilities);
+    })
 
     let duration = 2; 
     const interval = setInterval(() => {
@@ -104,18 +108,19 @@ export class CaseDetailsComponent implements OnInit {
     this.displayedItems = [];
 
     for (let i = 0; i < 50; i++) {
-      const randomItem = this.getWeightedRandomItem(probabilities);
+      const randomItem = this.getWeightedRandomItem(probabilities);      
       const itemDetails = this.caseDetails?.items.find(item => item.id === randomItem.itemId); 
       if (itemDetails) {
         this.displayedItems.push(itemDetails);
       }
-    }
-
-    //var winningItem = new Item{};
-    //this.displayedItems[this.winningItemIndex] = winningItem;
+    }    
+    this.apiService.openCase(this.caseDetails?.case.id!, this.user?.id!).subscribe({
+      next: (item: Item) => {
+      this.displayedItems[this.winningItemIndex] = item; 
+    }})
   }
 
-  getWeightedRandomItem(probabilities: CaseItem[]): CaseItem {
+  private getWeightedRandomItem(probabilities: CaseItem[]): CaseItem {
     const totalProbability = probabilities.reduce((sum, item) => sum + item.probability, 0);
     
     const randomValue = Math.random() * totalProbability;

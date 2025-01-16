@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { Case, CaseDetails, CaseUser } from '../types/case';
+import { Case, CaseDetails, CaseItem, CaseUser } from '../types/case';
 import { Category } from '../types/category';
+import { Item } from '../types/item';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,19 @@ export class ApiService {
         return throwError(() => new Error(err.error));
       })
     );
+  }
+
+  openCase(caseId: number, userId: string){
+    return this.http
+    .post<Item>('/api/case/open', null, {params: {caseId, userId}, withCredentials: true})
+    .pipe(
+      catchError((err: HttpErrorResponse)=>{          
+        return throwError(() => new Error(err.error));
+      })
+    );
+  }
+
+  getCaseProbabilities(caseId: number){
+    return this.http.get<CaseItem[]>('/api/case/item-probabilities', {params: {caseId}});
   }
 }

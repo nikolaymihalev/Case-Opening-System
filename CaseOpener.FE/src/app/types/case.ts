@@ -22,6 +22,7 @@ export interface CaseUser{
 }
 
 export interface CaseItem{
+    id: number,
     caseId: number; 
     itemId: number; 
     probability: number
