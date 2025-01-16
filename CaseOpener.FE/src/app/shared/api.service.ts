@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { Case, CaseDetails, CaseItem, CaseUser } from '../types/case';
+import { Case, CaseDetails, CaseItem, CaseUser, OpenedCase } from '../types/case';
 import { Category } from '../types/category';
 import { Item } from '../types/item';
 
@@ -63,5 +63,9 @@ export class ApiService {
 
   getCaseProbabilities(caseId: number){
     return this.http.get<CaseItem[]>('/api/case/item-probabilities', {params: {caseId}});
+  }
+
+  getUserOpenedCases(userId: string){
+    return this.http.get<OpenedCase[]>('/api/case/user-opened-cases', {params: {userId}});
   }
 }

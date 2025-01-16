@@ -128,7 +128,7 @@ namespace CaseOpener.API.Controllers
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.UtcNow.AddHours(24),
+                        Expires = DateTime.Now.AddHours(24),
                         SigningCredentials = new SigningCredentials(
                             new SymmetricSecurityKey(keyBytes),
                             SecurityAlgorithms.HmacSha256Signature)
@@ -164,7 +164,7 @@ namespace CaseOpener.API.Controllers
                     UserId = user.Id,
                     Type = TransactionType.Deposit.ToString(),
                     Amount = 500m,
-                    Date = DateTime.UtcNow,
+                    Date = DateTime.Now,
                     Status = TransactionStatus.Completed.ToString()
                 };
 

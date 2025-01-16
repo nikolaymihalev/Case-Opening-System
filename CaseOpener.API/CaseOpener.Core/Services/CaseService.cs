@@ -225,6 +225,7 @@ namespace CaseOpener.Core.Services
         {
             var caseOpenings = await repository.AllReadonly<CaseOpening>()
                 .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.DateOpened)
                 .ToListAsync();
 
             var list = new List<CaseOpeningModel>();
@@ -304,6 +305,7 @@ namespace CaseOpener.Core.Services
                         Price = x.Case.Price,
                     }
                 })
+                .OrderByDescending(x => x.Id)
                 .ToListAsync();
         }
 
@@ -344,7 +346,7 @@ namespace CaseOpener.Core.Services
                 UserId = userId,
                 ItemId = itemId,
                 CaseId = caseId,
-                DateOpened = DateTime.UtcNow,
+                DateOpened = DateTime.Now,
             };
 
             await repository.AddAsync(caseOpening);
@@ -370,14 +372,14 @@ namespace CaseOpener.Core.Services
             {
                 var dailyReward = await repository.All<DailyReward>().FirstOrDefaultAsync(x => x.UserId == userId);
 
-                if (dailyReward != null && (DateTime.UtcNow - dailyReward.LastClaimedDate).TotalHours >= 24)
+                if (dailyReward != null && (DateTime.Now - dailyReward.LastClaimedDate).TotalHours >= 24)
                 {
                     var caseM = await repository.AllReadonly<Case>().FirstOrDefaultAsync(x => x.Name == "Daily Reward");
 
                     if (caseM != null)
                     {
                         var item = await OpenCaseAsync(caseM.Id, userId);
-                        dailyReward.LastClaimedDate = DateTime.UtcNow;
+                        dailyReward.LastClaimedDate = DateTime.Now;
 
                         await repository.SaveChangesAsync();
 

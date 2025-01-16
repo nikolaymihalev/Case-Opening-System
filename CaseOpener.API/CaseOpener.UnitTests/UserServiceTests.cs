@@ -38,7 +38,7 @@ namespace CaseOpener.UnitTests
                 Id = "user123",
                 Username = "testuser",
                 Email = "test@example.com",
-                DateJoined = DateTime.UtcNow,
+                DateJoined = DateTime.Now,
                 Balance = 1000m
             };
 
@@ -67,7 +67,7 @@ namespace CaseOpener.UnitTests
                 Id = "user123",
                 Username = "testuser",
                 Email = "test@example.com",
-                DateJoined = DateTime.UtcNow,
+                DateJoined = DateTime.Now,
                 Balance = 1000m
             };
 

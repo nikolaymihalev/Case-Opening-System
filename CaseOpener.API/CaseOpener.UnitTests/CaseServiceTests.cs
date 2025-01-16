@@ -161,7 +161,7 @@ namespace CaseOpener.UnitTests
             var category = new Category { Id = 1, Name = "Weapons" };
             var @case = new Case { Id = 1, Name = "Case1", Price = 10.0m, ImageUrl = "image1.jpg", CategoryId = category.Id };
             var item = new Item { Id = 1, Name = "Item1", ImageUrl = "item1.jpg", Amount = 1, Rarity = "Rare", Type = "Weapon" };
-            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = item.Id, DateOpened = DateTime.UtcNow };
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = item.Id, DateOpened = DateTime.Now };
 
             await repository.AddAsync(category);
             await repository.AddAsync(@case);
@@ -201,7 +201,7 @@ namespace CaseOpener.UnitTests
         {
             // Arrange
             var userId = "test-user-id";
-            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = 999, ItemId = 1, DateOpened = DateTime.UtcNow };
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = 999, ItemId = 1, DateOpened = DateTime.Now };
 
             repository.AddAsync(caseOpening).Wait();
             repository.SaveChangesAsync().Wait();
@@ -221,7 +221,7 @@ namespace CaseOpener.UnitTests
 
             var category = new Category { Id = 1, Name = "Weapons" };
             var @case = new Case { Id = 1, Name = "Case1", Price = 10.0m, ImageUrl = "image1.jpg", CategoryId = category.Id };
-            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = 999, DateOpened = DateTime.UtcNow };
+            var caseOpening = new CaseOpening { Id = 1, UserId = userId, CaseId = @case.Id, ItemId = 999, DateOpened = DateTime.Now };
 
             repository.AddAsync(category).Wait();
             repository.AddAsync(@case).Wait();

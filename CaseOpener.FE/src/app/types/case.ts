@@ -27,3 +27,11 @@ export interface CaseItem{
     itemId: number; 
     probability: number
 }
+
+export interface OpenedCase{
+    id: number,
+    userId: string,
+    case: Case,
+    item: Item,
+    dateOpened: string
+  }

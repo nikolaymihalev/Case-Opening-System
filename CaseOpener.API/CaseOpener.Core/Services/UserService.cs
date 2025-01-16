@@ -92,7 +92,7 @@ namespace CaseOpener.Core.Services
                 Id = Guid.NewGuid().ToString(),
                 Username = model.Username,
                 Email = model.Email,
-                DateJoined = DateTime.UtcNow,
+                DateJoined = DateTime.Now,
                 Balance = 1000m
             };
 

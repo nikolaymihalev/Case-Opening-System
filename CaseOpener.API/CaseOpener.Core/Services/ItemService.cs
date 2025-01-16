@@ -43,7 +43,7 @@ namespace CaseOpener.Core.Services
             {
                 UserId = model.UserId,
                 ItemId = model.ItemId,
-                AcquiredDate = DateTime.UtcNow,
+                AcquiredDate = DateTime.Now,
             };
 
             await repository.AddAsync(inventoryItem);

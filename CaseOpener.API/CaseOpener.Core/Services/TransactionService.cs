@@ -27,7 +27,7 @@ namespace CaseOpener.Core.Services
                 UserId = model.UserId,
                 Type = model.Type,
                 Amount = model.Amount,
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 Status = model.Status,
             };
 
