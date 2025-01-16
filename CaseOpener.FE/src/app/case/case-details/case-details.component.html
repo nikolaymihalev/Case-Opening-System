@@ -8,6 +8,15 @@
             <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
             @if(doesUserHaveCaseCount>0){
                 <button>Open</button>
+                <div class="case-opening-container">
+                    <div class="case-items" [style]="{ animationDuration: animationDuration + 's' }">
+                      <div>
+                        @for (item of displayedItems; track $index) {
+                            <img [src]="item.imageUrl"/>
+                        }
+                      </div>
+                    </div>
+                </div>
             }@else {
                 <div class="buy-container">
                     <div class="quantity-container">

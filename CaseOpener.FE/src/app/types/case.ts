@@ -20,3 +20,9 @@ export interface CaseUser{
     quantity: number,
     case: Case
 }
+
+export interface CaseItem{
+    caseId: number; 
+    itemId: number; 
+    probability: number
+}
