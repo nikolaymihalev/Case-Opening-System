@@ -66,7 +66,9 @@ export class CaseDetailsComponent implements OnInit {
         }
       })
     } else {   
-      this.notificationService.showNotification('Not enough money in your balance!', 'error');
+      let notMessage = this.user !== undefined && this.user !== null ? 'Not enough money in your balance!' : 'Please log in to your account to purchase a case.';            
+      let notKind = this.user !== undefined && this.user !== null ? 'error' : 'warning';
+      this.notificationService.showNotification(notMessage, notKind);
       this.hasNotification = true;
     }
   }
