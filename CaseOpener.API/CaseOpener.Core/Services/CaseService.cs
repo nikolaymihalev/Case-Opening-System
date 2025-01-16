@@ -325,7 +325,10 @@ namespace CaseOpener.Core.Services
             if(caseUserModel == null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Case"));
 
-            await repository.DeleteAsync<CaseUser>(caseUserModel.Id);
+            if (caseUserModel.Quantity == 1)
+                await repository.DeleteAsync<CaseUser>(caseUserModel.Id);
+            else
+                caseUserModel.Quantity -= 1;
 
             var items = await GetCaseItemsProbabilities(caseM.Id);
 
