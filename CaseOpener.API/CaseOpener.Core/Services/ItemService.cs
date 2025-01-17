@@ -156,7 +156,10 @@ namespace CaseOpener.Core.Services
         }
         public async Task<IEnumerable<ItemModel>> GetUserInventoryItemsAsync(string userId)
         {
-            var inItems = await repository.AllReadonly<InventoryItem>().Where(x => x.UserId == userId).ToListAsync();
+            var inItems = await repository.AllReadonly<InventoryItem>()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x=>x.AcquiredDate)
+                .ToListAsync();
 
             var items = new List<Item>();
 

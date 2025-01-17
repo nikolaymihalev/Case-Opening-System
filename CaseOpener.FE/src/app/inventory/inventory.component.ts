@@ -55,11 +55,12 @@ export class InventoryComponent implements OnInit{
       this.userService.updateBalance(this.user?.id!,UserValidationConstants.BALANCE_INCREASE, this.currentItem.amount).subscribe();
       this.apiService.removeItemFromInventory(this.currentItem.id, this.user?.id!).subscribe({
         next: ()=>{
-          this.notificationService.showNotification(`Successfully sold the item for ${this.currentItem?.amount}!`);  
+          this.notificationService.showNotification(`Successfully sold the item for ${this.currentItem?.amount}$!`);  
           this.hasNotification = true;
           setTimeout(() => {
             this.setCurrentMode(false);
-          }, 3000);
+            this.getItems();
+          }, 2000);
         },
         error: ()=>{
           this.notificationService.showNotification('Operation failed! Try again later.', 'error');

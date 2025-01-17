@@ -73,9 +73,9 @@ export class ApiService {
     return this.http.get<Item[]>('/api/item/user-items', {params: {userId}});
   }
 
-  removeItemFromInventory(id: number, userId: string){
+  removeItemFromInventory(itemId: number, userId: string){
     return this.http
-      .delete<{message: string}>('/api/item/remove-item', {params: {id, userId}})
+      .delete<{message: string}>('/api/item/remove-item', {params: {itemId, userId}})
       .pipe(
         catchError((err: HttpErrorResponse)=>{          
           return throwError(() => new Error(err.error));
