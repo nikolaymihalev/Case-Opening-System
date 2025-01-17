@@ -139,9 +139,9 @@ namespace CaseOpener.Core.Services
             };
         }
 
-        public async Task<string> RemoveItemFromInventoryAsync(int id, string userId)
+        public async Task<string> RemoveItemFromInventoryAsync(int itemId, string userId)
         {
-            var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
+            var inventoryItem = await repository.All<InventoryItem>().FirstOrDefaultAsync(x => x.ItemId == itemId && x.UserId == userId);
 
             if (inventoryItem is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Inventory item"));
@@ -149,7 +149,7 @@ namespace CaseOpener.Core.Services
             if (inventoryItem.UserId != userId)
                 throw new ArgumentException(ReturnMessages.Unauthorized);
 
-            await repository.DeleteAsync<InventoryItem>(id);
+            await repository.DeleteAsync<InventoryItem>(inventoryItem.Id);
             await repository.SaveChangesAsync();
 
             return string.Format(ReturnMessages.SuccessfullyDeleted, "inventory item");

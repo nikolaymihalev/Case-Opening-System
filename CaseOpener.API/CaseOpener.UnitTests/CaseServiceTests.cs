@@ -360,10 +360,10 @@ namespace CaseOpener.UnitTests
             Assert.AreEqual(2, result.Count());
 
             var resultList = result.ToList();
-            Assert.AreEqual(case1.Id, resultList[0].Case.Id);
-            Assert.AreEqual(case1.Name, resultList[0].Case.Name);
-            Assert.AreEqual(case2.Id, resultList[1].Case.Id);
-            Assert.AreEqual(case2.Name, resultList[1].Case.Name);
+            Assert.AreEqual(case1.Id, resultList[1].Case.Id);
+            Assert.AreEqual(case1.Name, resultList[1].Case.Name);
+            Assert.AreEqual(case2.Id, resultList[0].Case.Id);
+            Assert.AreEqual(case2.Name, resultList[0].Case.Name);
         }
 
         [Test]
