@@ -43,8 +43,11 @@
                             currentItem?.rarity === 'Covert'? 'red':
                             'gold'   }">{{currentItem?.rarity}}</h5>
                 </div>
-                <button>Sell for {{currentItem?.amount}} $</button>
+                <button (click)="sellItem()">Sell for {{currentItem?.amount}} $</button>
             </div>
         }
     </div>
+}
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
 }
