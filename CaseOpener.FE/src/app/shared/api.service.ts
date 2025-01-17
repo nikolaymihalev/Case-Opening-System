@@ -68,4 +68,8 @@ export class ApiService {
   getUserOpenedCases(userId: string){
     return this.http.get<OpenedCase[]>('/api/case/user-opened-cases', {params: {userId}});
   }
+
+  getUserInventoryItems(userId: string){
+    return this.http.get<Item[]>('/api/item/user-items', {params: {userId}});
+  }
 }
