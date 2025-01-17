@@ -28,7 +28,7 @@
                 <h4><i class="fa-solid fa-gun"></i> Weapon Cases</h4>  
                 <div class="section-cases">
                     @for (case of weaponCases; track $index) {
-                        <a class="case" routerLink="/home">
+                        <a class="case" [routerLink]="['/case', case.id]">
                             <img src={{case.imageUrl}}/>
                             <h5>{{case.name | slice: 20}}</h5>
                             <div class="price-container">
@@ -45,7 +45,7 @@
                 <h4><i class="fa-solid fa-jet-fighter-up"></i> Operation Cases</h4>
                 <div class="section-cases">
                     @for (case of operationCases; track $index) {
-                        <a class="case" routerLink="/home">
+                        <a class="case" [routerLink]="['/case', case.id]">
                             <img src={{case.imageUrl}}/>
                             <h5>{{case.name | slice: 20}}</h5>
                             <div class="price-container">
@@ -61,7 +61,7 @@
                 <h4><i class="fa-regular fa-gem"></i> Rare Cases</h4>
                 <div class="section-cases">
                     @for (case of rareCases; track $index) {
-                        <a class="case" routerLink="/home">
+                        <a class="case" [routerLink]="['/case', case.id]">
                             <img src={{case.imageUrl}}/>
                             <h5>{{case.name | slice: 20}}</h5>
                             <div class="price-container">
@@ -78,7 +78,7 @@
                 <h4><i class="fa-regular fa-note-sticky"></i> Sticker Capsules</h4>
                 <div class="section-cases">
                     @for (case of stickerCases; track $index) {
-                        <a class="case" routerLink="/home">
+                        <a class="case" [routerLink]="['/case', case.id]">
                             <img src={{case.imageUrl}}/>
                             <h5>{{case.name | slice: 20}}</h5>
                             <div class="price-container">
@@ -95,7 +95,7 @@
                 <h4><i class="fa-solid fa-spray-can"></i> Graffiti Boxes</h4>
                 <div class="section-cases">
                     @for (case of graffitiCases; track $index) {
-                        <a class="case" routerLink="/home">
+                        <a class="case" [routerLink]="['/case', case.id]">
                             <img src={{case.imageUrl}}/>
                             <h5>{{case.name | slice: 20}}</h5>
                             <div class="price-container">

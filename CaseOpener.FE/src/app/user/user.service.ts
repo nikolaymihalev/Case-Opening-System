@@ -7,13 +7,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  
+  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);  
+
   public user$: Observable<User | null> = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.setUser();
+  }
 
-  private setUser(): void {
+  private setUser(): void {    
     const token = localStorage.getItem('authToken');
 
     if (token) {
@@ -22,8 +24,15 @@ export class UserService {
       this.http.get<User>('/api/user/get-user', { headers }).pipe(
         tap((user)=>{
           this.userSubject.next(user);  
+        }),
+        catchError((err: HttpErrorResponse)=>{   
+          this.logout();
+          return throwError(() => new Error(err.error));
         })
       ).subscribe();
+    }
+    else{
+      this.logout();
     }
   }
 
@@ -36,7 +45,7 @@ export class UserService {
     const token = localStorage.getItem('authToken');
     return !!this.user$ && !!token;
   }
-
+  
   login(email: string, password: string){
     return this.http
       .post<{token:string}>('/api/user/login', { email, password }, { withCredentials: true })
@@ -48,7 +57,7 @@ export class UserService {
             this.setUser();   
           }
         },
-        catchError((err: HttpErrorResponse)=>{          
+        catchError((err: HttpErrorResponse)=>{   
           return throwError(() => new Error(err.error));
         }))
       )
@@ -56,14 +65,30 @@ export class UserService {
   
   register(username: string, email: string, password: string, confirmPassword: string){
     return this.http
-    .post('/api/user/register', {username, email, password, confirmPassword}, { withCredentials: true })
-    .pipe(
-      catchError((err: HttpErrorResponse)=>{          
+      .post('/api/user/register', {username, email, password, confirmPassword}, { withCredentials: true })
+      .pipe(
+        catchError((err: HttpErrorResponse)=>{          
+          return throwError(() => new Error(err.error));
+        })
+      );
+  }
+
+  updateInfo(userId: string, username: string){
+    return this.http
+      .put('/api/user/update-info', null, {params:{userId, username}, withCredentials: true })
+      .pipe( catchError((err: HttpErrorResponse)=>{          
         return throwError(() => new Error(err.error));
-      })
-    );
+      }));
   }
   
+  updateBalance(userId: string, operation: string, amount: number){
+    return this.http
+      .put('/api/user/update-balance', null, {params:{userId, operation, amount}, withCredentials: true })
+      .pipe( catchError((err: HttpErrorResponse)=>{          
+        return throwError(() => new Error(err.error));
+      }));
+  }
+
   logout(){
     this.clearSubscriptions();
   }

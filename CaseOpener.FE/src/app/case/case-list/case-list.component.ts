@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LoaderComponent } from '../../shared/loader/loader.component';
 import { Case } from '../../types/case';
-import { ApiService } from '../api.service';
 import { RouterLink } from '@angular/router';
 import { Category } from '../../types/category';
 import { SlicePipe } from '../../shared/pipes/slice.pipe';
 import { FormsModule, NgForm } from '@angular/forms';
+import { ApiService } from '../../shared/api.service';
 
 @Component({
   selector: 'app-case-list',

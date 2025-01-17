@@ -69,7 +69,7 @@ namespace CaseOpener.UnitTests
                 UserId = "user123",
                 Type = "Deposit",
                 Amount = 100.50m,
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 Status = "Completed"
             };
 
@@ -95,7 +95,7 @@ namespace CaseOpener.UnitTests
                 UserId = "user123",
                 Type = "Deposit",
                 Amount = 100.50m,
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 Status = "Completed"
             };
 
@@ -124,7 +124,7 @@ namespace CaseOpener.UnitTests
                 UserId = "user123",
                 Type = "Deposit",
                 Amount = 100.50m,
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 Status = "Pending"
             };
 
@@ -144,7 +144,7 @@ namespace CaseOpener.UnitTests
                 UserId = "user123",
                 Type = "Deposit",
                 Amount = 100.50m,
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 Status = "Pending"
             };
 

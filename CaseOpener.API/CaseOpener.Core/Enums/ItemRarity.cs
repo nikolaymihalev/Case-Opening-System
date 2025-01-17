@@ -2,8 +2,6 @@
 {
     public enum ItemRarity
     {
-        Consumer,
-        Industrial,
         MilSpec,
         Restricted,
         Classified,

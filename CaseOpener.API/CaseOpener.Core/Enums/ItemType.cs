@@ -3,10 +3,9 @@
     public enum ItemType
     {
         Skin,
-        Knive,
+        Knife,
         Gloves,
         Sticker,
-        Case,
         Graffiti
     }
 }

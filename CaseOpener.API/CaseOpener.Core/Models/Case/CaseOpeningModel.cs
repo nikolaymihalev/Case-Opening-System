@@ -1,4 +1,6 @@
-﻿namespace CaseOpener.Core.Models.Case
+﻿using CaseOpener.Core.Models.Item;
+
+namespace CaseOpener.Core.Models.Case
 {
     /// <summary>
     /// Model for case opening
@@ -16,14 +18,14 @@
         public string UserId { get; set; } = string.Empty;
 
         /// <summary>
-        /// Unique identifier for the case.
+        /// Case model.
         /// </summary>
-        public int CaseId { get; set; }
+        public CasePageModel Case { get; set; } = null!;
 
         /// <summary>
-        /// Unique identifier for the item.
+        /// Item model.
         /// </summary>
-        public int ItemId { get; set; }
+        public ItemModel Item { get; set; } = null!;
 
         /// <summary>
         /// Date of opening.

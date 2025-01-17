@@ -1,0 +1,14 @@
+@if(isVisible){
+    <div class="notification" [ngClass]="type">
+        @if(type === 'error'){
+            <i class="fa-regular fa-circle-xmark"></i>
+        }@else if(type === 'success'){
+            <i class="fa-solid fa-check"></i>
+        }@else if(type === 'info'){
+            <i class="fa-solid fa-circle-exclamation"></i>
+        }@else if(type === 'warning'){
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        }
+        <p>{{message}}</p>
+    </div>
+}

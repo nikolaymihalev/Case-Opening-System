@@ -110,7 +110,7 @@ namespace CaseOpener.API.Controllers
         }
 
         [HttpPost("add-item-inventory")]
-        public async Task<IActionResult> AddItemToInventory([FromBody] InventoryItem model)
+        public async Task<IActionResult> AddItemToInventory([FromBody] InventoryItemModel model)
         {
             string operation = await itemService.AddItemToInventoryAsync(model);
 
@@ -118,11 +118,11 @@ namespace CaseOpener.API.Controllers
         }
 
         [HttpDelete("remove-item")]
-        public async Task<IActionResult> RemoveItemFromInventory(int id, string userId) 
+        public async Task<IActionResult> RemoveItemFromInventory(int itemId, string userId) 
         {
             try
             {
-                string operation = await itemService.RemoveItemFromInventoryAsync(id, userId);
+                string operation = await itemService.RemoveItemFromInventoryAsync(itemId, userId);
 
                 return Ok(new { Message = operation });
             }

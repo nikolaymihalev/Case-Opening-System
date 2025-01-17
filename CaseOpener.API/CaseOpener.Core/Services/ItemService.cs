@@ -37,13 +37,13 @@ namespace CaseOpener.Core.Services
             return string.Format(ReturnMessages.SuccessfullyAdded, "item");
          }
 
-        public async Task<string> AddItemToInventoryAsync(InventoryItem model)
+        public async Task<string> AddItemToInventoryAsync(InventoryItemModel model)
         {
             var inventoryItem = new InventoryItem()
             {
                 UserId = model.UserId,
                 ItemId = model.ItemId,
-                AcquiredDate = DateTime.UtcNow,
+                AcquiredDate = DateTime.Now,
             };
 
             await repository.AddAsync(inventoryItem);
@@ -139,9 +139,9 @@ namespace CaseOpener.Core.Services
             };
         }
 
-        public async Task<string> RemoveItemFromInventoryAsync(int id, string userId)
+        public async Task<string> RemoveItemFromInventoryAsync(int itemId, string userId)
         {
-            var inventoryItem = await repository.GetByIdAsync<InventoryItem>(id);
+            var inventoryItem = await repository.All<InventoryItem>().FirstOrDefaultAsync(x => x.ItemId == itemId && x.UserId == userId);
 
             if (inventoryItem is null)
                 throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "Inventory item"));
@@ -149,14 +149,17 @@ namespace CaseOpener.Core.Services
             if (inventoryItem.UserId != userId)
                 throw new ArgumentException(ReturnMessages.Unauthorized);
 
-            await repository.DeleteAsync<InventoryItem>(id);
+            await repository.DeleteAsync<InventoryItem>(inventoryItem.Id);
             await repository.SaveChangesAsync();
 
             return string.Format(ReturnMessages.SuccessfullyDeleted, "inventory item");
         }
         public async Task<IEnumerable<ItemModel>> GetUserInventoryItemsAsync(string userId)
         {
-            var inItems = await repository.AllReadonly<InventoryItem>().Where(x => x.UserId == userId).ToListAsync();
+            var inItems = await repository.AllReadonly<InventoryItem>()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x=>x.AcquiredDate)
+                .ToListAsync();
 
             var items = new List<Item>();
 

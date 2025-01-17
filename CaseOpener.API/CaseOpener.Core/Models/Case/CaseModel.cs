@@ -8,29 +8,9 @@ namespace CaseOpener.Core.Models.Case
     public class CaseModel
     {
         /// <summary>
-        /// Unique identifier for the case.
+        /// Case model
         /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Name of the case.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Image of the case.
-        /// </summary>
-        public string ImageUrl { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Price of the case.
-        /// </summary>
-        public decimal Price { get; set; }
-
-        /// <summary>
-        /// Name of the category.
-        /// </summary>
-        public string CategoryName { get; set; } = string.Empty;
+        public CasePageModel Case { get; set; } = null!;
 
         /// <summary>
         /// Items in the case.

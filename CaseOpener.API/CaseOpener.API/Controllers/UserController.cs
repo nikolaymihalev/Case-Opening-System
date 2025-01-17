@@ -128,7 +128,7 @@ namespace CaseOpener.API.Controllers
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.UtcNow.AddHours(24),
+                        Expires = DateTime.Now.AddHours(24),
                         SigningCredentials = new SigningCredentials(
                             new SymmetricSecurityKey(keyBytes),
                             SecurityAlgorithms.HmacSha256Signature)
@@ -164,7 +164,7 @@ namespace CaseOpener.API.Controllers
                     UserId = user.Id,
                     Type = TransactionType.Deposit.ToString(),
                     Amount = 500m,
-                    Date = DateTime.UtcNow,
+                    Date = DateTime.Now,
                     Status = TransactionStatus.Completed.ToString()
                 };
 
@@ -179,11 +179,11 @@ namespace CaseOpener.API.Controllers
         }
 
         [HttpPut("update-info")]
-        public async Task<IActionResult> Update([FromBody]UserModel model)
+        public async Task<IActionResult> Update(string userId, string username)
         {
             try
             {
-                string operation = await userService.UpdateUserInformationAsync(model);
+                string operation = await userService.UpdateUserInformationAsync(userId, username);
 
                 return Ok(new { Message = operation });
             }

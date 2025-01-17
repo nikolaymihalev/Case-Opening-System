@@ -1,0 +1,55 @@
+@if(isLoading){
+    <app-loader/>
+}@else {
+    @if(isEditingMode){
+        <form class="edit-user-form" #form="ngForm" (ngSubmit)="saveEdit(form)">
+            <h2>Edit information</h2>
+            <div class="edit-field">
+                <label for="username">Username:</label>
+                <input           
+                    type="text" 
+                    name="username" 
+                    id="username" 
+                    required
+                    ngModel 
+                    minlength={{usernameMinLength}}
+                    maxlength={{usernameMaxLength}}
+                    #inputUsername="ngModel">
+            </div>
+            @if(inputUsername?.touched){
+                @if(inputUsername?.errors?.['required']){
+                    <p class="validation-error">Username is required!</p>
+                } 
+                @if(inputUsername?.errors?.['minlength']){
+                    <p class="validation-error">Username must be at least {{usernameMinLength}} characters!</p>
+                }
+            }
+            <div class="btns-container">
+                <button class="profile-btn">Save</button>
+                <a class="profile-btn" (click)="toggleEditMode()">Cancel</a>
+            </div>
+        </form>
+    }@else {
+        <div class="profile-container">
+            <h2>Hello, {{user?.username}}</h2>
+            <div class="user-info-container">
+                <div class="user-labels">
+                    <h4>Email:</h4>
+                    <h4>Username:</h4>
+                    <h4>Balance:</h4>
+                    <h4>Joined:</h4>
+                </div>
+                <div class="user-info">
+                    <h4>{{user?.email}}</h4>
+                    <h4>{{user?.username}}</h4>
+                    <h4>{{user?.balance?.toFixed(2)}} $</h4>
+                    <h4>{{joinedDate}}</h4>
+                </div>
+            </div>
+            <button class="profile-btn" (click)="toggleEditMode()">Edit</button>
+        </div>
+    }
+}
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
+}

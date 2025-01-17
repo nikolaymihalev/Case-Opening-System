@@ -1,6 +1,7 @@
 ﻿using CaseOpener.Core.Constants;
 using CaseOpener.Core.Contracts;
 using CaseOpener.Core.Models.Case;
+using CaseOpener.Core.Models.Item;
 using CaseOpener.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -128,7 +129,7 @@ namespace CaseOpener.API.Controllers
             {
                 var openedItem = await caseService.OpenCaseAsync(caseId, userId);
 
-                var inventoryItem = new InventoryItem()
+                var inventoryItem = new InventoryItemModel()
                 {
                     UserId = userId,
                     ItemId = openedItem.Id
@@ -136,7 +137,13 @@ namespace CaseOpener.API.Controllers
 
                 string operation = await itemService.AddItemToInventoryAsync(inventoryItem);
 
-                return Ok(new { Message = operation });
+                if(operation == string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory"))
+                {
+                    return Ok(openedItem);
+                }
+
+                throw new ArgumentException(ReturnMessages.OperationFailed);
+
             }
             catch (Exception ex)
             {
@@ -151,13 +158,56 @@ namespace CaseOpener.API.Controllers
             {
                 var openedItem = await caseService.OpenDailyRewardAsync(userId);
 
-                var inventoryItem = new InventoryItem()
+                var inventoryItem = new InventoryItemModel()
                 {
                     UserId = userId,
                     ItemId = openedItem.Id
                 };
 
                 string operation = await itemService.AddItemToInventoryAsync(inventoryItem);
+
+                if (operation == string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory"))
+                {
+                    return Ok(openedItem);
+                }
+
+                throw new ArgumentException(ReturnMessages.OperationFailed);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("item-probabilities")]
+        public async Task<IActionResult> GetCaseItemProbabilities(int caseId)
+        {
+            var items = await caseService.GetCaseItemsProbabilities(caseId);
+
+            return Ok(items);
+        }
+
+        [HttpGet("user-has-case")]
+        public async Task<IActionResult> UserHasCase(int caseId, string userId) 
+        {
+            int result = await caseService.DoesUserHaveCaseAsync(userId, caseId);
+
+            return Ok(result);
+        }
+
+        [HttpPost("buy-case")]
+        public async Task<IActionResult> BuyCase(int caseId, string userId, int? quantity)
+        {
+            try
+            {
+                int quantityC = 1;
+
+                if (quantity != null)
+                {
+                    quantityC = (int)quantity;
+                }
+
+                string operation = await caseService.BuyCaseAsync(caseId, userId, quantityC);
 
                 return Ok(new { Message = operation });
             }
@@ -167,12 +217,34 @@ namespace CaseOpener.API.Controllers
             }
         }
 
-        [HttpGet("user-has-case")]
-        public async Task<IActionResult> UserHasCase(int caseId, string userId) 
+        [HttpGet("bought-cases")]
+        public async Task<IActionResult> GetBoughtCases(string userId)
         {
-            bool result = await caseService.DoesUserHaveCase(userId, caseId);
+            try
+            {
+                var cases = await caseService.GetUsersCasesAsync(userId);
 
-            return Ok(new { Message = result.ToString() });
+                return Ok(cases);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user-opened-cases")]
+        public async Task<IActionResult> GetUserOpenedCases(string userId)
+        {
+            try
+            {
+                var cases = await caseService.GetUserOpenedCasesAsync(userId);
+
+                return Ok(cases);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

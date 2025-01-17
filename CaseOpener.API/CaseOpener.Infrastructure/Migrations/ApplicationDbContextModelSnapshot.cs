@@ -133,6 +133,40 @@ namespace CaseOpener.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.CaseUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Case User identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CaseId")
+                        .HasColumnType("int")
+                        .HasComment("Case identifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasComment("Case quanitity");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User identifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CaseUsers", t =>
+                        {
+                            t.HasComment("Case User mapping table");
+                        });
+                });
+
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -424,7 +458,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 0m,
                             DateJoined = new DateTime(2024, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC5q0ixLjaEtD9hTkKd4r1dETz78h0Wx8kO6v7kalp2jEJ/hLN33m9X543qxNJPifQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJS5sS+TaW2My0N0wl4HGXzTp3fJw1LRa5KnTkpaKuGzpapyFsSNyqreSpjnSyUESw==",
                             Username = "Admin"
                         },
                         new
@@ -433,7 +467,7 @@ namespace CaseOpener.Infrastructure.Migrations
                             Balance = 1000m,
                             DateJoined = new DateTime(2024, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "johndoe@gmail.com",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP8EYJ4To9JlPaG0fPuKkdvaoL0Ie7Cmavuy4xqcijyxphgy0Y89ibPAIAhpXMUzdw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDihq00+bvOa5T/RIy+LLbUfeadQ5kO8ObfyjzVYgeu8ocvfqH88RpYX3e5r5I42Uw==",
                             Username = "JohnD"
                         });
                 });
@@ -527,6 +561,25 @@ namespace CaseOpener.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CaseOpener.Infrastructure.Models.CaseUser", b =>
+                {
+                    b.HasOne("CaseOpener.Infrastructure.Models.Case", "Case")
+                        .WithMany("CaseUsers")
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CaseOpener.Infrastructure.Models.User", "User")
+                        .WithMany("CaseUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.DailyReward", b =>
                 {
                     b.HasOne("CaseOpener.Infrastructure.Models.Case", "Case")
@@ -601,6 +654,8 @@ namespace CaseOpener.Infrastructure.Migrations
 
                     b.Navigation("CaseOpenings");
 
+                    b.Navigation("CaseUsers");
+
                     b.Navigation("DailyRewards");
                 });
 
@@ -626,6 +681,8 @@ namespace CaseOpener.Infrastructure.Migrations
             modelBuilder.Entity("CaseOpener.Infrastructure.Models.User", b =>
                 {
                     b.Navigation("CaseOpenings");
+
+                    b.Navigation("CaseUsers");
 
                     b.Navigation("DailyRewards");
 

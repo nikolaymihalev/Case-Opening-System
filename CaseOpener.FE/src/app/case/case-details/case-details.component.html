@@ -1,0 +1,62 @@
+@if (isLoading) {
+    <app-loader/>
+}@else {
+    <div class="case-details-container">
+        <img class="back" src="case_details_back.png" >
+        <div class="details">
+            <h2>{{caseDetails?.case?.name}}</h2>
+            @if(isOpening){
+                <div class="case-opening-container">
+                    <div class="case-items" [style]="{ animationDuration: animationDuration + 's' }">
+                      <div>
+                        @for (item of displayedItems; track $index) {
+                            <img [src]="item.imageUrl"/>
+                        }
+                      </div>
+                    </div>
+                </div>
+            }@else {
+                <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
+            }
+            @if(doesUserHaveCaseCount>0){
+                @if(isOpening === false){
+                    <button (click)="startOpening()">Open</button>                
+                }
+            }@else {
+                <div class="buy-container">
+                    <div class="quantity-container">
+                        @for (quantity of quantityArray; track $index) {
+                            <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
+                        }
+                    </div>
+                    <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
+                </div>
+            }
+        </div>
+        <div class="items-container">
+            <h3><i class="fa-solid fa-suitcase"></i> Case Contains</h3>
+            <div class="items-wrapper">
+                @for (item of caseDetails?.items; track $index) {
+                    <div class="item" [style]="{
+                        borderColor: 
+                            item.rarity === 'MilSpec' ? 'darkblue':
+                            item.rarity === 'Restricted' ? 'purple':
+                            item.rarity === 'Classified' ? 'plum' :
+                            item.rarity === 'Covert'? 'red':
+                            'gold',
+                        backgroundColor: item.rarity === 'MilSpec' ? '#000024':
+                            item.rarity === 'Restricted' ? '#13002b':
+                            item.rarity === 'Classified' ? '#2b0017' :
+                            item.rarity === 'Covert'? '#2b0000':
+                            '#2b2000'   }">
+                        <h3>{{item.name}}</h3>
+                        <img src={{item.imageUrl}}>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
+}

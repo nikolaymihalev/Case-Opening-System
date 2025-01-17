@@ -1,28 +1,36 @@
 <div class="header-container">
     <div class="nav-container">
         <img src="logo.png">
-        <a routerLink="/"><i class="fa-solid fa-suitcase"></i>Cases</a>
-        <a routerLink="/"><i class="fa-solid fa-star daily"></i>Daily Free</a>
+        <a routerLink="/home" (click)="toggleMenu(false)"><i class="fa-solid fa-suitcase"></i>Cases</a>
+        <a routerLink="/daily" (click)="toggleMenu(false)"><i class="fa-solid fa-star daily"></i>Daily Free</a>
     </div>   
     @if(isLoggedIn){
-        <button class="bars" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button>        
+        <div class="logged-in-btns">
+            <div class="user-balance-container">
+                <h4>{{balance.toFixed(2)}} $</h4>
+            </div>
+            <button class="bars" (click)="toggleMenu(true)"><i class="fa-solid fa-bars"></i></button>        
+        </div>
     }@else {
         <a routerLink="/login" class="login">Sign in</a>
     }
 </div>
 <div class="floating-menu" [class.open]="menuOpen">
     <div class="floating-toggle">
-        <button (click)="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        <button (click)="toggleMenu(false)"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <ul>
         <li>
-            <a routerLink="/">Inventory</a>
+            <a routerLink="/inventory" (click)="toggleMenu(false)">Inventory</a>
         </li>
         <li>
-            <a routerLink="/">Transactions</a>
+            <a routerLink="/mycases" (click)="toggleMenu(false)">My Cases</a>
         </li>
         <li>
-            <a routerLink="/">Settings</a>
+            <a routerLink="/history" (click)="toggleMenu(false)">History</a>
+        </li>
+        <li>
+            <a routerLink="/settings" (click)="toggleMenu(false)">Settings</a>
         </li>
         <li>
             <button (click)="logout()">Sign out</button>

@@ -65,5 +65,10 @@ namespace CaseOpener.Infrastructure.Models
         /// Collection of case items.
         /// </summary>
         public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();
+
+        /// <summary>
+        /// Collection of case users.
+        /// </summary>
+        public ICollection<CaseUser> CaseUsers { get; set; } = new List<CaseUser>();
     }
 }

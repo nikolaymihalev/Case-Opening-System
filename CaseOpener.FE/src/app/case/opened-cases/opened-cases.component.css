@@ -1,0 +1,57 @@
+.opened-cases-container{
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin: 3em auto;    
+}
+
+.opened-case{
+    color: #dedede;
+    background-color: #161726;
+    border-radius: 0.5em;
+    padding: 2em 3em;
+}
+
+.opened-case h2{
+    font-size: 1.8rem;
+    margin-bottom: 1em;
+}
+
+.opened-case-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2em;
+}
+
+.opened-case-details .case,
+.opened-case-details .item{
+    padding: 1em 2em;
+    border-radius: 0.5em;
+    text-align: center;
+    flex: 1 1 30%;
+}
+
+.opened-case-details .case h3,
+.opened-case-details .item h3{
+    font-size: 1.6rem;
+}
+
+.opened-case-details .case img,
+.opened-case-details .item img{
+    width: 200px;
+    height: 200px;
+}
+
+.opened-case-details .case{
+    background-color: #3d3f6d;
+}
+
+.opened-case-details .item{
+    border: 3px solid #000;
+}
+
+.opened-case-details i{
+    font-size: 5rem;
+}

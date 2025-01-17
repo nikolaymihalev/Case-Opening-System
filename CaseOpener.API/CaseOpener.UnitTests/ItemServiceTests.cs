@@ -36,7 +36,7 @@ namespace CaseOpener.UnitTests
             {
                 Name = "Test Item",
                 Type = "Skin",
-                Rarity = "Industrial",
+                Rarity = "MilSpec",
                 ImageUrl = "http://example.com/item.png",
                 Amount = 5
             };
@@ -207,7 +207,7 @@ namespace CaseOpener.UnitTests
             await repository.AddAsync(item);
             await repository.SaveChangesAsync();
 
-            var inventoryItem = new InventoryItem
+            var inventoryItem = new InventoryItemModel
             {
                 UserId = "user123",
                 ItemId = item.Id
