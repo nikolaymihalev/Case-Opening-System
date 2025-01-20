@@ -93,7 +93,7 @@ namespace CaseOpener.Core.Services
                 Username = model.Username,
                 Email = model.Email,
                 DateJoined = DateTime.Now,
-                Balance = 1000m
+                Balance = 100m
             };
 
             var passwordHasher = new PasswordHasher<User>();

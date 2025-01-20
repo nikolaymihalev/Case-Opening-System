@@ -115,7 +115,7 @@ export class CaseDetailsComponent implements OnInit {
       this.isCaseOpened = false; 
       this.isOpening = false;
       this.isLoading = false;
-    },2000);
+    },1500);
   }
 
   getAnimationStyle(index: number): { transform: string, backgroundColor: string,  borderColor: string} {
