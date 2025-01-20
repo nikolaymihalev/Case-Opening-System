@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { CaseDetails, CaseItem } from '../../types/case';
@@ -105,9 +105,17 @@ export class CaseDetailsComponent implements OnInit {
     this.animateItems();
   }
 
-  getAnimationStyle(index: number): { transform: string } {
+  getAnimationStyle(index: number): { transform: string, backgroundColor: string,  borderColor: string} {
     return {      
       transform: `translateX(${this.positions[index]}%)`,
+      backgroundColor: this.displayedItems[index].rarity === 'MilSpec' ? '#000024':
+        this.displayedItems[index].rarity === 'Restricted' ? '#13002b':
+        this.displayedItems[index].rarity === 'Classified' ? '#2b0017' :
+        this.displayedItems[index].rarity === 'Covert'? '#2b0000': '#2b2000',
+      borderColor: this.displayedItems[index].rarity === 'MilSpec' ? 'darkblue':
+        this.displayedItems[index].rarity === 'Restricted' ? 'purple':
+        this.displayedItems[index].rarity === 'Classified' ? 'plum' :
+        this.displayedItems[index].rarity === 'Covert'? 'red': 'gold'
     };
   }
 

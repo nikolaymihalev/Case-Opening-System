@@ -9,7 +9,7 @@
                 <div class="case-opening-container">
                     <div class="case-items">
                         @for (item of displayedItems; track $index) {
-                        <div [class]="{ highlight: $index === stopAt }" [style]="getAnimationStyle($index)">
+                        <div [style]="getAnimationStyle($index)">
                             <img [src]="item.imageUrl"/>
                         </div>
                         }
@@ -17,20 +17,20 @@
                 </div>
             }@else {
                 <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
-            }
-            @if(doesUserHaveCaseCount>0){
-                @if(isOpening === false){
-                    <button (click)="startOpening()">Open</button>                
-                }
-            }@else {
-                <div class="buy-container">
-                    <div class="quantity-container">
-                        @for (quantity of quantityArray; track $index) {
-                            <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
-                        }
+                @if(doesUserHaveCaseCount>0){
+                    @if(isOpening === false){
+                        <button (click)="startOpening()">Open</button>                
+                    }
+                }@else {
+                    <div class="buy-container">
+                        <div class="quantity-container">
+                            @for (quantity of quantityArray; track $index) {
+                                <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
+                            }
+                        </div>
+                        <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
                     </div>
-                    <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
-                </div>
+                }
             }
         </div>
         <div class="items-container">
