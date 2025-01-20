@@ -132,20 +132,18 @@
 /* ------------------------------------------------------------------------ */
 .case-opening-container {
     position: relative;
-    width: 300px; 
     height: 100px;
+    width: 500px;
     overflow: hidden; 
     border: 2px solid #000;
-  }
+}
   
-  .case-items {
+.case-items {
     display: flex;
     position: relative;
-    animation: scrollItems linear infinite;
-    will-change: transform;
-  }
-  
-  .case-items div {
+}
+
+.case-items div {
     flex-shrink: 0;
     width: 100px;
     height: 100px;
@@ -155,23 +153,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+    white-space: nowrap;
+    transition: transform 0.1s linear;
+}
   
-  .case-items div img {
+.case-items div img {
     max-width: 80%;
     max-height: 80%;
-  }
-  
-  .case-items div.highlight {
+}
+
+.case-items div.highlight {
     border: 2px solid gold;
     background-color: rgba(255, 223, 0, 0.3);
-  }
-  
-  @keyframes scrollItems {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-100%);
-    }
-  }
+}  

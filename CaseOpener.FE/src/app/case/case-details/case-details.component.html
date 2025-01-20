@@ -7,12 +7,12 @@
             <h2>{{caseDetails?.case?.name}}</h2>
             @if(isOpening){
                 <div class="case-opening-container">
-                    <div class="case-items" [style]="{ animationDuration: animationDuration + 's' }">
-                      <div>
+                    <div class="case-items">
                         @for (item of displayedItems; track $index) {
+                        <div [class]="{ highlight: $index === stopAt }" [style]="getAnimationStyle($index)">
                             <img [src]="item.imageUrl"/>
+                        </div>
                         }
-                      </div>
                     </div>
                 </div>
             }@else {

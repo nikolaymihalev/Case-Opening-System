@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { CaseDetails, CaseItem } from '../../types/case';
@@ -34,11 +34,16 @@ export class CaseDetailsComponent implements OnInit {
   hasNotification: boolean = false;
 
   displayedItems: Item[] = [];
-  animationDuration = 2;
-  winningItemIndex = 0;
+  items: number[] = Array.from({ length: 15 }, (_, i) => i);
+  stopAt: number = 12; 
+  positions: number[] = this.items.map(() => 100); 
 
   get getCasePrice(): number{
     return this.casePrice*this.caseQuantity;
+  }
+
+  get caseId(): number{
+    return this.route.snapshot.params['caseId'];
   }
 
   constructor(
@@ -48,12 +53,11 @@ export class CaseDetailsComponent implements OnInit {
     private notificationService: NotificationService){}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['caseId'];
-
     this.setUser();
-    this.getCase(id);
-    this.checkDoesUserHaveCase(id);
+    this.getCase(this.caseId);
+    this.checkDoesUserHaveCase(this.caseId);
     this.subscribeToNotification();    
+    
   }
 
   buy(){    
@@ -93,31 +97,42 @@ export class CaseDetailsComponent implements OnInit {
       this.generateDisplayedItems(probabilities);
     })
 
-    let duration = 2; 
-    const interval = setInterval(() => {
-      duration += 0.5; 
-      this.animationDuration = duration;
+    this.apiService.openCase(this.caseDetails?.case.id!, this.user?.id!).subscribe((item: Item) => {
+      this.displayedItems[this.stopAt] = item;
+      this.checkDoesUserHaveCase(this.caseId);       
+    })
 
-      if (duration > 5) {
-        clearInterval(interval);
-      }
-    }, 500);
+    this.animateItems();
+  }
+
+  getAnimationStyle(index: number): { transform: string } {
+    return {      
+      transform: `translateX(${this.positions[index]}%)`,
+    };
   }
 
   private generateDisplayedItems(probabilities: CaseItem[]) {
     this.displayedItems = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < this.items.length; i++) {
       const randomItem = this.getWeightedRandomItem(probabilities);      
       const itemDetails = this.caseDetails?.items.find(item => item.id === randomItem.itemId); 
       if (itemDetails) {
         this.displayedItems.push(itemDetails);
       }
-    }    
-    this.apiService.openCase(this.caseDetails?.case.id!, this.user?.id!).subscribe({
-      next: (item: Item) => {
-      this.displayedItems[this.winningItemIndex] = item; 
-    }})
+    }       
+  }
+
+  private animateItems() {
+    this.displayedItems.forEach((_, index) => {
+        this.positions[index] -= 15;
+    });
+    
+    if (this.positions[this.stopAt] <= -1000) {
+      //this.isOpening = false; 
+    } else {
+      setTimeout(() => this.animateItems(), 50);
+    }
   }
 
   private getWeightedRandomItem(probabilities: CaseItem[]): CaseItem {
