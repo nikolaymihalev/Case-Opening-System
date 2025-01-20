@@ -3,7 +3,7 @@
 }@else{
     <div class="parent-container">
         <div class="inventory-container">
-            @for (item of items; track $index) {
+            @for (item of currentItems; track $index) {
                 <button class="item-button" (click)="setCurrentItem(item)" [style]="{
                     borderColor: 
                         item.rarity === 'MilSpec' ? 'darkblue':
@@ -20,6 +20,10 @@
                         <img src={{item.imageUrl}}>            
                 </button>
             }
+            <div class="pages-container">
+                <button (click)="changePage(0)"><i class="fa-solid fa-angle-left"></i></button>
+                <button (click)="changePage(1)"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
         </div>
         @if(isCurrentItemMode){
             <div class="item-container">
