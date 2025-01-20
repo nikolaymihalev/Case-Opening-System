@@ -55,3 +55,29 @@
 .opened-case-details i{
     font-size: 5rem;
 }
+
+.pages-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.pages-container button{
+    flex: 1 1 auto;
+    font-size: 2.5rem;
+    border-radius: 0.3em;
+    padding: 0.3em 0;
+    color: #dedede;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.pages-container button:hover{
+    background-color: #000;
+    color: #fff;
+}
