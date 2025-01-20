@@ -24,6 +24,7 @@ export class CaseDetailsComponent implements OnInit {
   
   isLoading: boolean = true;
   isOpening: boolean = false;
+  isCaseOpened: boolean = false;
   doesUserHaveCaseCount: number = 0;
 
   caseQuantity: number = 1;
@@ -37,6 +38,7 @@ export class CaseDetailsComponent implements OnInit {
   items: number[] = Array.from({ length: 15 }, (_, i) => i);
   stopAt: number = 12; 
   positions: number[] = this.items.map(() => 100); 
+  openedItem: Item | undefined;
 
   get getCasePrice(): number{
     return this.casePrice*this.caseQuantity;
@@ -105,6 +107,17 @@ export class CaseDetailsComponent implements OnInit {
     this.animateItems();
   }
 
+  stopOpenning(){
+    this.notificationService.showNotification('Added item to inventory!');
+    this.hasNotification = true;
+    this.isLoading = true;
+    setTimeout(()=>{
+      this.isCaseOpened = false; 
+      this.isOpening = false;
+      this.isLoading = false;
+    },2000);
+  }
+
   getAnimationStyle(index: number): { transform: string, backgroundColor: string,  borderColor: string} {
     return {      
       transform: `translateX(${this.positions[index]}%)`,
@@ -137,7 +150,10 @@ export class CaseDetailsComponent implements OnInit {
     });
     
     if (this.positions[this.stopAt] <= -1000) {
-      //this.isOpening = false; 
+      setTimeout(()=>{
+        this.isCaseOpened = true; 
+        this.openedItem = this.displayedItems[this.stopAt];
+      }, 2000);
     } else {
       setTimeout(() => this.animateItems(), 50);
     }
