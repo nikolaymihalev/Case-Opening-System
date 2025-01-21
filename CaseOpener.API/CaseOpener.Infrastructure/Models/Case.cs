@@ -57,11 +57,6 @@ namespace CaseOpener.Infrastructure.Models
         public ICollection<CaseOpening> CaseOpenings { get; set; } = new List<CaseOpening>();
 
         /// <summary>
-        /// Collection of daily rewards.
-        /// </summary>
-        public ICollection<DailyReward> DailyRewards { get; set; } = new List<DailyReward>();
-
-        /// <summary>
         /// Collection of case items.
         /// </summary>
         public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();

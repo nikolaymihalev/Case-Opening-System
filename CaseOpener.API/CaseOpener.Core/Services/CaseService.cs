@@ -364,63 +364,6 @@ namespace CaseOpener.Core.Services
             };
         }
 
-        public async Task<ItemModel> OpenDailyRewardAsync(string userId)
-        {
-            var user = await repository.GetByIdAsync<User>(userId);
-
-            if (user != null)
-            {
-                var dailyReward = await repository.All<DailyReward>().FirstOrDefaultAsync(x => x.UserId == userId);
-
-                if (dailyReward != null && (DateTime.Now - dailyReward.LastClaimedDate).TotalHours >= 24)
-                {
-                    var caseM = await repository.AllReadonly<Case>().FirstOrDefaultAsync(x => x.Name == "Daily Reward");
-
-                    if (caseM != null)
-                    {
-                        var item = await OpenCaseAsync(caseM.Id, userId);
-                        dailyReward.LastClaimedDate = DateTime.Now;
-
-                        await repository.SaveChangesAsync();
-
-                        return item;
-                    }
-                }
-
-                throw new ArgumentException(ReturnMessages.CannotClaimDailyReward);
-            }
-            else
-                throw new ArgumentException(string.Format(ReturnMessages.DoesntExist, "User"));
-        }
-
-        public async Task SubscribeUserToDailyRewardAsync(string userId)
-        {
-            var user = await repository.GetByIdAsync<User>(userId);
-
-            if (user != null)
-            {
-                var entity = await repository.AllReadonly<DailyReward>().FirstOrDefaultAsync(x => x.UserId == userId);
-
-                if (entity is null)
-                {
-                    var caseM = await repository.AllReadonly<Case>().FirstOrDefaultAsync(x => x.Name == "Daily Reward");
-
-                    if (caseM != null)
-                    {
-                        var model = new DailyRewardModel()
-                        {
-                            UserId = userId,
-                            CaseId = caseM.Id,
-                            LastClaimedDate = new DateTime()
-                        };
-
-                        await repository.AddAsync(model);
-                        await repository.SaveChangesAsync();
-                    }
-                }
-            }           
-        }
-
         private int GetRandomItem(List<CaseItemModel> items)
         {
             var cumulativeProbability = 0.0;

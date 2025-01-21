@@ -24,7 +24,7 @@ export class CaseDetailsComponent implements OnInit {
   
   isLoading: boolean = true;
   isOpening: boolean = false;
-  isCaseOpened: boolean = false;
+  isCaseOpened: boolean = false;  
   doesUserHaveCaseCount: number = 0;
 
   caseQuantity: number = 1;
@@ -48,6 +48,10 @@ export class CaseDetailsComponent implements OnInit {
     return this.route.snapshot.params['caseId'];
   }
 
+  get isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
+  }
+
   constructor(
     private route: ActivatedRoute, 
     private userService: UserService,
@@ -63,7 +67,7 @@ export class CaseDetailsComponent implements OnInit {
   }
 
   buy(){    
-    if(this.canUserBuyCase() === true){
+    if(this.canUserBuyCase() === true && this.isLoggedIn){
       this.apiService.buyCase(this.caseDetails?.case.id!, this.user?.id!, this.caseQuantity).subscribe({
         next:()=>{
           this.notificationService.showNotification('Successfully bought case!');

@@ -151,34 +151,6 @@ namespace CaseOpener.API.Controllers
             }
         }
 
-        [HttpPost("claim-daily-reward")]
-        public async Task<IActionResult> ClaimDailyReward(string userId)
-        {
-            try
-            {
-                var openedItem = await caseService.OpenDailyRewardAsync(userId);
-
-                var inventoryItem = new InventoryItemModel()
-                {
-                    UserId = userId,
-                    ItemId = openedItem.Id
-                };
-
-                string operation = await itemService.AddItemToInventoryAsync(inventoryItem);
-
-                if (operation == string.Format(ReturnMessages.SuccessfullyAdded, "item to inventory"))
-                {
-                    return Ok(openedItem);
-                }
-
-                throw new ArgumentException(ReturnMessages.OperationFailed);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpGet("item-probabilities")]
         public async Task<IActionResult> GetCaseItemProbabilities(int caseId)
         {
