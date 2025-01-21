@@ -70,8 +70,13 @@
                             item.rarity === 'Classified' ? '#2b0017' :
                             item.rarity === 'Covert'? '#2b0000':
                             '#2b2000'   }">
-                        <h3>{{item.name}}</h3>
-                        <img src={{item.imageUrl}}>
+                        @if(item.rarity === 'ExceedinglyRare'){
+                            <h3>Special item</h3>
+                            <img class="special-item" src="special_case_item.png">
+                        }@else {
+                            <h3>{{item.name}}</h3>
+                            <img src={{item.imageUrl}}>
+                        }
                     </div>
                 }
             </div>

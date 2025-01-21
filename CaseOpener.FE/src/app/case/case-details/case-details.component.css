@@ -206,6 +206,11 @@
     animation-duration: 3s;
 }
 
+.item .special-item{
+    width: 180px; 
+    height: 130px;
+}
+
 @keyframes scaleContainer{
     0%{
         scale: 0.1;
