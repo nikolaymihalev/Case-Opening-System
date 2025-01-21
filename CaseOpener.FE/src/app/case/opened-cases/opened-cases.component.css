@@ -81,3 +81,16 @@
     background-color: #000;
     color: #fff;
 }
+
+
+@media only screen and (max-width: 1000px) {
+    .opened-cases-container{
+        width: 100%;
+    }
+
+    .opened-case-details .case img,
+    .opened-case-details .item img{
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -93,6 +93,15 @@ export class InventoryComponent implements OnInit{
       this.itemsStartIndex = 0;
       this.getCurrentItems(this.items);
     }
+
+    this.scrollToTop();
+  }
+
+  private scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 
   private getCurrentItems(items: Item[]){

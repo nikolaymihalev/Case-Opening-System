@@ -219,3 +219,17 @@
         scale: 1;
     }
 }
+
+@media only screen and (max-width: 1200px) {
+    .items-wrapper{
+        width: 100%;
+    }
+
+    .case-opening-container{
+        width: 600px;
+    }
+
+    .case-items div{
+        width: 125px;
+    }
+}
