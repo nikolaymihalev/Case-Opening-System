@@ -1,9 +1,5 @@
 <div class="header-container">
-    <div class="nav-container">
-        <img src="logo.png">
-        <a routerLink="/home" (click)="toggleMenu(false)"><i class="fa-solid fa-suitcase"></i>Cases</a>
-        <a routerLink="/daily" (click)="toggleMenu(false)"><i class="fa-solid fa-star daily"></i>Daily Free</a>
-    </div>   
+    <a routerLink="/home" (click)="toggleMenu(false)"><img class="home-img" src="logo.png"></a>  
     @if(isLoggedIn){
         <div class="logged-in-btns">
             <div class="user-balance-container">
