@@ -113,3 +113,26 @@
   display: flex;
   gap: 0.5em;
 }
+
+@media only screen and (max-width: 1000px) {
+  .floating-menu{
+    right: -70%; 
+    width: 70%;
+  }
+
+  .floating-menu ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .floating-menu a,
+  .floating-menu button{
+    font-size: 1.8rem;
+  }
+
+  .floating-toggle button i{
+    font-size: 2.5rem;
+  }
+}

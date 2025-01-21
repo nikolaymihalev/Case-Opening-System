@@ -60,3 +60,17 @@ ul li a:hover .tiktok{
 ul li a:hover .telegram{
     color: rgb(0, 174, 255);
 }
+
+@media only screen and (max-width: 1000px) {
+    .footer-container{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding: 2em;
+    }
+
+    .company-container{
+        order: 1;
+        margin-top: 2em;
+    }
+}
