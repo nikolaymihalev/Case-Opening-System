@@ -110,11 +110,9 @@ export class CaseDetailsComponent implements OnInit {
   stopOpenning(){
     this.notificationService.showNotification('Added item to inventory!');
     this.hasNotification = true;
-    this.isLoading = true;
     setTimeout(()=>{
       this.isCaseOpened = false; 
       this.isOpening = false;
-      this.isLoading = false;
     },1500);
   }
 
@@ -153,6 +151,7 @@ export class CaseDetailsComponent implements OnInit {
       setTimeout(()=>{
         this.isCaseOpened = true; 
         this.openedItem = this.displayedItems[this.stopAt];
+        this.positions = this.items.map(() => 100); 
       }, 2000);
     } else {
       setTimeout(() => this.animateItems(), 50);
