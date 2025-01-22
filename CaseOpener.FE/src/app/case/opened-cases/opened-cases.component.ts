@@ -14,9 +14,16 @@ import { LoaderComponent } from "../../shared/loader/loader.component";
 })
 export class OpenedCasesComponent implements OnInit{
   openedCases: OpenedCase[] = [];
+  currentOpenedCases: OpenedCase[] = [];
   user: User | undefined;
 
   isLoading: boolean = true;
+
+  openedCasesPerPageCount: number = 5;
+  pages: number = 0;
+  currentPage: number = 1;
+  openedCasesStartIndex: number = 0;
+  openedCasesEndIndex: number = 5;
 
   constructor(
     private userService: UserService,
@@ -40,6 +47,41 @@ export class OpenedCasesComponent implements OnInit{
     return `${day}/${month}/${year} - ${hour}:${minutes}`;
   }
 
+  changePage(operation: number){     
+    if(operation === 1)  {
+        this.openedCasesEndIndex += this.openedCasesPerPageCount;
+        this.openedCasesStartIndex += this.openedCasesPerPageCount;
+    }else if(operation === 0){
+      this.openedCasesEndIndex -= this.openedCasesPerPageCount;
+      this.openedCasesStartIndex -= this.openedCasesPerPageCount;
+    }
+
+    this.getCurrentItems(this.openedCases);
+
+    if(this.currentOpenedCases.length === 0){
+      this.openedCasesEndIndex = this.openedCasesPerPageCount;
+      this.openedCasesStartIndex = 0;
+      this.getCurrentItems(this.openedCases);
+    }
+
+    this.scrollToTop();
+  }
+
+  private scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+  
+  private getCurrentItems(openedCases: OpenedCase[]){
+    this.currentOpenedCases = [];
+    for (let index = this.openedCasesStartIndex; index < this.openedCasesEndIndex; index++) {
+      if(openedCases[index])
+        this.currentOpenedCases.push(openedCases[index]);      
+    }    
+  }
+
   private setUser(){
     this.isLoading = true;
     this.userService.user$.subscribe((user)=>{
@@ -54,6 +96,9 @@ export class OpenedCasesComponent implements OnInit{
       this.openedCases = cases;
 
       this.isLoading = false;
+
+      this.pages = cases.length / this.openedCasesPerPageCount;
+      this.getCurrentItems(cases);
     })
   }
 }

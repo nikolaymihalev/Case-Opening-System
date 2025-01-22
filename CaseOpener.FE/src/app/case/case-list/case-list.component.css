@@ -183,3 +183,39 @@
     background-color: #903749;
     border-color: #E84545;
 }
+
+@media only screen and (max-width: 1000px) {
+    .list-nav-menu .categories{
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+
+    .categories button{
+        font-size: 1rem;
+    }
+
+    .cases-container h4{
+        font-size: 1.6rem;
+    }
+    
+    .case{
+        flex: 1 1 auto;
+    }
+
+    .case img{
+        width: 200px;
+    }
+
+    .case h5{
+        font-size: 1rem;
+    }
+
+    .case .price-container{
+        font-size: 1rem;
+    }
+    
+    .price-container h3,
+    .price-container p{
+        font-size: 1rem;
+    }
+  }

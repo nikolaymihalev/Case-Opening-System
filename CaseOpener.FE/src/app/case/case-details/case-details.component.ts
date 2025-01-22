@@ -24,6 +24,7 @@ export class CaseDetailsComponent implements OnInit {
   
   isLoading: boolean = true;
   isOpening: boolean = false;
+  isCaseOpened: boolean = false;  
   doesUserHaveCaseCount: number = 0;
 
   caseQuantity: number = 1;
@@ -34,11 +35,21 @@ export class CaseDetailsComponent implements OnInit {
   hasNotification: boolean = false;
 
   displayedItems: Item[] = [];
-  animationDuration = 2;
-  winningItemIndex = 0;
+  items: number[] = Array.from({ length: 15 }, (_, i) => i);
+  stopAt: number = 12; 
+  positions: number[] = this.items.map(() => 100); 
+  openedItem: Item | undefined;
 
   get getCasePrice(): number{
     return this.casePrice*this.caseQuantity;
+  }
+
+  get caseId(): number{
+    return this.route.snapshot.params['caseId'];
+  }
+
+  get isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
   }
 
   constructor(
@@ -48,16 +59,14 @@ export class CaseDetailsComponent implements OnInit {
     private notificationService: NotificationService){}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['caseId'];
-
     this.setUser();
-    this.getCase(id);
-    this.checkDoesUserHaveCase(id);
-    this.subscribeToNotification();    
+    this.getCase(this.caseId);
+    this.checkDoesUserHaveCase(this.caseId);
+    this.subscribeToNotification();        
   }
 
   buy(){    
-    if(this.canUserBuyCase() === true){
+    if(this.canUserBuyCase() === true && this.isLoggedIn){
       this.apiService.buyCase(this.caseDetails?.case.id!, this.user?.id!, this.caseQuantity).subscribe({
         next:()=>{
           this.notificationService.showNotification('Successfully bought case!');
@@ -84,7 +93,7 @@ export class CaseDetailsComponent implements OnInit {
   }
 
   canUserBuyCase():boolean{    
-    return this.user?.balance! >= this.casePrice;
+    return this.user?.balance! >= this.getCasePrice;
   }
 
   startOpening() {
@@ -93,31 +102,63 @@ export class CaseDetailsComponent implements OnInit {
       this.generateDisplayedItems(probabilities);
     })
 
-    let duration = 2; 
-    const interval = setInterval(() => {
-      duration += 0.5; 
-      this.animationDuration = duration;
+    this.apiService.openCase(this.caseDetails?.case.id!, this.user?.id!).subscribe((item: Item) => {
+      this.displayedItems[this.stopAt] = item;
+      this.checkDoesUserHaveCase(this.caseId);       
+    })
 
-      if (duration > 5) {
-        clearInterval(interval);
-      }
-    }, 500);
+    this.animateItems();
+  }
+
+  stopOpenning(){
+    this.notificationService.showNotification('Added item to inventory!');
+    this.hasNotification = true;
+    setTimeout(()=>{
+      this.isCaseOpened = false; 
+      this.isOpening = false;
+    },1500);
+  }
+
+  getAnimationStyle(index: number): { transform: string, backgroundColor: string,  borderColor: string} {
+    return {      
+      transform: `translateX(${this.positions[index]}%)`,
+      backgroundColor: this.displayedItems[index].rarity === 'MilSpec' ? '#000024':
+        this.displayedItems[index].rarity === 'Restricted' ? '#13002b':
+        this.displayedItems[index].rarity === 'Classified' ? '#2b0017' :
+        this.displayedItems[index].rarity === 'Covert'? '#2b0000': '#2b2000',
+      borderColor: this.displayedItems[index].rarity === 'MilSpec' ? 'darkblue':
+        this.displayedItems[index].rarity === 'Restricted' ? 'purple':
+        this.displayedItems[index].rarity === 'Classified' ? 'plum' :
+        this.displayedItems[index].rarity === 'Covert'? 'red': 'gold'
+    };
   }
 
   private generateDisplayedItems(probabilities: CaseItem[]) {
     this.displayedItems = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < this.items.length; i++) {
       const randomItem = this.getWeightedRandomItem(probabilities);      
       const itemDetails = this.caseDetails?.items.find(item => item.id === randomItem.itemId); 
       if (itemDetails) {
         this.displayedItems.push(itemDetails);
       }
-    }    
-    this.apiService.openCase(this.caseDetails?.case.id!, this.user?.id!).subscribe({
-      next: (item: Item) => {
-      this.displayedItems[this.winningItemIndex] = item; 
-    }})
+    }       
+  }
+
+  private animateItems() {
+    this.displayedItems.forEach((_, index) => {
+        this.positions[index] -= 15;
+    });
+    
+    if (this.positions[this.stopAt] <= -1000) {
+      setTimeout(()=>{
+        this.isCaseOpened = true; 
+        this.openedItem = this.displayedItems[this.stopAt];
+        this.positions = this.items.map(() => 100); 
+      }, 2000);
+    } else {
+      setTimeout(() => this.animateItems(), 50);
+    }
   }
 
   private getWeightedRandomItem(probabilities: CaseItem[]): CaseItem {

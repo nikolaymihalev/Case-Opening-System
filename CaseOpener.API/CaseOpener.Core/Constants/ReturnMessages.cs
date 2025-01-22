@@ -16,6 +16,7 @@
         public const string Unauthorized = "Unauthorized!";
 
         public const string SuccessfullyModifiedBalance = "Successfully {0} balance!";
+        public const string CannotModifyBalance = "Can not decrease balance!";
 
         public const string SuccessfullyClaimedDailyReward = "Successfully claimed daily reward!";
         public const string CannotClaimDailyReward = "You can't claim daily reward!";

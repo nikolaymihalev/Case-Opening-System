@@ -16,7 +16,6 @@ namespace CaseOpener.Infrastructure.Data
         public DbSet<Case> Cases { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<CaseOpening> CaseOpenings { get; set; }
-        public DbSet<DailyReward> DailyRewards { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
@@ -29,7 +28,6 @@ namespace CaseOpener.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new CaseOpeningConfiguration());
-            modelBuilder.ApplyConfiguration(new DailyRewardConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryItemConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleConfiguration());

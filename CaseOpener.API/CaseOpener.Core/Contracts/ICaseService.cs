@@ -9,13 +9,11 @@ namespace CaseOpener.Core.Contracts
         Task<IEnumerable<CaseOpeningModel>> GetUserOpenedCasesAsync(string userId);
         Task<IEnumerable<CaseItemModel>> GetCaseItemsProbabilities(int caseId);
         Task<CaseModel> GetCaseByIdAsync(int id);
-        Task SubscribeUserToDailyRewardAsync(string userId);
         Task<string> AddCaseAsync(CaseFormModel model);
         Task<string> EditCaseAsync(CaseFormModel model);
         Task<string> DeleteCaseAsync(int id);
         Task<string> AddItemToCaseAsync(int caseId, int itemId, double probability);
         Task<ItemModel> OpenCaseAsync(int caseId, string userId);
-        Task<ItemModel> OpenDailyRewardAsync(string userId);
         Task<int> DoesUserHaveCaseAsync(string userId, int caseId);
         Task<string> BuyCaseAsync(int caseId, string userId, int quantity);
         Task<IEnumerable<CaseUserModel>> GetUsersCasesAsync(string userId);

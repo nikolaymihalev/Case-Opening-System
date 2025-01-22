@@ -129,49 +129,107 @@
     background-color: #903749;
 }
 
-/* ------------------------------------------------------------------------ */
 .case-opening-container {
     position: relative;
-    width: 300px; 
-    height: 100px;
+    height: 150px;
+    width: 700px;
     overflow: hidden; 
     border: 2px solid #000;
-  }
+    margin: 2em 0;
+}
+
+.case-opening-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 5px;
+    background-color: #E84545;
+    transform: translateX(-50%);
+}
   
-  .case-items {
+.case-items {
     display: flex;
     position: relative;
-    animation: scrollItems linear infinite;
-    will-change: transform;
-  }
-  
-  .case-items div {
+    gap: 0.2em;
+}
+
+.case-items div {
     flex-shrink: 0;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 3px solid #ddd;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+    white-space: nowrap;
+    transition: transform 0.1s linear;
+}
   
-  .case-items div img {
+.case-items div img {
     max-width: 80%;
     max-height: 80%;
-  }
-  
-  .case-items div.highlight {
-    border: 2px solid gold;
-    background-color: rgba(255, 223, 0, 0.3);
-  }
-  
-  @keyframes scrollItems {
-    from {
-      transform: translateX(0);
+}
+
+.opened-item-container{
+    margin: 1em auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+
+.opened-item-container h3{
+    margin: 1em;
+    color: #ddd;
+    font-size: 1.6rem;
+}
+
+.opened-item-container .image-container img{
+    width: 350px;
+    height: 350px;
+    margin: 0 auto;
+}
+
+.opened-item-container .image-container{
+    width: 400px;
+    height: 400px;
+    background-color: #6d5900;
+    border: 3px solid gold;
+    border-radius: 15em;
+    padding: 2em;
+    animation-name: scaleContainer;
+    animation-duration: 3s;
+}
+
+.item .special-item{
+    width: 180px; 
+    height: 130px;
+}
+
+@keyframes scaleContainer{
+    0%{
+        scale: 0.1;
     }
-    to {
-      transform: translateX(-100%);
+    100%{
+        scale: 1;
     }
-  }
+}
+
+@media only screen and (max-width: 1200px) {
+    .items-wrapper{
+        width: 100%;
+    }
+
+    .case-opening-container{
+        width: 600px;
+    }
+
+    .case-items div{
+        width: 125px;
+    }
+}

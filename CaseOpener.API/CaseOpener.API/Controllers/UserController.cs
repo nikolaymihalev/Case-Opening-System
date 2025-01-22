@@ -157,13 +157,12 @@ namespace CaseOpener.API.Controllers
                 var user = await userService.RegisterAsync(model);
 
                 await adminService.AddUserToRoleAsync(user.Id, "User");
-                await caseService.SubscribeUserToDailyRewardAsync(user.Id);
 
                 var transaction = new TransactionModel()
                 {
                     UserId = user.Id,
                     Type = TransactionType.Deposit.ToString(),
-                    Amount = 500m,
+                    Amount = 100m,
                     Date = DateTime.Now,
                     Status = TransactionStatus.Completed.ToString()
                 };

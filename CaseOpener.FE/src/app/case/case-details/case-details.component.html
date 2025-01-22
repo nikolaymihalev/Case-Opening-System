@@ -6,31 +6,52 @@
         <div class="details">
             <h2>{{caseDetails?.case?.name}}</h2>
             @if(isOpening){
-                <div class="case-opening-container">
-                    <div class="case-items" [style]="{ animationDuration: animationDuration + 's' }">
-                      <div>
-                        @for (item of displayedItems; track $index) {
-                            <img [src]="item.imageUrl"/>
-                        }
-                      </div>
+                @if(isCaseOpened){
+                    <div class="opened-item-container">
+                        <div class="image-container" [style]="{
+                            borderColor: 
+                                openedItem?.rarity === 'MilSpec' ? 'darkblue':
+                                openedItem?.rarity === 'Restricted' ? 'purple':
+                                openedItem?.rarity === 'Classified' ? 'plum' :
+                                openedItem?.rarity === 'Covert'? 'red':
+                                'gold',
+                            backgroundColor: openedItem?.rarity === 'MilSpec' ? '#000024':
+                                openedItem?.rarity === 'Restricted' ? '#13002b':
+                                openedItem?.rarity === 'Classified' ? '#2b0017' :
+                                openedItem?.rarity === 'Covert'? '#2b0000':
+                                '#2b2000'   }">
+                            <img [src]="openedItem?.imageUrl">
+                        </div>
+                        <h3>{{openedItem?.name}}</h3>
+                        <button (click)="stopOpenning()">Take</button>
                     </div>
-                </div>
-            }@else {
-                <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
-            }
-            @if(doesUserHaveCaseCount>0){
-                @if(isOpening === false){
-                    <button (click)="startOpening()">Open</button>                
+                }@else {
+                    <div class="case-opening-container">
+                        <div class="case-items">
+                            @for (item of displayedItems; track $index) {
+                            <div [style]="getAnimationStyle($index)">
+                                <img [src]="item.imageUrl"/>
+                            </div>
+                            }
+                        </div>
+                    </div>
                 }
             }@else {
-                <div class="buy-container">
-                    <div class="quantity-container">
-                        @for (quantity of quantityArray; track $index) {
-                            <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
-                        }
+                <img class="case-img" src={{caseDetails?.case?.imageUrl}}/>
+                @if(doesUserHaveCaseCount>0){
+                    @if(isOpening === false){
+                        <button (click)="startOpening()">Open</button>                
+                    }
+                }@else {
+                    <div class="buy-container">
+                        <div class="quantity-container">
+                            @for (quantity of quantityArray; track $index) {
+                                <button (click)="changeCaseQuantity(quantity)">{{quantity}}</button>
+                            }
+                        </div>
+                        <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
                     </div>
-                    <button (click)="buy()">Buy {{getCasePrice.toFixed(2)}} $</button>
-                </div>
+                }
             }
         </div>
         <div class="items-container">
@@ -49,8 +70,13 @@
                             item.rarity === 'Classified' ? '#2b0017' :
                             item.rarity === 'Covert'? '#2b0000':
                             '#2b2000'   }">
-                        <h3>{{item.name}}</h3>
-                        <img src={{item.imageUrl}}>
+                        @if(item.rarity === 'ExceedinglyRare'){
+                            <h3>Special item</h3>
+                            <img class="special-item" src="special_case_item.png">
+                        }@else {
+                            <h3>{{item.name}}</h3>
+                            <img src={{item.imageUrl}}>
+                        }
                     </div>
                 }
             </div>

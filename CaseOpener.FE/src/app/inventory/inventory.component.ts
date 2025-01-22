@@ -17,6 +17,7 @@ import { NotificationComponent } from '../shared/notification/notification.compo
 })
 export class InventoryComponent implements OnInit{
   items: Item[] = [];
+  currentItems: Item[] = [];
   user: User | undefined;
   currentItem: Item | undefined;
 
@@ -26,6 +27,12 @@ export class InventoryComponent implements OnInit{
   notificationMessage: string = '';
   notificationType: string = '';
   hasNotification: boolean = false;
+
+  itemsPerPageCount: number = 16;
+  pages: number = 0;
+  currentPage: number = 1;
+  itemsStartIndex: number = 0;
+  itemsEndIndex: number = 16;
 
   constructor(
     private userService: UserService, 
@@ -70,6 +77,41 @@ export class InventoryComponent implements OnInit{
     }
   }
 
+  changePage(operation: number){     
+    if(operation === 1)  {
+        this.itemsEndIndex += this.itemsPerPageCount;
+        this.itemsStartIndex += this.itemsPerPageCount;
+    }else if(operation === 0){
+      this.itemsEndIndex -= this.itemsPerPageCount;
+      this.itemsStartIndex -= this.itemsPerPageCount;
+    }
+
+    this.getCurrentItems(this.items);
+
+    if(this.currentItems.length === 0){
+      this.itemsEndIndex = this.itemsPerPageCount;
+      this.itemsStartIndex = 0;
+      this.getCurrentItems(this.items);
+    }
+
+    this.scrollToTop();
+  }
+
+  private scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+
+  private getCurrentItems(items: Item[]){
+    this.currentItems = [];
+    for (let index = this.itemsStartIndex; index < this.itemsEndIndex; index++) {
+      if(items[index])
+        this.currentItems.push(items[index]);      
+    }    
+  }
+
   private setUser(){
     this.isLoading = true;
     this.userService.user$.subscribe((user)=>{
@@ -84,6 +126,9 @@ export class InventoryComponent implements OnInit{
       this.items = items;
 
       this.isLoading = false;
+      this.pages = items.length / this.itemsPerPageCount;
+
+      this.getCurrentItems(items);
     })
   }
 

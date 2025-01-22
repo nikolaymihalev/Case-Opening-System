@@ -93,7 +93,7 @@ namespace CaseOpener.Core.Services
                 Username = model.Username,
                 Email = model.Email,
                 DateJoined = DateTime.Now,
-                Balance = 1000m
+                Balance = 100m
             };
 
             var passwordHasher = new PasswordHasher<User>();
@@ -130,6 +130,9 @@ namespace CaseOpener.Core.Services
             }
             else
             {
+                if((user.Balance - amount) < 0)
+                    throw new ArgumentException(ReturnMessages.CannotModifyBalance);
+
                 user.Balance -= amount;
 
                 await repository.SaveChangesAsync();

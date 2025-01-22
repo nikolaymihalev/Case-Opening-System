@@ -2,7 +2,7 @@
     <app-loader/>
 }@else {
     <div class="opened-cases-container">        
-        @for (case of openedCases; track $index) {
+        @for (case of currentOpenedCases; track $index) {
             <div class="opened-case">
                 <h2>{{getOpenedDate(case.dateOpened)}}</h2>
                 <div class="opened-case-details">
@@ -31,5 +31,9 @@
                 </div>
             </div>
         }
+        <div class="pages-container">
+            <button (click)="changePage(0)"><i class="fa-solid fa-angle-left"></i></button>
+            <button (click)="changePage(1)"><i class="fa-solid fa-angle-right"></i></button>
+        </div>
     </div>
 }
