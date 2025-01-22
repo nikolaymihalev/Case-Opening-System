@@ -130,6 +130,9 @@ namespace CaseOpener.Core.Services
             }
             else
             {
+                if((user.Balance - amount) < 0)
+                    throw new ArgumentException(ReturnMessages.CannotModifyBalance);
+
                 user.Balance -= amount;
 
                 await repository.SaveChangesAsync();

@@ -62,8 +62,7 @@ export class CaseDetailsComponent implements OnInit {
     this.setUser();
     this.getCase(this.caseId);
     this.checkDoesUserHaveCase(this.caseId);
-    this.subscribeToNotification();    
-    
+    this.subscribeToNotification();        
   }
 
   buy(){    
