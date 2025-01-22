@@ -42,3 +42,17 @@
     background: #903749;
     border-color: #E84545;
 }
+
+@media only screen and (max-width: 1000px) {
+    .error-container h1{
+        font-size: 8rem;
+    }
+
+    .error-container h4{
+        font-size: 1.5rem;
+    }
+
+    .error-container p{
+        font-size: 0.9rem;
+    }
+}
