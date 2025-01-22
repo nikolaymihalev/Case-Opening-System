@@ -94,7 +94,7 @@ export class CaseDetailsComponent implements OnInit {
   }
 
   canUserBuyCase():boolean{    
-    return this.user?.balance! >= this.casePrice;
+    return this.user?.balance! >= this.getCasePrice;
   }
 
   startOpening() {
