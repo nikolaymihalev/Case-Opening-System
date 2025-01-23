@@ -14,7 +14,12 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config) 
         {
-            var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found.");
+            config
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            
+            var connectionString = builder.Configuration["AZURE_SQL_CONNECTIONSTRING"];
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
