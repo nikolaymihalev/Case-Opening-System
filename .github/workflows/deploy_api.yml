@@ -26,7 +26,7 @@ jobs:
       run: dotnet build CaseOpener.API/CaseOpener.API.sln --no-restore --configuration Release
 
     - name: Publish project
-      run: dotnet publish CaseOpener.API/CaseOpener.API.sln -c Release -o ${{ github.workspace }}/publish
+      run: dotnet publish CaseOpener.API/CaseOpener.API/CaseOpener.API.csproj -c Release -o ${{ github.workspace }}/publish
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
