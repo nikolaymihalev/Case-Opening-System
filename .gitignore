@@ -398,3 +398,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+CaseOpener.API/.vscode/launch.json
+CaseOpener.API/.vscode/tasks.json
