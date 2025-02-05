@@ -1,0 +1,57 @@
+@if (isLoading) {
+    <app-loader/>
+}@else{
+    <div class="parent-container">
+        <div class="inventory-container">
+            @for (item of currentItems; track $index) {
+                <button class="item-button" (click)="setCurrentItem(item)" [style]="{
+                    borderColor: 
+                        item.rarity === 'MilSpec' ? 'darkblue':
+                        item.rarity === 'Restricted' ? 'purple':
+                        item.rarity === 'Classified' ? 'plum' :
+                        item.rarity === 'Covert'? 'red':
+                        'gold',
+                    backgroundColor: item.rarity === 'MilSpec' ? '#000024':
+                        item.rarity === 'Restricted' ? '#13002b':
+                        item.rarity === 'Classified' ? '#2b0017' :
+                        item.rarity === 'Covert'? '#2b0000':
+                        '#2b2000'   }"
+                        >
+                        <img src={{item.imageUrl}}>            
+                </button>
+            }
+            <div class="pages-container">
+                <button (click)="changePage(0)"><i class="fa-solid fa-angle-left"></i></button>
+                <button (click)="changePage(1)"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
+        </div>
+        @if(isCurrentItemMode){
+            <div class="item-container">
+                <img src={{currentItem?.imageUrl}}>
+                <h3>{{currentItem?.name}}</h3>
+                <div class="item-details">
+                    <h5>Type:</h5>
+                    <h5 [style]="{
+                        color: currentItem?.type === 'Skin' ? '#007BFF':
+                            currentItem?.type === 'Knife' ? '#FF4C4C':
+                            currentItem?.type === 'Gloves' ? '#28A745' :
+                            currentItem?.type === 'Sticker'? '#FFC107':
+                            '#6F42C1'   }">{{currentItem?.type}}</h5>
+                </div>
+                <div class="item-details">
+                    <h5>Rarity:</h5>
+                    <h5 [style]="{
+                        color: currentItem?.rarity === 'MilSpec' ? 'darkblue':
+                            currentItem?.rarity === 'Restricted' ? 'purple':
+                            currentItem?.rarity === 'Classified' ? 'plum' :
+                            currentItem?.rarity === 'Covert'? 'red':
+                            'gold'   }">{{currentItem?.rarity}}</h5>
+                </div>
+                <button (click)="sellItem()">Sell for {{currentItem?.amount}} $</button>
+            </div>
+        }
+    </div>
+}
+@if(hasNotification){
+    <app-notification [message]="notificationMessage" [type]="notificationType"></app-notification>
+}

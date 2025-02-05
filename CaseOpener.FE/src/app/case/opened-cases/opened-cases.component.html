@@ -1,0 +1,39 @@
+@if(isLoading){
+    <app-loader/>
+}@else {
+    <div class="opened-cases-container">        
+        @for (case of currentOpenedCases; track $index) {
+            <div class="opened-case">
+                <h2>{{getOpenedDate(case.dateOpened)}}</h2>
+                <div class="opened-case-details">
+                    <div class="case">
+                        <h3>{{case.case.name}}</h3>
+                        <img src={{case.case.imageUrl}}/>
+                    </div>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <div class="item"
+                        [style]="{
+                            borderColor: 
+                            case.item.rarity === 'MilSpec' ? 'darkblue':
+                            case.item.rarity === 'Restricted' ? 'purple':
+                            case.item.rarity === 'Classified' ? 'plum' :
+                            case.item.rarity === 'Covert'? 'red':
+                            'gold',
+                            backgroundColor: case.item.rarity === 'MilSpec' ? '#000024':
+                            case.item.rarity === 'Restricted' ? '#13002b':
+                            case.item.rarity === 'Classified' ? '#2b0017' :
+                            case.item.rarity === 'Covert'? '#2b0000':
+                            '#2b2000'   
+                        }">
+                        <h3>{{case.item.name}}</h3>
+                        <img src={{case.item.imageUrl}}>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="pages-container">
+            <button (click)="changePage(0)"><i class="fa-solid fa-angle-left"></i></button>
+            <button (click)="changePage(1)"><i class="fa-solid fa-angle-right"></i></button>
+        </div>
+    </div>
+}

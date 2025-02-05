@@ -1,0 +1,76 @@
+.footer-container{
+    background: #161726;  
+    display: flex;
+    justify-content: space-around;
+    padding: 2em;
+    align-items: center;
+}
+
+.footer-container a,
+.footer-container p,
+.footer-container h4{
+    color: #9e9e9e;    
+}
+
+.company-container{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.company-container img{
+    width: 100px;
+}
+
+.media-container ul{
+    display: flex;
+    gap: 1.3em;
+    margin-top: 0.8em;
+    font-size: 1.5rem;
+}
+
+.media-container ul li{
+    list-style: outside none;
+}
+
+ul li a{
+    color: #dedede;
+}
+
+ul li a:hover .facebook{
+    color: rgb(0, 89, 255);
+}
+
+ul li a:hover .instagram{
+    color: rgb(255, 0, 157);
+}
+
+ul li a:hover .youtube{
+    color: rgb(255, 0, 0);
+}
+
+ul li a:hover .discord{
+    color: rgb(123, 22, 255);
+}
+
+ul li a:hover .tiktok{
+    color: rgb(247, 0, 255);
+}
+
+ul li a:hover .telegram{
+    color: rgb(0, 174, 255);
+}
+
+@media only screen and (max-width: 1000px) {
+    .footer-container{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding: 2em;
+    }
+
+    .company-container{
+        order: 1;
+        margin-top: 2em;
+    }
+}

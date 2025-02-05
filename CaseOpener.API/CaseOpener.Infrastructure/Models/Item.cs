@@ -21,15 +21,15 @@ namespace CaseOpener.Infrastructure.Models
         /// Image of the item.
         /// </summary>
         [Required]
-        [Comment("Item's image")]
-        public byte[] Image { get; set; } = new byte[128];
+        [Comment("Item's image url")]
+        public string ImageUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Name of the item.
         /// </summary>
         [Required]
         [Comment("Item's name")]
-        [MinLength(PropertiesConstants.ITEM_NAME_MIN_LENGTH)]
+        [MinLength(PropertiesConstants.ItemNameMinLength)]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
@@ -50,7 +50,23 @@ namespace CaseOpener.Infrastructure.Models
         /// Amount of the item.
         /// </summary>
         [Required]
+        [Precision(18, 4)]
         [Comment("Item's amount")]
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// Collection of case openings.
+        /// </summary>
+        public ICollection<CaseOpening> CaseOpenings { get; set; } = new List<CaseOpening>();
+
+        /// <summary>
+        /// Collection of inventory items.
+        /// </summary>
+        public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+
+        /// <summary>
+        /// Collection of case items.
+        /// </summary>
+        public ICollection<CaseItem> CaseItems { get; set; } = new List<CaseItem>();
     }
 }

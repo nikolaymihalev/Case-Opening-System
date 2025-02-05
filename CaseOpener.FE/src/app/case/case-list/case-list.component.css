@@ -1,0 +1,221 @@
+.list-container{
+    margin: 2em 3em;
+}
+
+.list-nav-menu{
+    display: flex;
+    padding: 0.5em 2em;
+    justify-content: space-between;
+    align-items: center;
+    background: #3d3f6d;
+    gap: 3em;
+    border-radius: 0.3em;
+}
+
+.list-nav-menu .categories {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    gap: 2em;
+}
+
+.list-nav-menu .search-btn{
+    font-size: 1.3rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    padding: 0.5em;
+    border-radius: 0.3em;
+}
+
+.search-btn i{
+    color: #dedede;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.list-nav-menu .search-btn:hover{
+    background-color: #53559c;
+}
+
+.list-nav-menu .search-btn:hover i{
+    color: #fff;
+}
+
+.categories button{
+    color: #dedede;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex: 1 1 auto;
+    padding: 0.5em 0;
+    font-size: 1.2rem;
+    border-radius: 0.3em;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.categories button:hover{
+    background-color: #53559c;
+    color: #fff;
+}
+
+.cases-container{
+    margin: 1em 0;
+    padding: 2em 0;
+    border-top: 1px solid #444679;
+    text-align: center;
+}
+
+.cases-container h4{
+    font-size: 2rem;
+    margin-bottom: 1em;
+    color: #dedede;
+}
+
+.cases-container h4 i{
+    color: #E84545;
+    margin-right: 0.3em;
+}
+
+.section-cases{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.case{
+    text-decoration: none;
+    color: #dedede;
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    border-radius: 1em;
+}
+
+.case img{
+    width: 300px;
+    transition: transform 0.5s ease;
+}
+
+.case h5{
+    font-size: 1.5rem;
+}
+
+.case .price-container{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 100px;   
+    font-size: 1.2rem;
+    margin: 0.6em auto;
+    padding: 0.3em 0.5em;
+    border-radius: 0.2em;
+    border: 2px solid #07b307;
+    gap: 0.3em;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.price-container h3{
+    font-size: 1.3rem;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.price-container p{
+    font-size: 1.3rem;
+    color: #07b307;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.case:hover{
+    background-color: #2a2a41;
+}
+
+.case:hover img{
+    transform: scale(1.1);
+}
+
+.case:hover .price-container{
+    background-color: #07b307;
+}
+
+.case:hover .price-container h3,
+.case:hover .price-container p{
+    color: #fff;
+}
+
+.search-form{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.search-form input{
+    padding: 0.5em;
+    background-color: #161726;
+    color: #E84545;
+    border: none;
+    border-radius: 0.3em;
+    border: 1px solid #000;
+}
+
+.no-result-container{
+    margin: 2em;
+}
+
+.no-result-container h4{
+    color: #dedede;
+    font-size: 1.5rem;
+    margin-bottom: 1em;
+}
+
+.no-result-container button{
+    background-color: #E84545;
+    padding: 0.5em 1em;
+    font-size: 1.3rem;
+    border-radius: 0.3em;
+    border: none;
+    border: 2px solid #903749;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.no-result-container button:hover{
+    background-color: #903749;
+    border-color: #E84545;
+}
+
+@media only screen and (max-width: 1000px) {
+    .list-nav-menu .categories{
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+
+    .categories button{
+        font-size: 1rem;
+    }
+
+    .cases-container h4{
+        font-size: 1.6rem;
+    }
+    
+    .case{
+        flex: 1 1 auto;
+    }
+
+    .case img{
+        width: 200px;
+    }
+
+    .case h5{
+        font-size: 1rem;
+    }
+
+    .case .price-container{
+        font-size: 1rem;
+    }
+    
+    .price-container h3,
+    .price-container p{
+        font-size: 1rem;
+    }
+  }

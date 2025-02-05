@@ -1,0 +1,39 @@
+.notification {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    top: 0;
+    right: 0;
+    width: 400px;
+    margin-top: 13em;
+    margin-right: 1em;
+    color: #fff;
+    padding: 0.3em 0.5em;
+    border-radius: 0.3em;
+    font-size: 1.1rem;
+}
+    
+.notification i{
+    font-size: 2rem;
+}
+
+.notification{
+    color: #2B2E4A;
+}
+
+.error{
+    background-color: #ffa5a5;
+}
+
+.success{
+    background-color: #bcf8bc;
+}
+
+.info{
+    background-color: #c5deff;
+}
+
+.warning{
+    background-color: #ffefb6;
+}
